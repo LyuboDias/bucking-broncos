@@ -7,5 +7,17 @@ import {
 } from 'next-themes'
 
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>
+  const [mounted, setMounted] = React.useState(false)
+
+  // useEffect only runs on the client, so now we can safely show the UI
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Avoid hydration mismatch by only rendering children once mounted
+  return (
+    <NextThemesProvider {...props}>
+      {mounted ? children : <div style={{ visibility: 'hidden' }}>{children}</div>}
+    </NextThemesProvider>
+  )
 }

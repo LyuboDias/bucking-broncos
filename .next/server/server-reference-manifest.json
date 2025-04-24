@@ -5,10 +5,20 @@
         "app/races/[id]/page": {
           "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fovibar%2FIdeaProjects%2Fwacky-races%2Flib%2Factions.ts%22%2C%5B%7B%22id%22%3A%2240160dc3fc7c738bb775f1ccd6569972fee5b28db4%22%2C%22exportedName%22%3A%22createRaceAction%22%7D%2C%7B%22id%22%3A%2240dfb7e1d921d34dbca19565682ccdc7d2bcfcdfe7%22%2C%22exportedName%22%3A%22deleteRaceAction%22%7D%2C%7B%22id%22%3A%2240ebec177d6ad3f0a2872f61e12e06a6946c5d395b%22%2C%22exportedName%22%3A%22settleRaceAction%22%7D%2C%7B%22id%22%3A%22600f833c4dac7adda67857593487cf2ef7e223a2b2%22%2C%22exportedName%22%3A%22updateUserBalanceAction%22%7D%2C%7B%22id%22%3A%226016eb370d9b1a781c682f65b913412f09aa01270a%22%2C%22exportedName%22%3A%22setRaceWinnerAction%22%7D%2C%7B%22id%22%3A%226073659691841ac98dcce8445f062febd485488adf%22%2C%22exportedName%22%3A%22updateRaceStatusAction%22%7D%2C%7B%22id%22%3A%227079b1b91cabb9a3cb03a1b91015c3060268fd18c6%22%2C%22exportedName%22%3A%22createUserAction%22%7D%2C%7B%22id%22%3A%227094309e8007f3dc4a138f713e377f8d64f49cdc13%22%2C%22exportedName%22%3A%22addPlayerAction%22%7D%2C%7B%22id%22%3A%227813e313b7ec74e95d83fdde207b4c37058dc3c0e2%22%2C%22exportedName%22%3A%22placeBetAction%22%7D%5D%5D%5D&__client_imported__=true!",
           "async": false
+        },
+        "app/admin/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fovibar%2FIdeaProjects%2Fwacky-races%2Flib%2Factions.ts%22%2C%5B%7B%22id%22%3A%2240160dc3fc7c738bb775f1ccd6569972fee5b28db4%22%2C%22exportedName%22%3A%22createRaceAction%22%7D%2C%7B%22id%22%3A%2240dfb7e1d921d34dbca19565682ccdc7d2bcfcdfe7%22%2C%22exportedName%22%3A%22deleteRaceAction%22%7D%2C%7B%22id%22%3A%2240ebec177d6ad3f0a2872f61e12e06a6946c5d395b%22%2C%22exportedName%22%3A%22settleRaceAction%22%7D%2C%7B%22id%22%3A%22600f833c4dac7adda67857593487cf2ef7e223a2b2%22%2C%22exportedName%22%3A%22updateUserBalanceAction%22%7D%2C%7B%22id%22%3A%226016eb370d9b1a781c682f65b913412f09aa01270a%22%2C%22exportedName%22%3A%22setRaceWinnerAction%22%7D%2C%7B%22id%22%3A%226073659691841ac98dcce8445f062febd485488adf%22%2C%22exportedName%22%3A%22updateRaceStatusAction%22%7D%2C%7B%22id%22%3A%227079b1b91cabb9a3cb03a1b91015c3060268fd18c6%22%2C%22exportedName%22%3A%22createUserAction%22%7D%2C%7B%22id%22%3A%227094309e8007f3dc4a138f713e377f8d64f49cdc13%22%2C%22exportedName%22%3A%22addPlayerAction%22%7D%2C%7B%22id%22%3A%227813e313b7ec74e95d83fdde207b4c37058dc3c0e2%22%2C%22exportedName%22%3A%22placeBetAction%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        },
+        "app/admin/races/[id]/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fovibar%2FIdeaProjects%2Fwacky-races%2Flib%2Factions.ts%22%2C%5B%7B%22id%22%3A%2240160dc3fc7c738bb775f1ccd6569972fee5b28db4%22%2C%22exportedName%22%3A%22createRaceAction%22%7D%2C%7B%22id%22%3A%2240dfb7e1d921d34dbca19565682ccdc7d2bcfcdfe7%22%2C%22exportedName%22%3A%22deleteRaceAction%22%7D%2C%7B%22id%22%3A%2240ebec177d6ad3f0a2872f61e12e06a6946c5d395b%22%2C%22exportedName%22%3A%22settleRaceAction%22%7D%2C%7B%22id%22%3A%22600f833c4dac7adda67857593487cf2ef7e223a2b2%22%2C%22exportedName%22%3A%22updateUserBalanceAction%22%7D%2C%7B%22id%22%3A%226016eb370d9b1a781c682f65b913412f09aa01270a%22%2C%22exportedName%22%3A%22setRaceWinnerAction%22%7D%2C%7B%22id%22%3A%226073659691841ac98dcce8445f062febd485488adf%22%2C%22exportedName%22%3A%22updateRaceStatusAction%22%7D%2C%7B%22id%22%3A%227079b1b91cabb9a3cb03a1b91015c3060268fd18c6%22%2C%22exportedName%22%3A%22createUserAction%22%7D%2C%7B%22id%22%3A%227094309e8007f3dc4a138f713e377f8d64f49cdc13%22%2C%22exportedName%22%3A%22addPlayerAction%22%7D%2C%7B%22id%22%3A%227813e313b7ec74e95d83fdde207b4c37058dc3c0e2%22%2C%22exportedName%22%3A%22placeBetAction%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
         }
       },
       "layer": {
-        "app/races/[id]/page": "action-browser"
+        "app/races/[id]/page": "action-browser",
+        "app/admin/page": "action-browser",
+        "app/admin/races/[id]/page": "action-browser"
       }
     },
     "40dfb7e1d921d34dbca19565682ccdc7d2bcfcdfe7": {
@@ -16,10 +26,20 @@
         "app/races/[id]/page": {
           "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fovibar%2FIdeaProjects%2Fwacky-races%2Flib%2Factions.ts%22%2C%5B%7B%22id%22%3A%2240160dc3fc7c738bb775f1ccd6569972fee5b28db4%22%2C%22exportedName%22%3A%22createRaceAction%22%7D%2C%7B%22id%22%3A%2240dfb7e1d921d34dbca19565682ccdc7d2bcfcdfe7%22%2C%22exportedName%22%3A%22deleteRaceAction%22%7D%2C%7B%22id%22%3A%2240ebec177d6ad3f0a2872f61e12e06a6946c5d395b%22%2C%22exportedName%22%3A%22settleRaceAction%22%7D%2C%7B%22id%22%3A%22600f833c4dac7adda67857593487cf2ef7e223a2b2%22%2C%22exportedName%22%3A%22updateUserBalanceAction%22%7D%2C%7B%22id%22%3A%226016eb370d9b1a781c682f65b913412f09aa01270a%22%2C%22exportedName%22%3A%22setRaceWinnerAction%22%7D%2C%7B%22id%22%3A%226073659691841ac98dcce8445f062febd485488adf%22%2C%22exportedName%22%3A%22updateRaceStatusAction%22%7D%2C%7B%22id%22%3A%227079b1b91cabb9a3cb03a1b91015c3060268fd18c6%22%2C%22exportedName%22%3A%22createUserAction%22%7D%2C%7B%22id%22%3A%227094309e8007f3dc4a138f713e377f8d64f49cdc13%22%2C%22exportedName%22%3A%22addPlayerAction%22%7D%2C%7B%22id%22%3A%227813e313b7ec74e95d83fdde207b4c37058dc3c0e2%22%2C%22exportedName%22%3A%22placeBetAction%22%7D%5D%5D%5D&__client_imported__=true!",
           "async": false
+        },
+        "app/admin/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fovibar%2FIdeaProjects%2Fwacky-races%2Flib%2Factions.ts%22%2C%5B%7B%22id%22%3A%2240160dc3fc7c738bb775f1ccd6569972fee5b28db4%22%2C%22exportedName%22%3A%22createRaceAction%22%7D%2C%7B%22id%22%3A%2240dfb7e1d921d34dbca19565682ccdc7d2bcfcdfe7%22%2C%22exportedName%22%3A%22deleteRaceAction%22%7D%2C%7B%22id%22%3A%2240ebec177d6ad3f0a2872f61e12e06a6946c5d395b%22%2C%22exportedName%22%3A%22settleRaceAction%22%7D%2C%7B%22id%22%3A%22600f833c4dac7adda67857593487cf2ef7e223a2b2%22%2C%22exportedName%22%3A%22updateUserBalanceAction%22%7D%2C%7B%22id%22%3A%226016eb370d9b1a781c682f65b913412f09aa01270a%22%2C%22exportedName%22%3A%22setRaceWinnerAction%22%7D%2C%7B%22id%22%3A%226073659691841ac98dcce8445f062febd485488adf%22%2C%22exportedName%22%3A%22updateRaceStatusAction%22%7D%2C%7B%22id%22%3A%227079b1b91cabb9a3cb03a1b91015c3060268fd18c6%22%2C%22exportedName%22%3A%22createUserAction%22%7D%2C%7B%22id%22%3A%227094309e8007f3dc4a138f713e377f8d64f49cdc13%22%2C%22exportedName%22%3A%22addPlayerAction%22%7D%2C%7B%22id%22%3A%227813e313b7ec74e95d83fdde207b4c37058dc3c0e2%22%2C%22exportedName%22%3A%22placeBetAction%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        },
+        "app/admin/races/[id]/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fovibar%2FIdeaProjects%2Fwacky-races%2Flib%2Factions.ts%22%2C%5B%7B%22id%22%3A%2240160dc3fc7c738bb775f1ccd6569972fee5b28db4%22%2C%22exportedName%22%3A%22createRaceAction%22%7D%2C%7B%22id%22%3A%2240dfb7e1d921d34dbca19565682ccdc7d2bcfcdfe7%22%2C%22exportedName%22%3A%22deleteRaceAction%22%7D%2C%7B%22id%22%3A%2240ebec177d6ad3f0a2872f61e12e06a6946c5d395b%22%2C%22exportedName%22%3A%22settleRaceAction%22%7D%2C%7B%22id%22%3A%22600f833c4dac7adda67857593487cf2ef7e223a2b2%22%2C%22exportedName%22%3A%22updateUserBalanceAction%22%7D%2C%7B%22id%22%3A%226016eb370d9b1a781c682f65b913412f09aa01270a%22%2C%22exportedName%22%3A%22setRaceWinnerAction%22%7D%2C%7B%22id%22%3A%226073659691841ac98dcce8445f062febd485488adf%22%2C%22exportedName%22%3A%22updateRaceStatusAction%22%7D%2C%7B%22id%22%3A%227079b1b91cabb9a3cb03a1b91015c3060268fd18c6%22%2C%22exportedName%22%3A%22createUserAction%22%7D%2C%7B%22id%22%3A%227094309e8007f3dc4a138f713e377f8d64f49cdc13%22%2C%22exportedName%22%3A%22addPlayerAction%22%7D%2C%7B%22id%22%3A%227813e313b7ec74e95d83fdde207b4c37058dc3c0e2%22%2C%22exportedName%22%3A%22placeBetAction%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
         }
       },
       "layer": {
-        "app/races/[id]/page": "action-browser"
+        "app/races/[id]/page": "action-browser",
+        "app/admin/page": "action-browser",
+        "app/admin/races/[id]/page": "action-browser"
       }
     },
     "40ebec177d6ad3f0a2872f61e12e06a6946c5d395b": {
@@ -27,10 +47,20 @@
         "app/races/[id]/page": {
           "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fovibar%2FIdeaProjects%2Fwacky-races%2Flib%2Factions.ts%22%2C%5B%7B%22id%22%3A%2240160dc3fc7c738bb775f1ccd6569972fee5b28db4%22%2C%22exportedName%22%3A%22createRaceAction%22%7D%2C%7B%22id%22%3A%2240dfb7e1d921d34dbca19565682ccdc7d2bcfcdfe7%22%2C%22exportedName%22%3A%22deleteRaceAction%22%7D%2C%7B%22id%22%3A%2240ebec177d6ad3f0a2872f61e12e06a6946c5d395b%22%2C%22exportedName%22%3A%22settleRaceAction%22%7D%2C%7B%22id%22%3A%22600f833c4dac7adda67857593487cf2ef7e223a2b2%22%2C%22exportedName%22%3A%22updateUserBalanceAction%22%7D%2C%7B%22id%22%3A%226016eb370d9b1a781c682f65b913412f09aa01270a%22%2C%22exportedName%22%3A%22setRaceWinnerAction%22%7D%2C%7B%22id%22%3A%226073659691841ac98dcce8445f062febd485488adf%22%2C%22exportedName%22%3A%22updateRaceStatusAction%22%7D%2C%7B%22id%22%3A%227079b1b91cabb9a3cb03a1b91015c3060268fd18c6%22%2C%22exportedName%22%3A%22createUserAction%22%7D%2C%7B%22id%22%3A%227094309e8007f3dc4a138f713e377f8d64f49cdc13%22%2C%22exportedName%22%3A%22addPlayerAction%22%7D%2C%7B%22id%22%3A%227813e313b7ec74e95d83fdde207b4c37058dc3c0e2%22%2C%22exportedName%22%3A%22placeBetAction%22%7D%5D%5D%5D&__client_imported__=true!",
           "async": false
+        },
+        "app/admin/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fovibar%2FIdeaProjects%2Fwacky-races%2Flib%2Factions.ts%22%2C%5B%7B%22id%22%3A%2240160dc3fc7c738bb775f1ccd6569972fee5b28db4%22%2C%22exportedName%22%3A%22createRaceAction%22%7D%2C%7B%22id%22%3A%2240dfb7e1d921d34dbca19565682ccdc7d2bcfcdfe7%22%2C%22exportedName%22%3A%22deleteRaceAction%22%7D%2C%7B%22id%22%3A%2240ebec177d6ad3f0a2872f61e12e06a6946c5d395b%22%2C%22exportedName%22%3A%22settleRaceAction%22%7D%2C%7B%22id%22%3A%22600f833c4dac7adda67857593487cf2ef7e223a2b2%22%2C%22exportedName%22%3A%22updateUserBalanceAction%22%7D%2C%7B%22id%22%3A%226016eb370d9b1a781c682f65b913412f09aa01270a%22%2C%22exportedName%22%3A%22setRaceWinnerAction%22%7D%2C%7B%22id%22%3A%226073659691841ac98dcce8445f062febd485488adf%22%2C%22exportedName%22%3A%22updateRaceStatusAction%22%7D%2C%7B%22id%22%3A%227079b1b91cabb9a3cb03a1b91015c3060268fd18c6%22%2C%22exportedName%22%3A%22createUserAction%22%7D%2C%7B%22id%22%3A%227094309e8007f3dc4a138f713e377f8d64f49cdc13%22%2C%22exportedName%22%3A%22addPlayerAction%22%7D%2C%7B%22id%22%3A%227813e313b7ec74e95d83fdde207b4c37058dc3c0e2%22%2C%22exportedName%22%3A%22placeBetAction%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        },
+        "app/admin/races/[id]/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fovibar%2FIdeaProjects%2Fwacky-races%2Flib%2Factions.ts%22%2C%5B%7B%22id%22%3A%2240160dc3fc7c738bb775f1ccd6569972fee5b28db4%22%2C%22exportedName%22%3A%22createRaceAction%22%7D%2C%7B%22id%22%3A%2240dfb7e1d921d34dbca19565682ccdc7d2bcfcdfe7%22%2C%22exportedName%22%3A%22deleteRaceAction%22%7D%2C%7B%22id%22%3A%2240ebec177d6ad3f0a2872f61e12e06a6946c5d395b%22%2C%22exportedName%22%3A%22settleRaceAction%22%7D%2C%7B%22id%22%3A%22600f833c4dac7adda67857593487cf2ef7e223a2b2%22%2C%22exportedName%22%3A%22updateUserBalanceAction%22%7D%2C%7B%22id%22%3A%226016eb370d9b1a781c682f65b913412f09aa01270a%22%2C%22exportedName%22%3A%22setRaceWinnerAction%22%7D%2C%7B%22id%22%3A%226073659691841ac98dcce8445f062febd485488adf%22%2C%22exportedName%22%3A%22updateRaceStatusAction%22%7D%2C%7B%22id%22%3A%227079b1b91cabb9a3cb03a1b91015c3060268fd18c6%22%2C%22exportedName%22%3A%22createUserAction%22%7D%2C%7B%22id%22%3A%227094309e8007f3dc4a138f713e377f8d64f49cdc13%22%2C%22exportedName%22%3A%22addPlayerAction%22%7D%2C%7B%22id%22%3A%227813e313b7ec74e95d83fdde207b4c37058dc3c0e2%22%2C%22exportedName%22%3A%22placeBetAction%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
         }
       },
       "layer": {
-        "app/races/[id]/page": "action-browser"
+        "app/races/[id]/page": "action-browser",
+        "app/admin/page": "action-browser",
+        "app/admin/races/[id]/page": "action-browser"
       }
     },
     "600f833c4dac7adda67857593487cf2ef7e223a2b2": {
@@ -38,10 +68,20 @@
         "app/races/[id]/page": {
           "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fovibar%2FIdeaProjects%2Fwacky-races%2Flib%2Factions.ts%22%2C%5B%7B%22id%22%3A%2240160dc3fc7c738bb775f1ccd6569972fee5b28db4%22%2C%22exportedName%22%3A%22createRaceAction%22%7D%2C%7B%22id%22%3A%2240dfb7e1d921d34dbca19565682ccdc7d2bcfcdfe7%22%2C%22exportedName%22%3A%22deleteRaceAction%22%7D%2C%7B%22id%22%3A%2240ebec177d6ad3f0a2872f61e12e06a6946c5d395b%22%2C%22exportedName%22%3A%22settleRaceAction%22%7D%2C%7B%22id%22%3A%22600f833c4dac7adda67857593487cf2ef7e223a2b2%22%2C%22exportedName%22%3A%22updateUserBalanceAction%22%7D%2C%7B%22id%22%3A%226016eb370d9b1a781c682f65b913412f09aa01270a%22%2C%22exportedName%22%3A%22setRaceWinnerAction%22%7D%2C%7B%22id%22%3A%226073659691841ac98dcce8445f062febd485488adf%22%2C%22exportedName%22%3A%22updateRaceStatusAction%22%7D%2C%7B%22id%22%3A%227079b1b91cabb9a3cb03a1b91015c3060268fd18c6%22%2C%22exportedName%22%3A%22createUserAction%22%7D%2C%7B%22id%22%3A%227094309e8007f3dc4a138f713e377f8d64f49cdc13%22%2C%22exportedName%22%3A%22addPlayerAction%22%7D%2C%7B%22id%22%3A%227813e313b7ec74e95d83fdde207b4c37058dc3c0e2%22%2C%22exportedName%22%3A%22placeBetAction%22%7D%5D%5D%5D&__client_imported__=true!",
           "async": false
+        },
+        "app/admin/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fovibar%2FIdeaProjects%2Fwacky-races%2Flib%2Factions.ts%22%2C%5B%7B%22id%22%3A%2240160dc3fc7c738bb775f1ccd6569972fee5b28db4%22%2C%22exportedName%22%3A%22createRaceAction%22%7D%2C%7B%22id%22%3A%2240dfb7e1d921d34dbca19565682ccdc7d2bcfcdfe7%22%2C%22exportedName%22%3A%22deleteRaceAction%22%7D%2C%7B%22id%22%3A%2240ebec177d6ad3f0a2872f61e12e06a6946c5d395b%22%2C%22exportedName%22%3A%22settleRaceAction%22%7D%2C%7B%22id%22%3A%22600f833c4dac7adda67857593487cf2ef7e223a2b2%22%2C%22exportedName%22%3A%22updateUserBalanceAction%22%7D%2C%7B%22id%22%3A%226016eb370d9b1a781c682f65b913412f09aa01270a%22%2C%22exportedName%22%3A%22setRaceWinnerAction%22%7D%2C%7B%22id%22%3A%226073659691841ac98dcce8445f062febd485488adf%22%2C%22exportedName%22%3A%22updateRaceStatusAction%22%7D%2C%7B%22id%22%3A%227079b1b91cabb9a3cb03a1b91015c3060268fd18c6%22%2C%22exportedName%22%3A%22createUserAction%22%7D%2C%7B%22id%22%3A%227094309e8007f3dc4a138f713e377f8d64f49cdc13%22%2C%22exportedName%22%3A%22addPlayerAction%22%7D%2C%7B%22id%22%3A%227813e313b7ec74e95d83fdde207b4c37058dc3c0e2%22%2C%22exportedName%22%3A%22placeBetAction%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        },
+        "app/admin/races/[id]/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fovibar%2FIdeaProjects%2Fwacky-races%2Flib%2Factions.ts%22%2C%5B%7B%22id%22%3A%2240160dc3fc7c738bb775f1ccd6569972fee5b28db4%22%2C%22exportedName%22%3A%22createRaceAction%22%7D%2C%7B%22id%22%3A%2240dfb7e1d921d34dbca19565682ccdc7d2bcfcdfe7%22%2C%22exportedName%22%3A%22deleteRaceAction%22%7D%2C%7B%22id%22%3A%2240ebec177d6ad3f0a2872f61e12e06a6946c5d395b%22%2C%22exportedName%22%3A%22settleRaceAction%22%7D%2C%7B%22id%22%3A%22600f833c4dac7adda67857593487cf2ef7e223a2b2%22%2C%22exportedName%22%3A%22updateUserBalanceAction%22%7D%2C%7B%22id%22%3A%226016eb370d9b1a781c682f65b913412f09aa01270a%22%2C%22exportedName%22%3A%22setRaceWinnerAction%22%7D%2C%7B%22id%22%3A%226073659691841ac98dcce8445f062febd485488adf%22%2C%22exportedName%22%3A%22updateRaceStatusAction%22%7D%2C%7B%22id%22%3A%227079b1b91cabb9a3cb03a1b91015c3060268fd18c6%22%2C%22exportedName%22%3A%22createUserAction%22%7D%2C%7B%22id%22%3A%227094309e8007f3dc4a138f713e377f8d64f49cdc13%22%2C%22exportedName%22%3A%22addPlayerAction%22%7D%2C%7B%22id%22%3A%227813e313b7ec74e95d83fdde207b4c37058dc3c0e2%22%2C%22exportedName%22%3A%22placeBetAction%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
         }
       },
       "layer": {
-        "app/races/[id]/page": "action-browser"
+        "app/races/[id]/page": "action-browser",
+        "app/admin/page": "action-browser",
+        "app/admin/races/[id]/page": "action-browser"
       }
     },
     "6016eb370d9b1a781c682f65b913412f09aa01270a": {
@@ -49,10 +89,20 @@
         "app/races/[id]/page": {
           "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fovibar%2FIdeaProjects%2Fwacky-races%2Flib%2Factions.ts%22%2C%5B%7B%22id%22%3A%2240160dc3fc7c738bb775f1ccd6569972fee5b28db4%22%2C%22exportedName%22%3A%22createRaceAction%22%7D%2C%7B%22id%22%3A%2240dfb7e1d921d34dbca19565682ccdc7d2bcfcdfe7%22%2C%22exportedName%22%3A%22deleteRaceAction%22%7D%2C%7B%22id%22%3A%2240ebec177d6ad3f0a2872f61e12e06a6946c5d395b%22%2C%22exportedName%22%3A%22settleRaceAction%22%7D%2C%7B%22id%22%3A%22600f833c4dac7adda67857593487cf2ef7e223a2b2%22%2C%22exportedName%22%3A%22updateUserBalanceAction%22%7D%2C%7B%22id%22%3A%226016eb370d9b1a781c682f65b913412f09aa01270a%22%2C%22exportedName%22%3A%22setRaceWinnerAction%22%7D%2C%7B%22id%22%3A%226073659691841ac98dcce8445f062febd485488adf%22%2C%22exportedName%22%3A%22updateRaceStatusAction%22%7D%2C%7B%22id%22%3A%227079b1b91cabb9a3cb03a1b91015c3060268fd18c6%22%2C%22exportedName%22%3A%22createUserAction%22%7D%2C%7B%22id%22%3A%227094309e8007f3dc4a138f713e377f8d64f49cdc13%22%2C%22exportedName%22%3A%22addPlayerAction%22%7D%2C%7B%22id%22%3A%227813e313b7ec74e95d83fdde207b4c37058dc3c0e2%22%2C%22exportedName%22%3A%22placeBetAction%22%7D%5D%5D%5D&__client_imported__=true!",
           "async": false
+        },
+        "app/admin/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fovibar%2FIdeaProjects%2Fwacky-races%2Flib%2Factions.ts%22%2C%5B%7B%22id%22%3A%2240160dc3fc7c738bb775f1ccd6569972fee5b28db4%22%2C%22exportedName%22%3A%22createRaceAction%22%7D%2C%7B%22id%22%3A%2240dfb7e1d921d34dbca19565682ccdc7d2bcfcdfe7%22%2C%22exportedName%22%3A%22deleteRaceAction%22%7D%2C%7B%22id%22%3A%2240ebec177d6ad3f0a2872f61e12e06a6946c5d395b%22%2C%22exportedName%22%3A%22settleRaceAction%22%7D%2C%7B%22id%22%3A%22600f833c4dac7adda67857593487cf2ef7e223a2b2%22%2C%22exportedName%22%3A%22updateUserBalanceAction%22%7D%2C%7B%22id%22%3A%226016eb370d9b1a781c682f65b913412f09aa01270a%22%2C%22exportedName%22%3A%22setRaceWinnerAction%22%7D%2C%7B%22id%22%3A%226073659691841ac98dcce8445f062febd485488adf%22%2C%22exportedName%22%3A%22updateRaceStatusAction%22%7D%2C%7B%22id%22%3A%227079b1b91cabb9a3cb03a1b91015c3060268fd18c6%22%2C%22exportedName%22%3A%22createUserAction%22%7D%2C%7B%22id%22%3A%227094309e8007f3dc4a138f713e377f8d64f49cdc13%22%2C%22exportedName%22%3A%22addPlayerAction%22%7D%2C%7B%22id%22%3A%227813e313b7ec74e95d83fdde207b4c37058dc3c0e2%22%2C%22exportedName%22%3A%22placeBetAction%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        },
+        "app/admin/races/[id]/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fovibar%2FIdeaProjects%2Fwacky-races%2Flib%2Factions.ts%22%2C%5B%7B%22id%22%3A%2240160dc3fc7c738bb775f1ccd6569972fee5b28db4%22%2C%22exportedName%22%3A%22createRaceAction%22%7D%2C%7B%22id%22%3A%2240dfb7e1d921d34dbca19565682ccdc7d2bcfcdfe7%22%2C%22exportedName%22%3A%22deleteRaceAction%22%7D%2C%7B%22id%22%3A%2240ebec177d6ad3f0a2872f61e12e06a6946c5d395b%22%2C%22exportedName%22%3A%22settleRaceAction%22%7D%2C%7B%22id%22%3A%22600f833c4dac7adda67857593487cf2ef7e223a2b2%22%2C%22exportedName%22%3A%22updateUserBalanceAction%22%7D%2C%7B%22id%22%3A%226016eb370d9b1a781c682f65b913412f09aa01270a%22%2C%22exportedName%22%3A%22setRaceWinnerAction%22%7D%2C%7B%22id%22%3A%226073659691841ac98dcce8445f062febd485488adf%22%2C%22exportedName%22%3A%22updateRaceStatusAction%22%7D%2C%7B%22id%22%3A%227079b1b91cabb9a3cb03a1b91015c3060268fd18c6%22%2C%22exportedName%22%3A%22createUserAction%22%7D%2C%7B%22id%22%3A%227094309e8007f3dc4a138f713e377f8d64f49cdc13%22%2C%22exportedName%22%3A%22addPlayerAction%22%7D%2C%7B%22id%22%3A%227813e313b7ec74e95d83fdde207b4c37058dc3c0e2%22%2C%22exportedName%22%3A%22placeBetAction%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
         }
       },
       "layer": {
-        "app/races/[id]/page": "action-browser"
+        "app/races/[id]/page": "action-browser",
+        "app/admin/page": "action-browser",
+        "app/admin/races/[id]/page": "action-browser"
       }
     },
     "6073659691841ac98dcce8445f062febd485488adf": {
@@ -60,10 +110,20 @@
         "app/races/[id]/page": {
           "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fovibar%2FIdeaProjects%2Fwacky-races%2Flib%2Factions.ts%22%2C%5B%7B%22id%22%3A%2240160dc3fc7c738bb775f1ccd6569972fee5b28db4%22%2C%22exportedName%22%3A%22createRaceAction%22%7D%2C%7B%22id%22%3A%2240dfb7e1d921d34dbca19565682ccdc7d2bcfcdfe7%22%2C%22exportedName%22%3A%22deleteRaceAction%22%7D%2C%7B%22id%22%3A%2240ebec177d6ad3f0a2872f61e12e06a6946c5d395b%22%2C%22exportedName%22%3A%22settleRaceAction%22%7D%2C%7B%22id%22%3A%22600f833c4dac7adda67857593487cf2ef7e223a2b2%22%2C%22exportedName%22%3A%22updateUserBalanceAction%22%7D%2C%7B%22id%22%3A%226016eb370d9b1a781c682f65b913412f09aa01270a%22%2C%22exportedName%22%3A%22setRaceWinnerAction%22%7D%2C%7B%22id%22%3A%226073659691841ac98dcce8445f062febd485488adf%22%2C%22exportedName%22%3A%22updateRaceStatusAction%22%7D%2C%7B%22id%22%3A%227079b1b91cabb9a3cb03a1b91015c3060268fd18c6%22%2C%22exportedName%22%3A%22createUserAction%22%7D%2C%7B%22id%22%3A%227094309e8007f3dc4a138f713e377f8d64f49cdc13%22%2C%22exportedName%22%3A%22addPlayerAction%22%7D%2C%7B%22id%22%3A%227813e313b7ec74e95d83fdde207b4c37058dc3c0e2%22%2C%22exportedName%22%3A%22placeBetAction%22%7D%5D%5D%5D&__client_imported__=true!",
           "async": false
+        },
+        "app/admin/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fovibar%2FIdeaProjects%2Fwacky-races%2Flib%2Factions.ts%22%2C%5B%7B%22id%22%3A%2240160dc3fc7c738bb775f1ccd6569972fee5b28db4%22%2C%22exportedName%22%3A%22createRaceAction%22%7D%2C%7B%22id%22%3A%2240dfb7e1d921d34dbca19565682ccdc7d2bcfcdfe7%22%2C%22exportedName%22%3A%22deleteRaceAction%22%7D%2C%7B%22id%22%3A%2240ebec177d6ad3f0a2872f61e12e06a6946c5d395b%22%2C%22exportedName%22%3A%22settleRaceAction%22%7D%2C%7B%22id%22%3A%22600f833c4dac7adda67857593487cf2ef7e223a2b2%22%2C%22exportedName%22%3A%22updateUserBalanceAction%22%7D%2C%7B%22id%22%3A%226016eb370d9b1a781c682f65b913412f09aa01270a%22%2C%22exportedName%22%3A%22setRaceWinnerAction%22%7D%2C%7B%22id%22%3A%226073659691841ac98dcce8445f062febd485488adf%22%2C%22exportedName%22%3A%22updateRaceStatusAction%22%7D%2C%7B%22id%22%3A%227079b1b91cabb9a3cb03a1b91015c3060268fd18c6%22%2C%22exportedName%22%3A%22createUserAction%22%7D%2C%7B%22id%22%3A%227094309e8007f3dc4a138f713e377f8d64f49cdc13%22%2C%22exportedName%22%3A%22addPlayerAction%22%7D%2C%7B%22id%22%3A%227813e313b7ec74e95d83fdde207b4c37058dc3c0e2%22%2C%22exportedName%22%3A%22placeBetAction%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        },
+        "app/admin/races/[id]/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fovibar%2FIdeaProjects%2Fwacky-races%2Flib%2Factions.ts%22%2C%5B%7B%22id%22%3A%2240160dc3fc7c738bb775f1ccd6569972fee5b28db4%22%2C%22exportedName%22%3A%22createRaceAction%22%7D%2C%7B%22id%22%3A%2240dfb7e1d921d34dbca19565682ccdc7d2bcfcdfe7%22%2C%22exportedName%22%3A%22deleteRaceAction%22%7D%2C%7B%22id%22%3A%2240ebec177d6ad3f0a2872f61e12e06a6946c5d395b%22%2C%22exportedName%22%3A%22settleRaceAction%22%7D%2C%7B%22id%22%3A%22600f833c4dac7adda67857593487cf2ef7e223a2b2%22%2C%22exportedName%22%3A%22updateUserBalanceAction%22%7D%2C%7B%22id%22%3A%226016eb370d9b1a781c682f65b913412f09aa01270a%22%2C%22exportedName%22%3A%22setRaceWinnerAction%22%7D%2C%7B%22id%22%3A%226073659691841ac98dcce8445f062febd485488adf%22%2C%22exportedName%22%3A%22updateRaceStatusAction%22%7D%2C%7B%22id%22%3A%227079b1b91cabb9a3cb03a1b91015c3060268fd18c6%22%2C%22exportedName%22%3A%22createUserAction%22%7D%2C%7B%22id%22%3A%227094309e8007f3dc4a138f713e377f8d64f49cdc13%22%2C%22exportedName%22%3A%22addPlayerAction%22%7D%2C%7B%22id%22%3A%227813e313b7ec74e95d83fdde207b4c37058dc3c0e2%22%2C%22exportedName%22%3A%22placeBetAction%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
         }
       },
       "layer": {
-        "app/races/[id]/page": "action-browser"
+        "app/races/[id]/page": "action-browser",
+        "app/admin/page": "action-browser",
+        "app/admin/races/[id]/page": "action-browser"
       }
     },
     "7079b1b91cabb9a3cb03a1b91015c3060268fd18c6": {
@@ -71,10 +131,20 @@
         "app/races/[id]/page": {
           "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fovibar%2FIdeaProjects%2Fwacky-races%2Flib%2Factions.ts%22%2C%5B%7B%22id%22%3A%2240160dc3fc7c738bb775f1ccd6569972fee5b28db4%22%2C%22exportedName%22%3A%22createRaceAction%22%7D%2C%7B%22id%22%3A%2240dfb7e1d921d34dbca19565682ccdc7d2bcfcdfe7%22%2C%22exportedName%22%3A%22deleteRaceAction%22%7D%2C%7B%22id%22%3A%2240ebec177d6ad3f0a2872f61e12e06a6946c5d395b%22%2C%22exportedName%22%3A%22settleRaceAction%22%7D%2C%7B%22id%22%3A%22600f833c4dac7adda67857593487cf2ef7e223a2b2%22%2C%22exportedName%22%3A%22updateUserBalanceAction%22%7D%2C%7B%22id%22%3A%226016eb370d9b1a781c682f65b913412f09aa01270a%22%2C%22exportedName%22%3A%22setRaceWinnerAction%22%7D%2C%7B%22id%22%3A%226073659691841ac98dcce8445f062febd485488adf%22%2C%22exportedName%22%3A%22updateRaceStatusAction%22%7D%2C%7B%22id%22%3A%227079b1b91cabb9a3cb03a1b91015c3060268fd18c6%22%2C%22exportedName%22%3A%22createUserAction%22%7D%2C%7B%22id%22%3A%227094309e8007f3dc4a138f713e377f8d64f49cdc13%22%2C%22exportedName%22%3A%22addPlayerAction%22%7D%2C%7B%22id%22%3A%227813e313b7ec74e95d83fdde207b4c37058dc3c0e2%22%2C%22exportedName%22%3A%22placeBetAction%22%7D%5D%5D%5D&__client_imported__=true!",
           "async": false
+        },
+        "app/admin/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fovibar%2FIdeaProjects%2Fwacky-races%2Flib%2Factions.ts%22%2C%5B%7B%22id%22%3A%2240160dc3fc7c738bb775f1ccd6569972fee5b28db4%22%2C%22exportedName%22%3A%22createRaceAction%22%7D%2C%7B%22id%22%3A%2240dfb7e1d921d34dbca19565682ccdc7d2bcfcdfe7%22%2C%22exportedName%22%3A%22deleteRaceAction%22%7D%2C%7B%22id%22%3A%2240ebec177d6ad3f0a2872f61e12e06a6946c5d395b%22%2C%22exportedName%22%3A%22settleRaceAction%22%7D%2C%7B%22id%22%3A%22600f833c4dac7adda67857593487cf2ef7e223a2b2%22%2C%22exportedName%22%3A%22updateUserBalanceAction%22%7D%2C%7B%22id%22%3A%226016eb370d9b1a781c682f65b913412f09aa01270a%22%2C%22exportedName%22%3A%22setRaceWinnerAction%22%7D%2C%7B%22id%22%3A%226073659691841ac98dcce8445f062febd485488adf%22%2C%22exportedName%22%3A%22updateRaceStatusAction%22%7D%2C%7B%22id%22%3A%227079b1b91cabb9a3cb03a1b91015c3060268fd18c6%22%2C%22exportedName%22%3A%22createUserAction%22%7D%2C%7B%22id%22%3A%227094309e8007f3dc4a138f713e377f8d64f49cdc13%22%2C%22exportedName%22%3A%22addPlayerAction%22%7D%2C%7B%22id%22%3A%227813e313b7ec74e95d83fdde207b4c37058dc3c0e2%22%2C%22exportedName%22%3A%22placeBetAction%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        },
+        "app/admin/races/[id]/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fovibar%2FIdeaProjects%2Fwacky-races%2Flib%2Factions.ts%22%2C%5B%7B%22id%22%3A%2240160dc3fc7c738bb775f1ccd6569972fee5b28db4%22%2C%22exportedName%22%3A%22createRaceAction%22%7D%2C%7B%22id%22%3A%2240dfb7e1d921d34dbca19565682ccdc7d2bcfcdfe7%22%2C%22exportedName%22%3A%22deleteRaceAction%22%7D%2C%7B%22id%22%3A%2240ebec177d6ad3f0a2872f61e12e06a6946c5d395b%22%2C%22exportedName%22%3A%22settleRaceAction%22%7D%2C%7B%22id%22%3A%22600f833c4dac7adda67857593487cf2ef7e223a2b2%22%2C%22exportedName%22%3A%22updateUserBalanceAction%22%7D%2C%7B%22id%22%3A%226016eb370d9b1a781c682f65b913412f09aa01270a%22%2C%22exportedName%22%3A%22setRaceWinnerAction%22%7D%2C%7B%22id%22%3A%226073659691841ac98dcce8445f062febd485488adf%22%2C%22exportedName%22%3A%22updateRaceStatusAction%22%7D%2C%7B%22id%22%3A%227079b1b91cabb9a3cb03a1b91015c3060268fd18c6%22%2C%22exportedName%22%3A%22createUserAction%22%7D%2C%7B%22id%22%3A%227094309e8007f3dc4a138f713e377f8d64f49cdc13%22%2C%22exportedName%22%3A%22addPlayerAction%22%7D%2C%7B%22id%22%3A%227813e313b7ec74e95d83fdde207b4c37058dc3c0e2%22%2C%22exportedName%22%3A%22placeBetAction%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
         }
       },
       "layer": {
-        "app/races/[id]/page": "action-browser"
+        "app/races/[id]/page": "action-browser",
+        "app/admin/page": "action-browser",
+        "app/admin/races/[id]/page": "action-browser"
       }
     },
     "7094309e8007f3dc4a138f713e377f8d64f49cdc13": {
@@ -82,10 +152,20 @@
         "app/races/[id]/page": {
           "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fovibar%2FIdeaProjects%2Fwacky-races%2Flib%2Factions.ts%22%2C%5B%7B%22id%22%3A%2240160dc3fc7c738bb775f1ccd6569972fee5b28db4%22%2C%22exportedName%22%3A%22createRaceAction%22%7D%2C%7B%22id%22%3A%2240dfb7e1d921d34dbca19565682ccdc7d2bcfcdfe7%22%2C%22exportedName%22%3A%22deleteRaceAction%22%7D%2C%7B%22id%22%3A%2240ebec177d6ad3f0a2872f61e12e06a6946c5d395b%22%2C%22exportedName%22%3A%22settleRaceAction%22%7D%2C%7B%22id%22%3A%22600f833c4dac7adda67857593487cf2ef7e223a2b2%22%2C%22exportedName%22%3A%22updateUserBalanceAction%22%7D%2C%7B%22id%22%3A%226016eb370d9b1a781c682f65b913412f09aa01270a%22%2C%22exportedName%22%3A%22setRaceWinnerAction%22%7D%2C%7B%22id%22%3A%226073659691841ac98dcce8445f062febd485488adf%22%2C%22exportedName%22%3A%22updateRaceStatusAction%22%7D%2C%7B%22id%22%3A%227079b1b91cabb9a3cb03a1b91015c3060268fd18c6%22%2C%22exportedName%22%3A%22createUserAction%22%7D%2C%7B%22id%22%3A%227094309e8007f3dc4a138f713e377f8d64f49cdc13%22%2C%22exportedName%22%3A%22addPlayerAction%22%7D%2C%7B%22id%22%3A%227813e313b7ec74e95d83fdde207b4c37058dc3c0e2%22%2C%22exportedName%22%3A%22placeBetAction%22%7D%5D%5D%5D&__client_imported__=true!",
           "async": false
+        },
+        "app/admin/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fovibar%2FIdeaProjects%2Fwacky-races%2Flib%2Factions.ts%22%2C%5B%7B%22id%22%3A%2240160dc3fc7c738bb775f1ccd6569972fee5b28db4%22%2C%22exportedName%22%3A%22createRaceAction%22%7D%2C%7B%22id%22%3A%2240dfb7e1d921d34dbca19565682ccdc7d2bcfcdfe7%22%2C%22exportedName%22%3A%22deleteRaceAction%22%7D%2C%7B%22id%22%3A%2240ebec177d6ad3f0a2872f61e12e06a6946c5d395b%22%2C%22exportedName%22%3A%22settleRaceAction%22%7D%2C%7B%22id%22%3A%22600f833c4dac7adda67857593487cf2ef7e223a2b2%22%2C%22exportedName%22%3A%22updateUserBalanceAction%22%7D%2C%7B%22id%22%3A%226016eb370d9b1a781c682f65b913412f09aa01270a%22%2C%22exportedName%22%3A%22setRaceWinnerAction%22%7D%2C%7B%22id%22%3A%226073659691841ac98dcce8445f062febd485488adf%22%2C%22exportedName%22%3A%22updateRaceStatusAction%22%7D%2C%7B%22id%22%3A%227079b1b91cabb9a3cb03a1b91015c3060268fd18c6%22%2C%22exportedName%22%3A%22createUserAction%22%7D%2C%7B%22id%22%3A%227094309e8007f3dc4a138f713e377f8d64f49cdc13%22%2C%22exportedName%22%3A%22addPlayerAction%22%7D%2C%7B%22id%22%3A%227813e313b7ec74e95d83fdde207b4c37058dc3c0e2%22%2C%22exportedName%22%3A%22placeBetAction%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        },
+        "app/admin/races/[id]/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fovibar%2FIdeaProjects%2Fwacky-races%2Flib%2Factions.ts%22%2C%5B%7B%22id%22%3A%2240160dc3fc7c738bb775f1ccd6569972fee5b28db4%22%2C%22exportedName%22%3A%22createRaceAction%22%7D%2C%7B%22id%22%3A%2240dfb7e1d921d34dbca19565682ccdc7d2bcfcdfe7%22%2C%22exportedName%22%3A%22deleteRaceAction%22%7D%2C%7B%22id%22%3A%2240ebec177d6ad3f0a2872f61e12e06a6946c5d395b%22%2C%22exportedName%22%3A%22settleRaceAction%22%7D%2C%7B%22id%22%3A%22600f833c4dac7adda67857593487cf2ef7e223a2b2%22%2C%22exportedName%22%3A%22updateUserBalanceAction%22%7D%2C%7B%22id%22%3A%226016eb370d9b1a781c682f65b913412f09aa01270a%22%2C%22exportedName%22%3A%22setRaceWinnerAction%22%7D%2C%7B%22id%22%3A%226073659691841ac98dcce8445f062febd485488adf%22%2C%22exportedName%22%3A%22updateRaceStatusAction%22%7D%2C%7B%22id%22%3A%227079b1b91cabb9a3cb03a1b91015c3060268fd18c6%22%2C%22exportedName%22%3A%22createUserAction%22%7D%2C%7B%22id%22%3A%227094309e8007f3dc4a138f713e377f8d64f49cdc13%22%2C%22exportedName%22%3A%22addPlayerAction%22%7D%2C%7B%22id%22%3A%227813e313b7ec74e95d83fdde207b4c37058dc3c0e2%22%2C%22exportedName%22%3A%22placeBetAction%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
         }
       },
       "layer": {
-        "app/races/[id]/page": "action-browser"
+        "app/races/[id]/page": "action-browser",
+        "app/admin/page": "action-browser",
+        "app/admin/races/[id]/page": "action-browser"
       }
     },
     "7813e313b7ec74e95d83fdde207b4c37058dc3c0e2": {
@@ -93,10 +173,20 @@
         "app/races/[id]/page": {
           "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fovibar%2FIdeaProjects%2Fwacky-races%2Flib%2Factions.ts%22%2C%5B%7B%22id%22%3A%2240160dc3fc7c738bb775f1ccd6569972fee5b28db4%22%2C%22exportedName%22%3A%22createRaceAction%22%7D%2C%7B%22id%22%3A%2240dfb7e1d921d34dbca19565682ccdc7d2bcfcdfe7%22%2C%22exportedName%22%3A%22deleteRaceAction%22%7D%2C%7B%22id%22%3A%2240ebec177d6ad3f0a2872f61e12e06a6946c5d395b%22%2C%22exportedName%22%3A%22settleRaceAction%22%7D%2C%7B%22id%22%3A%22600f833c4dac7adda67857593487cf2ef7e223a2b2%22%2C%22exportedName%22%3A%22updateUserBalanceAction%22%7D%2C%7B%22id%22%3A%226016eb370d9b1a781c682f65b913412f09aa01270a%22%2C%22exportedName%22%3A%22setRaceWinnerAction%22%7D%2C%7B%22id%22%3A%226073659691841ac98dcce8445f062febd485488adf%22%2C%22exportedName%22%3A%22updateRaceStatusAction%22%7D%2C%7B%22id%22%3A%227079b1b91cabb9a3cb03a1b91015c3060268fd18c6%22%2C%22exportedName%22%3A%22createUserAction%22%7D%2C%7B%22id%22%3A%227094309e8007f3dc4a138f713e377f8d64f49cdc13%22%2C%22exportedName%22%3A%22addPlayerAction%22%7D%2C%7B%22id%22%3A%227813e313b7ec74e95d83fdde207b4c37058dc3c0e2%22%2C%22exportedName%22%3A%22placeBetAction%22%7D%5D%5D%5D&__client_imported__=true!",
           "async": false
+        },
+        "app/admin/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fovibar%2FIdeaProjects%2Fwacky-races%2Flib%2Factions.ts%22%2C%5B%7B%22id%22%3A%2240160dc3fc7c738bb775f1ccd6569972fee5b28db4%22%2C%22exportedName%22%3A%22createRaceAction%22%7D%2C%7B%22id%22%3A%2240dfb7e1d921d34dbca19565682ccdc7d2bcfcdfe7%22%2C%22exportedName%22%3A%22deleteRaceAction%22%7D%2C%7B%22id%22%3A%2240ebec177d6ad3f0a2872f61e12e06a6946c5d395b%22%2C%22exportedName%22%3A%22settleRaceAction%22%7D%2C%7B%22id%22%3A%22600f833c4dac7adda67857593487cf2ef7e223a2b2%22%2C%22exportedName%22%3A%22updateUserBalanceAction%22%7D%2C%7B%22id%22%3A%226016eb370d9b1a781c682f65b913412f09aa01270a%22%2C%22exportedName%22%3A%22setRaceWinnerAction%22%7D%2C%7B%22id%22%3A%226073659691841ac98dcce8445f062febd485488adf%22%2C%22exportedName%22%3A%22updateRaceStatusAction%22%7D%2C%7B%22id%22%3A%227079b1b91cabb9a3cb03a1b91015c3060268fd18c6%22%2C%22exportedName%22%3A%22createUserAction%22%7D%2C%7B%22id%22%3A%227094309e8007f3dc4a138f713e377f8d64f49cdc13%22%2C%22exportedName%22%3A%22addPlayerAction%22%7D%2C%7B%22id%22%3A%227813e313b7ec74e95d83fdde207b4c37058dc3c0e2%22%2C%22exportedName%22%3A%22placeBetAction%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        },
+        "app/admin/races/[id]/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fovibar%2FIdeaProjects%2Fwacky-races%2Flib%2Factions.ts%22%2C%5B%7B%22id%22%3A%2240160dc3fc7c738bb775f1ccd6569972fee5b28db4%22%2C%22exportedName%22%3A%22createRaceAction%22%7D%2C%7B%22id%22%3A%2240dfb7e1d921d34dbca19565682ccdc7d2bcfcdfe7%22%2C%22exportedName%22%3A%22deleteRaceAction%22%7D%2C%7B%22id%22%3A%2240ebec177d6ad3f0a2872f61e12e06a6946c5d395b%22%2C%22exportedName%22%3A%22settleRaceAction%22%7D%2C%7B%22id%22%3A%22600f833c4dac7adda67857593487cf2ef7e223a2b2%22%2C%22exportedName%22%3A%22updateUserBalanceAction%22%7D%2C%7B%22id%22%3A%226016eb370d9b1a781c682f65b913412f09aa01270a%22%2C%22exportedName%22%3A%22setRaceWinnerAction%22%7D%2C%7B%22id%22%3A%226073659691841ac98dcce8445f062febd485488adf%22%2C%22exportedName%22%3A%22updateRaceStatusAction%22%7D%2C%7B%22id%22%3A%227079b1b91cabb9a3cb03a1b91015c3060268fd18c6%22%2C%22exportedName%22%3A%22createUserAction%22%7D%2C%7B%22id%22%3A%227094309e8007f3dc4a138f713e377f8d64f49cdc13%22%2C%22exportedName%22%3A%22addPlayerAction%22%7D%2C%7B%22id%22%3A%227813e313b7ec74e95d83fdde207b4c37058dc3c0e2%22%2C%22exportedName%22%3A%22placeBetAction%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
         }
       },
       "layer": {
-        "app/races/[id]/page": "action-browser"
+        "app/races/[id]/page": "action-browser",
+        "app/admin/page": "action-browser",
+        "app/admin/races/[id]/page": "action-browser"
       }
     }
   },

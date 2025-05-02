@@ -18,6 +18,7 @@ type AuthContextType = {
   login: (email: string, password: string) => Promise<void>
   logout: () => void
   register: (name: string, email: string, password: string) => Promise<void>
+  updateUserBalance: (newBalance: number) => void
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -26,6 +27,7 @@ const AuthContext = createContext<AuthContextType>({
   login: async () => {},
   logout: () => {},
   register: async () => {},
+  updateUserBalance: () => {}
 })
 
 export const useAuth = () => useContext(AuthContext)
@@ -42,6 +44,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
     setLoading(false)
   }, [])
+
+  const updateUserBalance = (newBalance: number) => {
+    if (user) {
+      const updatedUser = { ...user, balance: newBalance };
+      setUser(updatedUser);
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+    }
+  }
 
   const login = async (email: string, password: string) => {
     // In a real app, this would be an API call to authenticate
@@ -120,5 +130,5 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.removeItem("user")
   }
 
-  return <AuthContext.Provider value={{ user, loading, login, logout, register }}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={{ user, loading, login, logout, register, updateUserBalance }}>{children}</AuthContext.Provider>
 }

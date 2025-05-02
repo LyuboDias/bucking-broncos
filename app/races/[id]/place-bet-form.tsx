@@ -22,7 +22,7 @@ export default function PlaceBetForm({
   race: Race
   players: Player[]
 }) {
-  const { user } = useAuth()
+  const { user, updateUserBalance } = useAuth()
   const { toast } = useToast()
   const router = useRouter()
 
@@ -66,13 +66,30 @@ export default function PlaceBetForm({
       const result = await placeBetAction(user.id, race.id, selectedPlayer, betAmount)
 
       if (result.success) {
+        // Update user balance in context and localStorage
+        const newBalance = user.balance - betAmount;
+        updateUserBalance(newBalance);
+        
         toast({
           title: "Bet placed successfully!",
           description: `You bet ${betAmount} coins on this race`,
         })
 
-        // Update user balance in context
-        user.balance -= betAmount
+        // Store bet in localStorage for persistence
+        const betsKey = `bets_${user.id}`;
+        const existingBets = JSON.parse(localStorage.getItem(betsKey) || '[]');
+        const newBet = {
+          id: Math.random().toString(36).substring(2, 9),
+          userId: user.id,
+          raceId: race.id,
+          playerId: selectedPlayer,
+          amount: betAmount,
+          createdAt: new Date().toISOString(),
+          settled: false,
+          winnings: 0
+        };
+        
+        localStorage.setItem(betsKey, JSON.stringify([...existingBets, newBet]));
 
         // Refresh the page to show updated data
         router.refresh()

@@ -15,7 +15,8 @@ export default function Header() {
   return (
     <header className="border-b">
       <div className="container mx-auto py-4 px-4 flex items-center justify-between">
-        <div className="flex flex-col">
+        {/* Title container with min width */}
+        <div className="flex flex-col min-w-[300px]">
           <Link href="/" className="font-bold text-xl flex items-center gap-2">
             <Trophy className="h-6 w-6" />
             Wacky Race
@@ -52,7 +53,7 @@ export default function Header() {
         </div>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-6">
+        <nav className="hidden md:flex items-center gap-6 w-full max-w-2xl justify-center">
           <Link
             href="/"
             className={`flex items-center gap-1 ${
@@ -84,20 +85,20 @@ export default function Header() {
           )}
         </nav>
 
-        {/* User info (desktop only) */}
-        <div className="hidden md:flex items-center gap-4">
+        {/* User info (desktop only) with min width */}
+        <div className="hidden md:flex items-center gap-4 min-w-[300px] justify-end">
           {user ? (
             <>
               <div className="text-sm">
                 <span className="text-muted-foreground mr-1">Balance:</span>
                 <span className="font-medium">{user.balance} coins</span>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-medium">{user.name}</span>
-                <Button variant="ghost" size="icon" onClick={logout}>
-                  <LogOut className="h-4 w-4" />
-                </Button>
-              </div>
+              {user.isAdmin && (
+                <span className="text-sm font-semibold">Admin User</span>
+              )}
+              <Button variant="ghost" size="icon" onClick={logout}>
+                <LogOut className="h-4 w-4" />
+              </Button>
             </>
           ) : (
             <Link href="/login">

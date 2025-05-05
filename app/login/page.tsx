@@ -93,7 +93,7 @@ export default function LoginPage() {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="admin@example.com or user@example.com"
+                    placeholder="wacky@race.com"
                     value={loginEmail}
                     onChange={(e) => setLoginEmail(e.target.value)}
                     required
@@ -114,13 +114,6 @@ export default function LoginPage() {
                   {isLoading ? "Logging in..." : "Login"}
                 </Button>
               </form>
-
-              <div className="mt-4 text-sm text-center text-muted-foreground">
-                <p>Demo accounts:</p>
-                <p>Admin: admin@example.com / password</p>
-                <p>Users: user@example.com, ross@example.com, lyu@example.com, aaron@example.com</p>
-                <p>Password for all accounts: password</p>
-              </div>
             </TabsContent>
 
             <TabsContent value="register">

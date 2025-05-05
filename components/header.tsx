@@ -27,8 +27,8 @@ export default function Header() {
               <div className="text-xs font-semibold text-primary">Admin User</div>
             )}
             {user && (
-              <div className="text-xs text-muted-foreground">
-                Balance: <span className="font-medium text-black">{user.balance}</span>
+              <div className="text-xs text-muted-foreground ">
+                Balance: <span className="font-medium text-black text-green-800">{user.balance}</span>
               </div>
             )}
           </div>

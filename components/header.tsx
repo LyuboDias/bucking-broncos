@@ -16,9 +16,9 @@ export default function Header() {
     <header className="border-b">
       <div className="container mx-auto py-4 px-4 flex items-center justify-between">
         {/* Title container with min width */}
-        <div className="flex flex-col min-w-[300px]">
+        <div className="flex flex-col md:min-w-[300px]">
           <Link href="/" className="font-bold text-xl flex items-center gap-2">
-            <Trophy className="h-6 w-6" />
+            <Trophy className="h-6 w-6" /> 
             Wacky Race
           </Link>
           {/* Mobile: User info under the title */}

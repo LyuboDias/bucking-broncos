@@ -34,12 +34,18 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Mobile: Log out and menu button side by side, top right */}
+        {/* Mobile: Log out/login and menu button side by side, top right */}
         <div className="flex items-center gap-2 md:hidden">
-          {user && (
+          {user ? (
             <Button variant="ghost" size="icon" onClick={logout}>
               <LogOut className="h-4 w-4" />
             </Button>
+          ) : (
+            <Link href="/login">
+              <Button variant="outline" size="icon" className="flex items-center justify-center">
+                <User className="h-4 w-4" />
+              </Button>
+            </Link>
           )}
           <button
             className="flex items-center px-2 py-1"

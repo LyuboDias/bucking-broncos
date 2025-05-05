@@ -56,7 +56,10 @@ export default async function Home() {
               </CardContent>
               <CardFooter>
                 <Link href={`/races/${race.id}`} className="w-full">
-                  <Button variant={race.status === "open" ? "default" : "outline"} className="w-full">
+                  <Button
+                    variant={race.status === "open" ? "default" : "outline"}
+                    className={`w-full ${race.status === "open" ? "bg-green-600 hover:bg-green-700 text-white border-green-600" : ""}`}
+                  >
                     {race.status === "settled"
                       ? "View Results"
                       : race.status === "open"
@@ -77,7 +80,10 @@ function StatusBadge({ status }: { status: string }) {
   switch (status) {
     case "upcoming":
       return (
-        <Badge variant="outline" className="flex items-center gap-1">
+        <Badge
+          variant="outline"
+          className="flex items-center gap-1 border-amber-400 text-amber-700 bg-amber-50"
+        >
           <Clock className="h-3 w-3" />
           <span>Upcoming</span>
         </Badge>

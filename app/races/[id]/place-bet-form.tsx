@@ -190,7 +190,11 @@ export default function PlaceBetForm({
             )}
           </div>
 
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
+          <Button
+            type="submit"
+            className="w-full bg-green-600 hover:bg-green-700 text-white"
+            disabled={isSubmitting}
+          >
             {isSubmitting ? "Placing Bet..." : "Place Bet"}
           </Button>
         </form>

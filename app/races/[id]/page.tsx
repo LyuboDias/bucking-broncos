@@ -34,22 +34,25 @@ export default async function RacePage({ params }: { params: { id: string } }) {
   })
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center gap-2">
+    <div className="space-y-8 flex flex-col items-center">
+      <div className="w-full max-w-2xl text-center mx-auto flex flex-col items-center">
+        <div className="flex flex-col items-center gap-2">
           <h1 className="text-3xl font-bold tracking-tight">{race.name}</h1>
-          <StatusBadge status={race.status} />
+          <p className="text-muted-foreground">
+            Created on {new Date(race.createdAt).toLocaleDateString()}
+            {race.settledAt && ` • Settled on ${new Date(race.settledAt).toLocaleDateString()}`}
+          </p>
+          <div>
+            <StatusBadge status={race.status} />
+          </div>
         </div>
-        <p className="text-muted-foreground">
-          Created on {new Date(race.createdAt).toLocaleDateString()}
-          {race.settledAt && ` • Settled on ${new Date(race.settledAt).toLocaleDateString()}`}
-        </p>
       </div>
 
       {race.status === "settled" ? (
         <RaceResults race={race} players={players} bets={bets} winner={winner} />
       ) : (
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="flex flex-col gap-6 w-full max-w-2xl mx-auto">
+          <PlaceBetForm race={race} players={players} />
           <Card>
             <CardHeader>
               <CardTitle>Participants</CardTitle>
@@ -76,8 +79,6 @@ export default async function RacePage({ params }: { params: { id: string } }) {
               </div>
             </CardContent>
           </Card>
-
-          <PlaceBetForm race={race} players={players} />
         </div>
       )}
     </div>
@@ -87,7 +88,14 @@ export default async function RacePage({ params }: { params: { id: string } }) {
 function StatusBadge({ status }: { status: string }) {
   switch (status) {
     case "upcoming":
-      return <Badge variant="outline">Upcoming</Badge>
+      return (
+        <Badge
+          variant="outline"
+          className="border-amber-400 text-amber-700 bg-amber-50"
+        >
+          Upcoming
+        </Badge>
+      )
     case "open":
       return (
         <Badge variant="secondary" className="bg-green-100 text-green-800 hover:bg-green-100">

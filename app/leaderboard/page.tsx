@@ -1,100 +1,145 @@
-import { getUsers, getBetsForRace, getRaces } from "@/lib/data"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Trophy, Medal, TrendingUp, TrendingDown } from "lucide-react"
+import { Trophy, Medal } from "lucide-react"
 
-export default async function LeaderboardPage() {
-  const users = await getUsers()
-  const races = await getRaces()
+// Switched to a client component for mock data (remove 'async')
+export default function LeaderboardPage() {
+  // Mock data for 20 players, with ties at the top and bottom
+  const mockPlayers = [
+    { id: 1, name: "Alice", points: 320 },
+    { id: 2, name: "Bob", points: 320 },        // Tie for top
+    { id: 3, name: "Charlie", points: 250 },
+    { id: 4, name: "Diana", points: 200 },
+    { id: 5, name: "Eve", points: 180 },
+    { id: 6, name: "Frank", points: 175 },
+    { id: 7, name: "Grace", points: 170 },
+    { id: 8, name: "Heidi", points: 165 },
+    { id: 9, name: "Ivan", points: 160 },
+    { id: 10, name: "Judy", points: 155 },
+    { id: 11, name: "Karl", points: 150 },
+    { id: 12, name: "Laura", points: 145 },
+    { id: 13, name: "Mallory", points: 140 },
+    { id: 14, name: "Niaj", points: 135 },
+    { id: 15, name: "Olivia", points: 130 },
+    { id: 16, name: "Peggy", points: 125 },
+    { id: 17, name: "Rupert", points: 110 },
+    { id: 18, name: "Sybil", points: 100 },     // Tie for bottom
+    { id: 19, name: "Trent", points: 100 },     // Tie for bottom
+    { id: 20, name: "Victor", points: 100 },    // Tie for bottom
+  ];
 
-  // Get all bets for all races
-  const allBets = []
-  for (const race of races) {
-    const raceBets = await getBetsForRace(race.id)
-    allBets.push(...raceBets)
-  }
+  // Sort by points descending and take top 5
+  const topPlayers = [...mockPlayers]
+    .sort((a, b) => b.points - a.points)
+    .slice(0, 5);
 
-  // Calculate user stats
-  const userStats = users
-    .filter((user) => !user.isAdmin) // Exclude admin users
-    .map((user) => {
-      const userBets = allBets.filter((bet) => bet.userId === user.id)
-      const totalBetAmount = userBets.reduce((sum, bet) => sum + bet.amount, 0)
-      const totalWinnings = userBets.reduce((sum, bet) => sum + bet.winnings, 0)
-      const netProfit = totalWinnings - totalBetAmount
-      const winRate = userBets.length > 0 ? userBets.filter((bet) => bet.winnings > 0).length / userBets.length : 0
+  // Sort by points ascending and take bottom 5, but always display the players with the lowest score as the last row(s)
+  const sortedByPointsAsc = [...mockPlayers].sort((a, b) => a.points - b.points);
+  const minScore = sortedByPointsAsc[0]?.points;
+  const bottomPlayersNonMin = sortedByPointsAsc.filter(p => p.points !== minScore).slice(0, 5 - sortedByPointsAsc.filter(p => p.points === minScore).length);
+  const bottomPlayersMin = sortedByPointsAsc.filter(p => p.points === minScore);
+  const bottomPlayers = [...bottomPlayersNonMin, ...bottomPlayersMin];
 
-      return {
-        ...user,
-        totalBetAmount,
-        totalWinnings,
-        netProfit,
-        winRate,
-        betsPlaced: userBets.length,
-      }
-    })
-    .sort((a, b) => b.balance - a.balance)
+  // Find the highest and second highest points among the top players
+  const topScore = topPlayers[0]?.points;
+  // Find the second highest score (runner-up), which is the highest score less than topScore
+  const secondTopScore = topPlayers.find(p => p.points < topScore)?.points;
 
   return (
-    <div className="space-y-8">
-      <div>
+    <div className="space-y-8 flex flex-col items-center">
+      <div className="w-full max-w-2xl text-center mx-auto">
         <h1 className="text-3xl font-bold tracking-tight">Leaderboard</h1>
-        <p className="text-muted-foreground mt-2">Users ranked by their current balance</p>
+        <p className="text-muted-foreground mt-2">Top 5 players by points</p>
       </div>
 
-      <div className="grid gap-6">
+      <div className="grid gap-6 w-full max-w-2xl">
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center gap-2">
               <Trophy className="h-5 w-5 text-yellow-500" />
               Top Players
             </CardTitle>
-            <CardDescription>Based on current balance</CardDescription>
+            <CardDescription>Based on total points</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {userStats.map((user, index) => (
-                <div key={user.id} className="flex justify-between items-center pb-4 border-b last:border-0">
+              {topPlayers.map((player, index) => (
+                <div key={player.id} className="flex justify-between items-center pb-4 border-b last:border-0">
                   <div className="flex items-center gap-3">
                     <div className="flex items-center justify-center w-8 h-8 rounded-full bg-muted font-semibold text-sm">
-                      {index === 0 ? (
+                      {player.points === topScore ? (
                         <Trophy className="h-4 w-4 text-yellow-500" />
-                      ) : index === 1 ? (
+                      ) : player.points === secondTopScore ? (
                         <Medal className="h-4 w-4 text-gray-400" />
-                      ) : index === 2 ? (
-                        <Medal className="h-4 w-4 text-amber-600" />
                       ) : (
                         index + 1
                       )}
                     </div>
                     <div>
-                      <div className="font-medium">{user.name}</div>
-                      <div className="text-sm text-muted-foreground">
-                        {user.betsPlaced} bets • {Math.round(user.winRate * 100)}% win rate
+                      <div
+                        className={`font-medium ${
+                          player.points === topScore
+                            ? "border border-green-600 rounded-full px-3 py-1 text-green-700"
+                            : ""
+                        }`}
+                      >
+                        {player.name}
                       </div>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="font-semibold">{user.balance} coins</div>
-                    <div className="flex items-center justify-end gap-1 text-sm">
-                      {user.netProfit > 0 ? (
-                        <>
-                          <TrendingUp className="h-3 w-3 text-green-500" />
-                          <span className="text-green-600">+{user.netProfit}</span>
-                        </>
-                      ) : user.netProfit < 0 ? (
-                        <>
-                          <TrendingDown className="h-3 w-3 text-red-500" />
-                          <span className="text-red-600">{user.netProfit}</span>
-                        </>
-                      ) : (
-                        <span className="text-muted-foreground">No change</span>
-                      )}
+                    <div className={`font-semibold ${player.points === topScore ? "text-green-600" : ""}`}>
+                      {player.points} points
                     </div>
                   </div>
                 </div>
               ))}
+              {topPlayers.length === 0 && <div className="text-center py-4 text-muted-foreground">No players found</div>}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
-              {userStats.length === 0 && <div className="text-center py-4 text-muted-foreground">No users found</div>}
+      {/* Bottom Players Section */}
+      <div className="grid gap-6 w-full max-w-2xl">
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="flex items-center gap-2">
+              <Trophy className="h-5 w-5 text-red-500" />
+              Bottom Players
+            </CardTitle>
+            <CardDescription>Lowest scoring 5 players</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {bottomPlayers.map((player, index) => (
+                <div key={player.id} className="flex justify-between items-center pb-4 border-b last:border-0">
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-muted font-semibold text-sm">
+                      {index + 1}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div
+                        className={`font-medium ${
+                          player.points === minScore
+                            ? "border border-red-600 rounded-full px-3 py-1 text-red-700"
+                            : ""
+                        }`}
+                      >
+                        {player.name}
+                      </div>
+                      {player.points === minScore && (
+                        <span className="text-xl" title="Oops!">💩</span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className={`font-semibold ${player.points === minScore ? "text-red-600" : ""}`}>
+                      {player.points} points
+                    </div>
+                  </div>
+                </div>
+              ))}
+              {bottomPlayers.length === 0 && <div className="text-center py-4 text-muted-foreground">No players found</div>}
             </div>
           </CardContent>
         </Card>

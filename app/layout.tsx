@@ -9,7 +9,7 @@ import Header from "@/components/header"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
-  title: "Race Betting App",
+  title: "Wacky Race App",
   description: "Place bets on races and compete on the leaderboard",
     generator: 'v0.dev'
 }
@@ -30,7 +30,7 @@ export default function RootLayout({
               <main className="flex-1 container mx-auto py-6 px-4">{children}</main>
               <footer className="border-t py-4">
                 <div className="container mx-auto text-center text-sm text-muted-foreground">
-                  © {new Date().getFullYear()} Race Betting App
+                  © {new Date().getFullYear()} Wacky Race App
                 </div>
               </footer>
             </div>

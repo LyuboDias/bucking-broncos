@@ -8,14 +8,19 @@ import { Trophy, Clock, Users } from "lucide-react"
 export default async function Home() {
   const races = await getRaces()
 
+  // Sort races: open for betting first, then the rest
+  const openRaces = races.filter(race => race.status === "open")
+  const otherRaces = races.filter(race => race.status !== "open")
+  const sortedRaces = [...openRaces, ...otherRaces]
+
   return (
-    <div className="space-y-8">
-      <div className="flex items-center justify-between">
+    <div className="space-y-8 flex flex-col items-center">
+      <div className="w-full max-w-2xl text-center mx-auto">
         <h1 className="text-3xl font-bold tracking-tight">Races</h1>
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {races.map(async (race) => {
+      <div className="grid gap-6 w-full max-w-2xl">
+        {sortedRaces.map(async (race) => {
           const players = await getPlayersForRace(race.id)
           return (
             <Card key={race.id} className="overflow-hidden">

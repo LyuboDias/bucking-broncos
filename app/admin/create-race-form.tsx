@@ -81,7 +81,11 @@ export default function CreateRaceForm() {
             />
           </div>
 
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
+          <Button
+            type="submit"
+            className="w-full bg-green-600 hover:bg-green-700 text-white"
+            disabled={isSubmitting}
+          >
             {isSubmitting ? "Creating..." : "Create Race"}
           </Button>
         </form>

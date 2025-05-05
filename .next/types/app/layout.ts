@@ -1,4 +1,4 @@
-// File: /Users/ovibar/IdeaProjects/wacky-races/app/layout.tsx
+// File: /Users/ldias/code/LyuboDias/wacky-races/app/layout.tsx
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

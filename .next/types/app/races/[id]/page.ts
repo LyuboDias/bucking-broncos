@@ -1,4 +1,4 @@
-// File: /Users/ovibar/IdeaProjects/wacky-races/app/races/[id]/page.tsx
+// File: /Users/ldias/code/LyuboDias/wacky-races/app/races/[id]/page.tsx
 import * as entry from '../../../../../app/races/[id]/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

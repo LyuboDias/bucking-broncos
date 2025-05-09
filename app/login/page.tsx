@@ -21,7 +21,7 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
 
   // Login form state
-  const [loginEmail, setLoginEmail] = useState("")
+  const [loginUsername, setLoginUsername] = useState("")
   const [loginPassword, setLoginPassword] = useState("")
 
   // Register form state
@@ -33,7 +33,7 @@ export default function LoginPage() {
     setIsLoading(true)
 
     try {
-      await login(loginEmail, loginPassword)
+      await login(loginUsername, loginPassword)
       toast({
         title: "Logged in successfully",
       })
@@ -41,7 +41,7 @@ export default function LoginPage() {
     } catch (error) {
       toast({
         title: "Login failed",
-        description: "Invalid email or password",
+        description: "Invalid username or password",
         variant: "destructive",
       })
     } finally {
@@ -88,13 +88,12 @@ export default function LoginPage() {
             <TabsContent value="login">
               <form onSubmit={handleLogin} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="username">Username</Label>
                   <Input
-                    id="email"
-                    type="email"
-                    placeholder="wacky@race.com"
-                    value={loginEmail}
-                    onChange={(e) => setLoginEmail(e.target.value)}
+                    id="username"
+                    placeholder="Enter your username"
+                    value={loginUsername}
+                    onChange={(e) => setLoginUsername(e.target.value)}
                     required
                   />
                 </div>

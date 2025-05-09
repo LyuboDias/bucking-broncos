@@ -69,74 +69,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string) => {
     try {
-      // For backward compatibility, keep the existing login for demo users
-      if (
-        (email === "admin@example.com" && password === "password") ||
-        (email === "user@example.com" && password === "password") ||
-        (email === "ross@example.com" && password === "password") ||
-        (email === "lyu@example.com" && password === "password") ||
-        (email === "aaron@example.com" && password === "password")
-      ) {
-        // Use the existing mock login for these demo accounts
-        if (email === "admin@example.com" && password === "password") {
-          const adminUser = {
-            id: "1",
-            name: "Admin User",
-            username: "admin_user",
-            isAdmin: true,
-            balance: 1000,
-          }
-          setUser(adminUser)
-          localStorage.setItem("user", JSON.stringify(adminUser))
-          return;
-        } else if (email === "user@example.com" && password === "password") {
-          const regularUser = {
-            id: "2",
-            name: "Regular User",
-            username: "regular_user",
-            isAdmin: false,
-            balance: 1000,
-          }
-          setUser(regularUser)
-          localStorage.setItem("user", JSON.stringify(regularUser))
-          return;
-        } else if (email === "ross@example.com" && password === "password") {
-          const rossUser = {
-            id: "5",
-            name: 'Ross "Yellow" Jacobs',
-            username: "ross_yellow",
-            isAdmin: false,
-            balance: 1000,
-          }
-          setUser(rossUser)
-          localStorage.setItem("user", JSON.stringify(rossUser))
-          return;
-        } else if (email === "lyu@example.com" && password === "password") {
-          const lyuUser = {
-            id: "6",
-            name: "Lyu Dias",
-            username: "lyu_dias",
-            isAdmin: false,
-            balance: 1000,
-          }
-          setUser(lyuUser)
-          localStorage.setItem("user", JSON.stringify(lyuUser))
-          return;
-        } else if (email === "aaron@example.com" && password === "password") {
-          const aaronUser = {
-            id: "7",
-            name: "Aaron Bird",
-            username: "aaron_bird",
-            isAdmin: false,
-            balance: 1000,
-          }
-          setUser(aaronUser)
-          localStorage.setItem("user", JSON.stringify(aaronUser))
-          return;
-        }
-      }
-      
-      // For new users, use the API
+      // Call the API for user login
       const response = await fetch('/api/login', {
         method: 'POST',
         headers: {

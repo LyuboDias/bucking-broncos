@@ -23,13 +23,16 @@ export default function Header() {
           </Link>
           {/* Mobile: User info under the title */}
           <div className="md:hidden mt-1">
-            {user?.isAdmin && (
-              <div className="text-xs font-semibold text-primary">Admin User</div>
-            )}
             {user && (
-              <div className="text-xs text-muted-foreground ">
-                Balance: <span className="font-medium text-black text-green-800">{user.balance}</span>
-              </div>
+              <>
+                <div className="text-base font-semibold text-primary">
+                  {user.username}
+                  {user.isAdmin && " (Admin)"}
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  Balance: <span className="font-medium text-black text-green-800">{user.balance}</span>
+                </div>
+              </>
             )}
           </div>
         </div>
@@ -95,13 +98,16 @@ export default function Header() {
         <div className="hidden md:flex items-center gap-4 min-w-[300px] justify-end">
           {user ? (
             <>
-              <div className="text-sm">
-                <span className="text-muted-foreground mr-1">Balance:</span>
-                <span className="font-medium">{user.balance} coins</span>
+              <div className="text-sm flex flex-col items-end">
+                <span className="text-lg font-semibold">
+                  {user.username}
+                  {user.isAdmin && " (Admin)"}
+                </span>
+                <div>
+                  <span className="text-muted-foreground mr-1">Balance:</span>
+                  <span className="font-medium">{user.balance} coins</span>
+                </div>
               </div>
-              {user.isAdmin && (
-                <span className="text-sm font-semibold">Admin User</span>
-              )}
               <Button variant="ghost" size="icon" onClick={logout}>
                 <LogOut className="h-4 w-4" />
               </Button>

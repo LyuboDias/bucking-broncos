@@ -26,7 +26,6 @@ export default function LoginPage() {
 
   // Register form state
   const [registerName, setRegisterName] = useState("")
-  const [registerEmail, setRegisterEmail] = useState("")
   const [registerPassword, setRegisterPassword] = useState("")
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -55,10 +54,10 @@ export default function LoginPage() {
     setIsLoading(true)
 
     try {
-      await register(registerName, registerEmail, registerPassword)
+      await register(registerName, registerPassword)
       toast({
         title: "Account created successfully",
-        description: "You have been logged in",
+        description: "You have been logged in with a generated username",
       })
       router.push("/")
     } catch (error) {
@@ -129,17 +128,6 @@ export default function LoginPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="register-email">Email</Label>
-                  <Input
-                    id="register-email"
-                    type="email"
-                    placeholder="your@email.com"
-                    value={registerEmail}
-                    onChange={(e) => setRegisterEmail(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
                   <Label htmlFor="register-password">Password</Label>
                   <Input
                     id="register-password"
@@ -153,6 +141,9 @@ export default function LoginPage() {
                 <Button type="submit" className="w-full" disabled={isLoading}>
                   {isLoading ? "Creating account..." : "Create account"}
                 </Button>
+                <p className="text-xs text-muted-foreground mt-2">
+                  A unique username will be automatically generated based on your name.
+                </p>
               </form>
             </TabsContent>
           </Tabs>

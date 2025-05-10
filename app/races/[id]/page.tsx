@@ -10,6 +10,7 @@ import AllUserBets from "./all-user-bets"
 import { useAuth } from "@/components/auth-provider"
 import type { Race, Player, Bet } from "@/lib/types"
 import { useParams } from "next/navigation"
+import { ORANGE, GREY, GREEN } from "@/app/constants"
 
 export default function RacePage() {
   const params = useParams()
@@ -145,7 +146,7 @@ function StatusBadge({ status }: { status: string }) {
       return (
         <Badge
           variant="outline"
-          className="border-amber-400 text-amber-700 bg-amber-50"
+          style={{ background: ORANGE, color: '#fff', borderColor: ORANGE }}
         >
           Upcoming
         </Badge>
@@ -158,7 +159,7 @@ function StatusBadge({ status }: { status: string }) {
       )
     case "settled":
       return (
-        <Badge variant="secondary" className="bg-blue-100 text-blue-800 hover:bg-blue-100">
+        <Badge variant="secondary" style={{ background: '#fff', color: GREEN, borderColor: GREEN, fontWeight: 'bold' }}>
           Settled
         </Badge>
       )

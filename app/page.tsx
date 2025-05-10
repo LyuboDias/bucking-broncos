@@ -65,7 +65,7 @@ export default async function Home() {
                       race.status === "open"
                         ? { background: GREEN, borderColor: GREEN, color: "#fff" }
                         : race.status === "settled"
-                        ? {}
+                        ? { color: GREEN, border: `2px solid ${GREEN}`, background: "#fff" }
                         : { color: ORANGE, border: `2px solid ${ORANGE}`, background: "#fff" }
                     }
                   >
@@ -105,8 +105,8 @@ function StatusBadge({ status }: { status: string }) {
       )
     case "settled":
       return (
-        <Badge variant="secondary" className="flex items-center gap-1 bg-blue-100 text-blue-800 hover:bg-blue-100">
-          <Trophy className="h-3 w-3" />
+        <Badge variant="secondary" className="flex items-center gap-1" style={{ background: '#e6f9e6', color: GREEN }}>
+          <Trophy className="h-3 w-3" style={{ color: GREEN }} />
           <span>Settled</span>
         </Badge>
       )

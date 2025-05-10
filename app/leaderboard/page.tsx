@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Trophy, Medal, Coins } from "lucide-react";
+import { Trophy, Medal, Coins, User } from "lucide-react";
 import { GREEN, ORANGE, GREY } from "@/app/constants";
 import { getUsers } from "@/lib/data";
 
@@ -80,7 +80,7 @@ export default async function LeaderboardPage() {
                           ) : index === 2 ? (
                             <Medal className="h-4 w-4" style={{ color: GREY }} />
                           ) : (
-                            <span style={{ color: ORANGE }}>{index + 1}</span>
+                            <User className="h-5 w-5" style={{ color: ORANGE }} />
                           )}
                         </div>
                         <div>
@@ -97,13 +97,19 @@ export default async function LeaderboardPage() {
                           className="font-semibold"
                           style={rankColor ? { color: rankColor } : {}}
                         >
-                          <span
-                            role="img"
-                            aria-label="coins"
-                            style={rankColor ? { marginRight: 4, fontSize: '1.5rem', color: rankColor, verticalAlign: 'middle' } : { marginRight: 4 }}
-                          >
-                            <Coins className="h-4 w-4 inline mr-1" />
-                          </span>
+                          {index === 0 ? (
+                            <span
+                              role="img"
+                              aria-label="coins"
+                              style={{ marginRight: 4, fontSize: '1.5rem', color: rankColor, verticalAlign: 'middle' }}
+                            >
+                              💰
+                            </span>
+                          ) : (
+                            <span style={{ marginRight: 4, verticalAlign: 'middle' }}>
+                              <Coins className="h-4 w-4 inline mr-1" style={rankColor ? { color: rankColor } : {}} />
+                            </span>
+                          )}
                           {user.balance} coins
                         </div>
                       </div>
@@ -121,7 +127,7 @@ export default async function LeaderboardPage() {
           <Card className="h-full">
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-3xl font-bold">
-                <Coins className="h-5 w-5" style={{ color: ORANGE }} />
+                <Medal className="h-5 w-5" style={{ color: ORANGE }} />
                 Bottom Users
               </CardTitle>
               <CardDescription style={{ color: GREY }}>Lowest coin balances</CardDescription>
@@ -132,7 +138,7 @@ export default async function LeaderboardPage() {
                   <div key={user.id} className="flex justify-between items-center pb-4 border-b last:border-0">
                     <div className="flex items-center gap-3">
                       <div className="flex items-center justify-center w-8 h-8 rounded-full bg-muted font-semibold text-sm">
-                        <span style={{ color: ORANGE }}>{nonAdminUsers.length - index}</span>
+                        <User className="h-5 w-5" style={{ color: ORANGE }} />
                       </div>
                       <div className="flex items-center gap-2">
                         <div
@@ -148,12 +154,8 @@ export default async function LeaderboardPage() {
                         className="font-semibold"
                         style={user.balance === minBalance ? { color: ORANGE } : {}}
                       >
-                        <span
-                          role="img"
-                          aria-label="coins"
-                          style={user.balance === minBalance ? { marginRight: 4, fontSize: '.7rem', color: ORANGE, verticalAlign: 'middle' } : { marginRight: 4 }}
-                        >
-                          <Coins className="h-4 w-4 inline mr-1" />
+                        <span style={{ marginRight: 4, verticalAlign: 'middle' }}>
+                          <Coins className="h-4 w-4 inline mr-1" style={user.balance === minBalance ? { color: ORANGE } : {}} />
                         </span>
                         {user.balance} coins
                       </div>

@@ -14,7 +14,7 @@ import { placeBetAction } from "@/lib/actions"
 import { useRouter } from "next/navigation"
 import type { Race, Player } from "@/lib/types"
 import Link from "next/link"
-import { GREEN } from "@/app/constants"
+import { GREEN, ORANGE, GREY } from "@/app/constants"
 
 export default function PlaceBetForm({
   race,
@@ -28,7 +28,7 @@ export default function PlaceBetForm({
   const router = useRouter()
 
   const [selectedPlayer, setSelectedPlayer] = useState<string>("")
-  const [betAmount, setBetAmount] = useState<number>(10)
+  const [betAmount, setBetAmount] = useState<string>("10")
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -52,7 +52,8 @@ export default function PlaceBetForm({
       return
     }
 
-    if (betAmount <= 0 || betAmount > user.balance) {
+    const betAmountNumber = Number(betAmount)
+    if (betAmountNumber <= 0 || betAmountNumber > user.balance) {
       toast({
         title: "Invalid bet amount",
         description: `Please enter an amount between 1 and ${user.balance} coins`,
@@ -64,16 +65,16 @@ export default function PlaceBetForm({
     setIsSubmitting(true)
 
     try {
-      const result = await placeBetAction(user.id, race.id, selectedPlayer, betAmount)
+      const result = await placeBetAction(user.id, race.id, selectedPlayer, betAmountNumber)
 
       if (result.success) {
         // Update user balance in context and localStorage
-        const newBalance = user.balance - betAmount;
+        const newBalance = user.balance - betAmountNumber;
         updateUserBalance(newBalance);
         
         toast({
           title: "Bet placed successfully!",
-          description: `You bet ${betAmount} coins on this race`,
+          description: `You bet ${betAmountNumber} coins on this race`,
         })
 
         // Refresh the page to show updated data
@@ -100,11 +101,13 @@ export default function PlaceBetForm({
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Place a Bet</CardTitle>
-          <CardDescription>This race is not open for betting yet</CardDescription>
+          <CardTitle style={{ color: ORANGE }}>Place a Bet</CardTitle>
+          <CardDescription style={{ color: GREY }}>
+            THIS RACE IS <span style={{ color: ORANGE, fontWeight: 'bold' }}>NOT</span> OPEN FOR BETTING YET
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground">You can place bets once the race is open for betting.</p>
+          <p style={{ color: GREY }}>You can place bets once the race is open for betting.</p>
         </CardContent>
       </Card>
     )
@@ -129,47 +132,55 @@ export default function PlaceBetForm({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Place a Bet</CardTitle>
-        <CardDescription>Select a participant and enter your bet amount</CardDescription>
+        <CardTitle style={{ color: ORANGE }}>Place a Bet</CardTitle>
+        <CardDescription style={{ color: GREY }}>Select a participant and enter your bet amount</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4">
             <div>
-              <Label>Select a participant</Label>
+              <Label style={{ color: GREY }}>Select a participant</Label>
               <RadioGroup value={selectedPlayer} onValueChange={setSelectedPlayer} className="mt-2">
                 {players.map((player) => (
                   <div key={player.id} className="flex items-center justify-between space-x-2 border p-3 rounded-md">
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value={player.id} id={player.id} />
-                      <Label htmlFor={player.id} className="font-medium cursor-pointer">
+                      <Label htmlFor={player.id} className="font-medium cursor-pointer" style={{ color: GREY }}>
                         {player.name}
                       </Label>
                     </div>
-                    <div className="text-sm font-semibold">{player.odds}x</div>
+                    <div className="text-sm font-semibold" style={{ color: ORANGE }}>{player.odds}x</div>
                   </div>
                 ))}
               </RadioGroup>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="betAmount">Bet amount (coins)</Label>
+              <Label htmlFor="betAmount" style={{ color: GREY }}>Bet amount (coins)</Label>
               <Input
                 id="betAmount"
                 type="number"
                 min={1}
                 max={user.balance}
                 value={betAmount}
-                onChange={(e) => setBetAmount(Number(e.target.value))}
+                onChange={(e) => {
+                  let val = e.target.value;
+                  // Remove leading zeros unless the value is exactly '0'
+                  if (val.length > 1 && val.startsWith('0')) {
+                    val = val.replace(/^0+/, '');
+                  }
+                  setBetAmount(val);
+                }}
+                style={{ color: "#000" }}
               />
-              <div className="text-sm text-muted-foreground">Your balance: {user.balance} coins</div>
+              <div className="text-sm" style={{ color: GREY }}>Your balance: {user.balance} coins</div>
             </div>
 
             {selectedPlayer && (
               <div className="p-3 bg-muted rounded-md">
-                <div className="text-sm">Potential winnings:</div>
-                <div className="font-semibold">
-                  {betAmount * (players.find((p) => p.id === selectedPlayer)?.odds || 0)} coins
+                <div className="text-sm" style={{ color: "#000" }}>Potential winnings:</div>
+                <div className="font-semibold" style={{ color: ORANGE }}>
+                  {Number(betAmount) * (players.find((p) => p.id === selectedPlayer)?.odds || 0)} coins
                 </div>
               </div>
             )}

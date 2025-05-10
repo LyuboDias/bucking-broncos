@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import type { Bet, Player } from "@/lib/types"
 import { getUser } from "@/lib/data"
+import { ORANGE, GREY } from "@/app/constants"
 
 type BetWithDetails = Bet & {
   userName: string
@@ -94,13 +95,11 @@ export default function AllUserBets({
     return (
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle>{userId ? "Your Bets" : "All Bets"}</CardTitle>
-          <CardDescription>{userId ? "You haven't placed any bets on this race yet" : "No bets have been placed on this race yet"}</CardDescription>
+          <CardTitle style={{ color: ORANGE }}>{userId ? "Your Bets" : "All Bets"}</CardTitle>
+          <CardDescription style={{ color: GREY }}>{userId ? "You haven't placed any bets on this race yet" : "No bets have been placed on this race yet"}</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="text-muted-foreground text-center py-4">
-            No bets have been placed on this race yet
-          </div>
+          <div className="text-center py-4" style={{ color: GREY }}>No bets have been placed on this race yet</div>
         </CardContent>
       </Card>
     )
@@ -125,8 +124,8 @@ export default function AllUserBets({
   return (
     <Card>
       <CardHeader className="pb-3">
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
+        <CardTitle style={{ color: ORANGE }}>{title}</CardTitle>
+        <CardDescription style={{ color: GREY }}>{description}</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-8">
@@ -137,13 +136,13 @@ export default function AllUserBets({
                 {userData.bets.map((bet) => (
                   <div key={bet.id} className="flex justify-between items-center p-2 bg-gray-50 rounded-md">
                     <div>
-                      <div className="font-medium">{bet.playerName}</div>
-                      <div className="text-sm text-muted-foreground">
+                      <div className="font-medium" style={{ color: "#000" }}>{bet.playerName}</div>
+                      <div className="text-sm" style={{ color: "#000" }}>
                         {bet.odds}x odds
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="font-semibold">{bet.amount} coins</div>
+                      <div className="font-semibold" style={{ color: ORANGE }}>{bet.amount} coins</div>
                       {bet.settled && (
                         <div className={`text-sm ${bet.winnings > 0 ? 'text-green-600' : 'text-red-500'}`}>
                           {bet.winnings > 0 ? `+${bet.winnings} coins` : 'Lost'}

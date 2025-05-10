@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label"
 import { useToast } from "@/hooks/use-toast"
 import { createRaceAction } from "@/lib/actions"
 import { useRouter } from "next/navigation"
+import { ORANGE, GREY } from "../constants"
 
 export default function CreateRaceForm() {
   const { toast } = useToast()
@@ -66,8 +67,8 @@ export default function CreateRaceForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Create New Race</CardTitle>
-        <CardDescription>Add a new race to the platform</CardDescription>
+        <CardTitle style={{ color: ORANGE }}>Create New Race</CardTitle>
+        <CardDescription style={{ color: GREY }}>Add a new race to the platform</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -75,7 +76,7 @@ export default function CreateRaceForm() {
             <Label htmlFor="raceName">Race Name</Label>
             <Input
               id="raceName"
-              placeholder="Enter race name"
+              placeholder="Wacky Race"
               value={raceName}
               onChange={(e) => setRaceName(e.target.value)}
             />

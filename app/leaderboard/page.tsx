@@ -1,150 +1,165 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Trophy, Medal } from "lucide-react";
-import { GREEN, ORANGE, GREY } from "@/lib/colors";
+import { Trophy, Medal, Coins } from "lucide-react";
+import { GREEN, BLUE, ORANGE, GRAY, GREY } from "@/lib/colors";
+import { getUsers } from "@/lib/data";
 
-export default function LeaderboardPage() {
-  const mockPlayers = [
-    { id: 1, name: "Alice", points: 1200 },
-    { id: 2, name: "Charlie", points: 1200 },
-    { id: 3, name: "Charlie", points: 250 },
-    { id: 4, name: "Diana", points: 200 },
-    { id: 5, name: "Eve", points: 180 },
-    { id: 6, name: "Frank", points: 175 },
-    { id: 7, name: "Grace", points: 170 },
-    { id: 8, name: "Heidi", points: 165 },
-    { id: 9, name: "Ivan", points: 160 },
-    { id: 10, name: "Judy", points: 155 },
-    { id: 11, name: "Karl", points: 150 },
-    { id: 12, name: "Laura", points: 145 },
-    { id: 13, name: "Mallory", points: 140 },
-    { id: 14, name: "Niaj", points: 135 },
-    { id: 15, name: "Olivia", points: 130 },
-    { id: 16, name: "Peggy", points: 125 },
-    { id: 17, name: "Rupert", points: 110 },
-    { id: 18, name: "Sybil", points: 15 },
-    { id: 19, name: "Trent", points: 15 },
-    { id: 20, name: "Victor", points: 15 },
-  ];
+export default async function LeaderboardPage() {
+  // Fetch all users from Supabase
+  const users = await getUsers();
+  
+  // Filter out admin users
+  const nonAdminUsers = users.filter(user => !user.isAdmin);
+  
+  // Sort users by balance and get top 6
+  const topUsers = [...nonAdminUsers]
+    .sort((a, b) => b.balance - a.balance)
+    .slice(0, 6);
 
-  const topPlayers = [...mockPlayers]
-    .sort((a, b) => b.points - a.points)
-    .slice(0, 5);
+  // Sort users by balance in ascending order (lowest first)
+  const sortedByBalanceAsc = [...nonAdminUsers].sort((a, b) => a.balance - b.balance);
+  
+  // Find the minimum balance value
+  const minBalance = sortedByBalanceAsc[0]?.balance;
+  
+  // Get users that don't have the minimum balance (for bottom 6)
+  const bottomUsersNonMin = sortedByBalanceAsc
+    .filter(u => u.balance !== minBalance)
+    .slice(0, 6 - sortedByBalanceAsc.filter(u => u.balance === minBalance).length);
+  
+  // Get users with the minimum balance
+  const bottomUsersMin = sortedByBalanceAsc.filter(u => u.balance === minBalance);
+  
+  // Combine to get bottom 6 users
+  const bottomUsers = [...bottomUsersNonMin, ...bottomUsersMin].slice(0, 6);
 
-  const sortedByPointsAsc = [...mockPlayers].sort((a, b) => a.points - b.points);
-  const minScore = sortedByPointsAsc[0]?.points;
-  const bottomPlayersNonMin = sortedByPointsAsc.filter(p => p.points !== minScore).slice(0, 5 - sortedByPointsAsc.filter(p => p.points === minScore).length);
-  const bottomPlayersMin = sortedByPointsAsc.filter(p => p.points === minScore);
-  const bottomPlayers = [...bottomPlayersNonMin, ...bottomPlayersMin];
-
-  const topScore = topPlayers[0]?.points;
-  const secondTopScore = topPlayers.find(p => p.points < topScore)?.points;
+  // Get top 3 balance values
+  const topBalance = topUsers[0]?.balance;
+  const secondTopBalance = topUsers[1]?.balance;
+  const thirdTopBalance = topUsers[2]?.balance;
 
   return (
     <div className="space-y-8 flex flex-col items-center">
       <div className="w-full max-w-2xl text-center mx-auto">
         <h1 className="text-6xl font-bold tracking-tight">Leaderboard</h1>
-        <p className="text-muted-foreground mt-2">Top 5 players by points</p>
+        <p className="text-muted-foreground mt-2">Top users by coin balance</p>
       </div>
 
       <div className="flex flex-col md:flex-row md:gap-24 gap-8 w-full max-w-12xl items-stretch">
-        {/* Top Players */}
+        {/* Top Users */}
         <div className="flex-1">
           <Card className="h-full">
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-3xl font-bold">
                 <Trophy className="h-5 w-5" style={{ color: ORANGE }} />
-                Top Players
+                Top Users
               </CardTitle>
-              <CardDescription style={{ color: GREY }}>Based on total points</CardDescription>
+              <CardDescription style={{ color: GRAY }}>Based on total coins</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {topPlayers.map((player, index) => (
-                  <div key={player.id} className="flex justify-between items-center pb-4 border-b last:border-0">
-                    <div className="flex items-center gap-3">
-                      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-muted font-semibold text-sm">
-                        {player.points === topScore ? (
-                          <Trophy className="h-4 w-4" style={{ color: ORANGE }} />
-                        ) : player.points === secondTopScore ? (
-                          <Medal className="h-4 w-4" style={{ color: ORANGE }} />
-                        ) : (
-                          <span style={{ color: ORANGE }}>{index + 1}</span>
-                        )}
+                {topUsers.map((user, index) => {
+                  // Set color based on rank - only for top 3
+                  let rankColor = "";
+                  if (index === 0) {
+                    rankColor = GREEN;
+                  } else if (index === 1) {
+                    rankColor = BLUE;
+                  } else if (index === 2) {
+                    rankColor = ORANGE;
+                  }
+                  
+                  return (
+                    <div key={user.id} className="flex justify-between items-center pb-4 border-b last:border-0">
+                      <div className="flex items-center gap-3">
+                        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-muted font-semibold text-sm">
+                          {index === 0 ? (
+                            <Trophy className="h-4 w-4" style={{ color: GREEN }} />
+                          ) : index === 1 ? (
+                            <Medal className="h-4 w-4" style={{ color: BLUE }} />
+                          ) : index === 2 ? (
+                            <Medal className="h-4 w-4" style={{ color: ORANGE }} />
+                          ) : (
+                            <span style={{ color: ORANGE }}>{index + 1}</span>
+                          )}
+                        </div>
+                        <div>
+                          <div
+                            className={`font-medium ${rankColor ? "border rounded-full px-3 py-1" : ""}`}
+                            style={rankColor ? { color: rankColor, borderColor: rankColor } : {}}
+                          >
+                            {user.name}
+                          </div>
+                        </div>
                       </div>
-                      <div>
+                      <div className="text-right">
                         <div
-                          className={`font-medium ${player.points === topScore ? "border rounded-full px-3 py-1" : ""}`}
-                          style={player.points === topScore ? { color: GREEN, borderColor: GREEN } : {}}
+                          className="font-semibold"
+                          style={rankColor ? { color: rankColor } : {}}
                         >
-                          {player.name}
+                          <span
+                            role="img"
+                            aria-label="coins"
+                            style={rankColor ? { marginRight: 4, fontSize: '1.5rem', color: rankColor, verticalAlign: 'middle' } : { marginRight: 4 }}
+                          >
+                            <Coins className="h-4 w-4 inline mr-1" />
+                          </span>
+                          {user.balance} coins
                         </div>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <div
-                        className="font-semibold"
-                        style={player.points === topScore ? { color: GREEN } : {}}
-                      >
-                        <span
-                          role="img"
-                          aria-label="money bag"
-                          style={player.points === topScore ? { marginRight: 4, fontSize: '1.5rem', color: GREEN, verticalAlign: 'middle' } : { marginRight: 4 }}
-                        >
-                          💰
-                        </span>
-                        {player.points}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                {topPlayers.length === 0 && <div className="text-center py-4 text-muted-foreground">No players found</div>}
+                  );
+                })}
+                {topUsers.length === 0 && <div className="text-center py-4 text-muted-foreground">No users found</div>}
               </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Bottom Players */}
+        {/* Bottom Users */}
         <div className="flex-1">
           <Card className="h-full">
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-3xl font-bold">
-                <Trophy className="h-5 w-5" style={{ color: ORANGE }} />
-                Bottom Players
+                <Coins className="h-5 w-5" style={{ color: ORANGE }} />
+                Bottom Users
               </CardTitle>
-              <CardDescription style={{ color: GREY }}>Lowest scoring 5 players</CardDescription>
+              <CardDescription style={{ color: GRAY }}>Lowest coin balances</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {bottomPlayers.map((player, index) => (
-                  <div key={player.id} className="flex justify-between items-center pb-4 border-b last:border-0">
+                {bottomUsers.map((user, index) => (
+                  <div key={user.id} className="flex justify-between items-center pb-4 border-b last:border-0">
                     <div className="flex items-center gap-3">
+                      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-muted font-semibold text-sm">
+                        <span style={{ color: ORANGE }}>{nonAdminUsers.length - index}</span>
+                      </div>
                       <div className="flex items-center gap-2">
                         <div
-                          className={`font-medium ${player.points === minScore ? "border rounded-full px-3 py-1" : ""}`}
-                          style={player.points === minScore ? { color: ORANGE, borderColor: ORANGE } : {}}
+                          className={`font-medium ${user.balance === minBalance ? "border rounded-full px-3 py-1" : ""}`}
+                          style={user.balance === minBalance ? { color: ORANGE, borderColor: ORANGE } : {}}
                         >
-                          {player.name}
+                          {user.name}
                         </div>
                       </div>
                     </div>
                     <div className="text-right">
                       <div
                         className="font-semibold"
-                        style={player.points === minScore ? { color: ORANGE } : {}}
+                        style={user.balance === minBalance ? { color: ORANGE } : {}}
                       >
                         <span
                           role="img"
-                          aria-label="money bag"
-                          style={player.points === minScore ? { marginRight: 4, fontSize: '.7rem', color: GREEN, verticalAlign: 'middle' } : { marginRight: 4 }}
+                          aria-label="coins"
+                          style={user.balance === minBalance ? { marginRight: 4, fontSize: '.7rem', color: ORANGE, verticalAlign: 'middle' } : { marginRight: 4 }}
                         >
-                          💰
+                          <Coins className="h-4 w-4 inline mr-1" />
                         </span>
-                        {player.points}
+                        {user.balance} coins
                       </div>
                     </div>
                   </div>
                 ))}
-                {bottomPlayers.length === 0 && <div className="text-center py-4 text-muted-foreground">No players found</div>}
+                {bottomUsers.length === 0 && <div className="text-center py-4 text-muted-foreground">No users found</div>}
               </div>
             </CardContent>
           </Card>

@@ -1,6 +1,7 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import { NAVY_BLUE, ORANGE, GREY } from "@/lib/colors"
 
 const Card = React.forwardRef<
   HTMLDivElement,
@@ -9,9 +10,10 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "rounded-lg border bg-card text-card-foreground shadow-sm",
+      "rounded-lg text-card-foreground shadow-sm",
       className
     )}
+    style={{ background: NAVY_BLUE, border: `3px solid ${ORANGE}`, color: GREY }}
     {...props}
   />
 ))
@@ -23,7 +25,7 @@ const CardHeader = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex flex-col space-y-1.5 p-6", className)}
+    className={cn("card-header flex flex-col space-y-1.5 p-6", className)}
     {...props}
   />
 ))

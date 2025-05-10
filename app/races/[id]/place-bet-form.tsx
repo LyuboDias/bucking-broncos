@@ -14,6 +14,7 @@ import { placeBetAction } from "@/lib/actions"
 import { useRouter } from "next/navigation"
 import type { Race, Player } from "@/lib/types"
 import Link from "next/link"
+import { GREEN } from "@/lib/colors"
 
 export default function PlaceBetForm({
   race,
@@ -192,7 +193,8 @@ export default function PlaceBetForm({
 
           <Button
             type="submit"
-            className="w-full bg-green-600 hover:bg-green-700 text-white"
+            className="w-full"
+            style={{ background: GREEN, borderColor: GREEN, color: '#fff' }}
             disabled={isSubmitting}
           >
             {isSubmitting ? "Placing Bet..." : "Place Bet"}

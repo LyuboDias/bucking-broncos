@@ -6,6 +6,7 @@ import { Button } from "./ui/button"
 import { usePathname } from "next/navigation"
 import { Trophy, Home, User, LogOut, Settings } from "lucide-react"
 import { useState } from "react"
+import { NAVY_BLUE, GREY, ORANGE } from "@/lib/colors"
 
 export default function Header() {
   const { user, logout } = useAuth()
@@ -13,24 +14,25 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
-    <header className="border-b">
+    <header className="border-b" style={{ background: NAVY_BLUE, color: GREY }}>
       <div className="container mx-auto py-4 px-4 flex items-center justify-between">
         {/* Title container with min width */}
         <div className="flex flex-col md:min-w-[300px]">
-          <Link href="/" className="font-bold text-xl flex items-center gap-2">
-            <Trophy className="h-6 w-6" /> 
+          <Link href="/" className="font-bold text-xl flex items-center gap-2" style={{ color: GREY }}>
+            <Trophy className="h-6 w-6" style={{ color: ORANGE }} /> 
             Wacky Race
           </Link>
           {/* Mobile: User info under the title */}
-          <div className="md:hidden mt-1">
+          <div className="md:hidden mt-1 text-xs">
             {user && (
               <>
-                <div className="text-base font-semibold text-primary">
-                  {user.username}
-                  {user.isAdmin && " (Admin)"}
+                <div className="font-semibold flex items-center gap-1">
+                  <span style={{ color: ORANGE }}>User:</span>
+                  <span style={{ color: GREY, textTransform: 'capitalize' }}>{user.username}</span>
+                  {user.isAdmin && <span style={{ color: GREY }}> (Admin)</span>}
                 </div>
-                <div className="text-xs text-muted-foreground">
-                  Balance: <span className="font-medium text-black text-green-800">{user.balance}</span>
+                <div className="text-xs" style={{ color: GREY }}>
+                  <span style={{ color: ORANGE }}>Balance:</span> <span className="font-medium" style={{ color: GREY }}>{user.balance} coins</span>
                 </div>
               </>
             )}
@@ -41,12 +43,12 @@ export default function Header() {
         <div className="flex items-center gap-2 md:hidden">
           {user ? (
             <Button variant="ghost" size="icon" onClick={logout}>
-              <LogOut className="h-4 w-4" />
+              <LogOut className="h-4 w-4" style={{ color: ORANGE }} />
             </Button>
           ) : (
             <Link href="/login">
               <Button variant="outline" size="icon" className="flex items-center justify-center">
-                <User className="h-4 w-4" />
+                <User className="h-4 w-4" style={{ color: ORANGE }} />
               </Button>
             </Link>
           )}
@@ -65,30 +67,27 @@ export default function Header() {
         <nav className="hidden md:flex items-center gap-6 w-full max-w-2xl justify-center">
           <Link
             href="/"
-            className={`flex items-center gap-1 ${
-              pathname === "/" ? "text-primary font-medium" : "text-muted-foreground"
-            }`}
+            className={`flex items-center gap-1 font-medium`}
+            style={{ color: GREY }}
           >
-            <Home className="h-4 w-4" />
+            <Home className="h-4 w-4" style={{ color: ORANGE }} />
             <span>Races</span>
           </Link>
           <Link
             href="/leaderboard"
-            className={`flex items-center gap-1 ${
-              pathname === "/leaderboard" ? "text-primary font-medium" : "text-muted-foreground"
-            }`}
+            className={`flex items-center gap-1 font-medium`}
+            style={{ color: GREY }}
           >
-            <Trophy className="h-4 w-4" />
+            <Trophy className="h-4 w-4" style={{ color: ORANGE }} />
             <span>Leaderboard</span>
           </Link>
           {user?.isAdmin && (
             <Link
               href="/admin"
-              className={`flex items-center gap-1 ${
-                pathname.startsWith("/admin") ? "text-primary font-medium" : "text-muted-foreground"
-              }`}
+              className={`flex items-center gap-1 font-medium`}
+              style={{ color: GREY }}
             >
-              <Settings className="h-4 w-4" />
+              <Settings className="h-4 w-4" style={{ color: ORANGE }} />
               <span>Admin</span>
             </Link>
           )}
@@ -98,24 +97,25 @@ export default function Header() {
         <div className="hidden md:flex items-center gap-4 min-w-[300px] justify-end">
           {user ? (
             <>
-              <div className="text-sm flex flex-col items-end">
-                <span className="text-lg font-semibold">
-                  {user.username}
-                  {user.isAdmin && " (Admin)"}
+              <div className="text-sm flex flex-col items-end" style={{ color: GREY }}>
+                <span className="text-lg font-semibold flex items-center gap-1">
+                  <span style={{ color: ORANGE }}>User:</span>
+                  <span style={{ color: GREY, textTransform: 'capitalize' }}>{user.username}</span>
+                  {user.isAdmin && <span style={{ color: GREY }}> (Admin)</span>}
                 </span>
                 <div>
-                  <span className="text-muted-foreground mr-1">Balance:</span>
-                  <span className="font-medium">{user.balance} coins</span>
+                  <span className="mr-1" style={{ color: ORANGE }}>Balance:</span>
+                  <span className="font-medium" style={{ color: GREY }}>{user.balance} coins</span>
                 </div>
               </div>
               <Button variant="ghost" size="icon" onClick={logout}>
-                <LogOut className="h-4 w-4" />
+                <LogOut className="h-4 w-4" style={{ color: ORANGE }} />
               </Button>
             </>
           ) : (
             <Link href="/login">
-              <Button variant="outline" size="sm" className="flex items-center gap-1">
-                <User className="h-4 w-4" />
+              <Button variant="outline" size="sm" className="flex items-center gap-1" style={{ color: GREY }}>
+                <User className="h-4 w-4" style={{ color: ORANGE }} />
                 <span>Login</span>
               </Button>
             </Link>
@@ -125,36 +125,33 @@ export default function Header() {
 
       {/* Mobile nav dropdown */}
       {menuOpen && (
-        <nav className="md:hidden bg-white border-t px-4 py-2 flex flex-col gap-2">
+        <nav className="md:hidden border-t px-4 py-2 flex flex-col gap-2" style={{ color: GREY, background: NAVY_BLUE }}>
           <Link
             href="/"
-            className={`flex items-center gap-1 py-2 ${
-              pathname === "/" ? "text-primary font-medium" : "text-muted-foreground"
-            }`}
+            className={`flex items-center gap-1 py-2 font-medium`}
+            style={{ color: GREY }}
             onClick={() => setMenuOpen(false)}
           >
-            <Home className="h-4 w-4" />
+            <Home className="h-4 w-4" style={{ color: ORANGE }} />
             <span>Races</span>
           </Link>
           <Link
             href="/leaderboard"
-            className={`flex items-center gap-1 py-2 ${
-              pathname === "/leaderboard" ? "text-primary font-medium" : "text-muted-foreground"
-            }`}
+            className={`flex items-center gap-1 py-2 font-medium`}
+            style={{ color: GREY }}
             onClick={() => setMenuOpen(false)}
           >
-            <Trophy className="h-4 w-4" />
+            <Trophy className="h-4 w-4" style={{ color: ORANGE }} />
             <span>Leaderboard</span>
           </Link>
           {user?.isAdmin && (
             <Link
               href="/admin"
-              className={`flex items-center gap-1 py-2 ${
-                pathname.startsWith("/admin") ? "text-primary font-medium" : "text-muted-foreground"
-              }`}
+              className={`flex items-center gap-1 py-2 font-medium`}
+              style={{ color: GREY }}
               onClick={() => setMenuOpen(false)}
             >
-              <Settings className="h-4 w-4" />
+              <Settings className="h-4 w-4" style={{ color: ORANGE }} />
               <span>Admin</span>
             </Link>
           )}

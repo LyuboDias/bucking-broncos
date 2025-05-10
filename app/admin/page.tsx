@@ -18,7 +18,7 @@ export default async function AdminPage() {
     <AdminCheck>
       <div className="space-y-8">
         <div className="w-full max-w-2xl text-center mx-auto">
-          <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
+          <h1 className="text-6xl font-bold tracking-tight">Admin Dashboard</h1>
           <p className="text-muted-foreground mt-2">Manage races, players, and bets</p>
         </div>
 

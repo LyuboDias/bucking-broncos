@@ -54,7 +54,7 @@ export default async function LeaderboardPage() {
                 <Trophy className="h-5 w-5" style={{ color: ORANGE }} />
                 Top Users
               </CardTitle>
-              <CardDescription style={{ color: GRAY }}>Based on total coins</CardDescription>
+              <CardDescription style={{ color: GREY }}>Based on total coins</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -64,9 +64,9 @@ export default async function LeaderboardPage() {
                   if (index === 0) {
                     rankColor = GREEN;
                   } else if (index === 1) {
-                    rankColor = BLUE;
-                  } else if (index === 2) {
                     rankColor = ORANGE;
+                  } else if (index === 2) {
+                    rankColor = GREY;
                   }
                   
                   return (
@@ -76,9 +76,9 @@ export default async function LeaderboardPage() {
                           {index === 0 ? (
                             <Trophy className="h-4 w-4" style={{ color: GREEN }} />
                           ) : index === 1 ? (
-                            <Medal className="h-4 w-4" style={{ color: BLUE }} />
-                          ) : index === 2 ? (
                             <Medal className="h-4 w-4" style={{ color: ORANGE }} />
+                          ) : index === 2 ? (
+                            <Medal className="h-4 w-4" style={{ color: GREY }} />
                           ) : (
                             <span style={{ color: ORANGE }}>{index + 1}</span>
                           )}
@@ -124,7 +124,7 @@ export default async function LeaderboardPage() {
                 <Coins className="h-5 w-5" style={{ color: ORANGE }} />
                 Bottom Users
               </CardTitle>
-              <CardDescription style={{ color: GRAY }}>Lowest coin balances</CardDescription>
+              <CardDescription style={{ color: GREY }}>Lowest coin balances</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">

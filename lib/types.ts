@@ -5,6 +5,8 @@ export type Race = {
   createdAt: string
   settledAt?: string
   winnerId?: string
+  secondPlaceId?: string
+  thirdPlaceId?: string
 }
 
 export type Player = {
@@ -23,6 +25,7 @@ export type Bet = {
   createdAt: string
   settled: boolean
   winnings: number
+  placeRank?: number // 1 for first, 2 for second, 3 for third place
 }
 
 export type User = {

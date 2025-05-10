@@ -61,7 +61,9 @@ export async function getRace(id: string): Promise<Race | null> {
     id: data.id.toString(),
     createdAt: data.created_at,
     settledAt: data.settled_at,
-    winnerId: data.winner_id?.toString()
+    winnerId: data.winner_id?.toString(),
+    secondPlaceId: data.second_place_id?.toString(),
+    thirdPlaceId: data.third_place_id?.toString()
   }
 }
 
@@ -289,15 +291,9 @@ export async function updateRaceStatus(raceId: string, status: "upcoming" | "ope
     return null;
   }
 
-  const updateData: any = { status }
-  
-  if (status === 'settled') {
-    updateData.settled_at = new Date().toISOString()
-  }
-  
   const { data, error } = await supabase
     .from('races')
-    .update(updateData)
+    .update({ status })
     .eq('id', parsedRaceId)
     .select()
     .single()
@@ -351,6 +347,109 @@ export async function setRaceWinner(raceId: string, playerId: string): Promise<R
     settledAt: data.settled_at,
     winnerId: data.winner_id?.toString()
   }
+}
+
+export async function setRaceSecondPlace(raceId: string, playerId: string): Promise<Race | null> {
+  const parsedRaceId = safeParseInt(raceId);
+  const parsedPlayerId = safeParseInt(playerId);
+  
+  if (parsedRaceId === null) {
+    console.error('Invalid race ID format:', raceId);
+    return null;
+  }
+  
+  if (parsedPlayerId === null) {
+    console.error('Invalid player ID format:', playerId);
+    return null;
+  }
+
+  // Ensure we're not setting the same player for multiple places
+  const { data: raceData } = await supabase
+    .from('races')
+    .select('winner_id')
+    .eq('id', parsedRaceId)
+    .single();
+    
+  if (raceData && raceData.winner_id === parsedPlayerId) {
+    throw new Error("Cannot set the same player for both first and second place");
+  }
+
+  const { data, error } = await supabase
+    .from('races')
+    .update({ second_place_id: parsedPlayerId })
+    .eq('id', parsedRaceId)
+    .select()
+    .single();
+    
+  if (error || !data) {
+    console.error('Error setting race second place:', error);
+    return null;
+  }
+  
+  return {
+    id: data.id.toString(),
+    name: data.name,
+    status: data.status,
+    createdAt: data.created_at,
+    settledAt: data.settled_at,
+    winnerId: data.winner_id?.toString(),
+    secondPlaceId: data.second_place_id?.toString(),
+    thirdPlaceId: data.third_place_id?.toString()
+  };
+}
+
+export async function setRaceThirdPlace(raceId: string, playerId: string): Promise<Race | null> {
+  const parsedRaceId = safeParseInt(raceId);
+  const parsedPlayerId = safeParseInt(playerId);
+  
+  if (parsedRaceId === null) {
+    console.error('Invalid race ID format:', raceId);
+    return null;
+  }
+  
+  if (parsedPlayerId === null) {
+    console.error('Invalid player ID format:', playerId);
+    return null;
+  }
+
+  // Ensure we're not setting the same player for multiple places
+  const { data: raceData } = await supabase
+    .from('races')
+    .select('winner_id, second_place_id')
+    .eq('id', parsedRaceId)
+    .single();
+    
+  if (raceData) {
+    if (raceData.winner_id === parsedPlayerId) {
+      throw new Error("Cannot set the same player for both first and third place");
+    }
+    if (raceData.second_place_id === parsedPlayerId) {
+      throw new Error("Cannot set the same player for both second and third place");
+    }
+  }
+
+  const { data, error } = await supabase
+    .from('races')
+    .update({ third_place_id: parsedPlayerId })
+    .eq('id', parsedRaceId)
+    .select()
+    .single();
+    
+  if (error || !data) {
+    console.error('Error setting race third place:', error);
+    return null;
+  }
+  
+  return {
+    id: data.id.toString(),
+    name: data.name,
+    status: data.status,
+    createdAt: data.created_at,
+    settledAt: data.settled_at,
+    winnerId: data.winner_id?.toString(),
+    secondPlaceId: data.second_place_id?.toString(),
+    thirdPlaceId: data.third_place_id?.toString()
+  };
 }
 
 export async function placeBet(userId: string, raceId: string, playerId: string, amount: number): Promise<Bet | null> {
@@ -456,43 +555,52 @@ export async function placeBet(userId: string, raceId: string, playerId: string,
 }
 
 export async function settleRace(raceId: string): Promise<Race | null> {
-  // Get race and winning player
+  // Get race and winning players
   const { data: raceData, error: raceError } = await supabase
     .from('races')
-    .select('*, winner_id')
+    .select('*, winner_id, second_place_id, third_place_id')
     .eq('id', parseInt(raceId, 10))
-    .single()
+    .single();
     
-  if (raceError || !raceData || !raceData.winner_id) {
-    console.error('Error fetching race:', raceError)
-    throw new Error("Race cannot be settled without a winner")
+  if (raceError || !raceData || !raceData.winner_id || !raceData.second_place_id) {
+    console.error('Error fetching race:', raceError);
+    throw new Error("Race cannot be settled without a winner and second place");
   }
   
-  const { data: winningPlayerData, error: playerError } = await supabase
+  // Get odds for all placed players
+  const playerIds = [
+    raceData.winner_id, 
+    raceData.second_place_id, 
+    raceData.third_place_id
+  ].filter(Boolean);  // Remove null values
+  
+  const { data: playersData, error: playersError } = await supabase
     .from('players')
-    .select('odds')
-    .eq('id', raceData.winner_id)
-    .single()
+    .select('id, odds')
+    .in('id', playerIds);
     
-  if (playerError || !winningPlayerData) {
-    console.error('Error fetching winning player:', playerError)
-    throw new Error("Winning player not found")
+  if (playersError || !playersData) {
+    console.error('Error fetching players:', playersError);
+    throw new Error("Could not fetch player odds");
   }
+  
+  const playerOdds = Object.fromEntries(
+    playersData.map(player => [player.id, player.odds])
+  );
   
   // Update race status
   const { data: updatedRaceData, error: updateRaceError } = await supabase
     .from('races')
     .update({ 
-      status: 'settled',
-      settled_at: new Date().toISOString()
+      status: 'settled'
     })
     .eq('id', parseInt(raceId, 10))
     .select()
-    .single()
+    .single();
     
   if (updateRaceError || !updatedRaceData) {
-    console.error('Error updating race status:', updateRaceError)
-    return null
+    console.error('Error updating race status:', updateRaceError);
+    return null;
   }
   
   // Get all unsettled bets for this race
@@ -500,30 +608,56 @@ export async function settleRace(raceId: string): Promise<Race | null> {
     .from('bets')
     .select('*')
     .eq('race_id', parseInt(raceId, 10))
-    .eq('settled', false)
+    .eq('settled', false);
     
   if (betsError) {
-    console.error('Error fetching bets:', betsError)
-    return null
+    console.error('Error fetching bets:', betsError);
+    return null;
   }
   
   // Process each bet
   for (const bet of betsData) {
-    let winnings = 0
+    let winnings = 0;
+    let placeRank = null;
     
     if (bet.player_id === raceData.winner_id) {
-      winnings = bet.amount * winningPlayerData.odds
+      // First place gets full odds
+      winnings = bet.amount * playerOdds[bet.player_id];
+      placeRank = 1;
+    } 
+    else if (bet.player_id === raceData.second_place_id) {
+      // Second place gets half odds
+      winnings = bet.amount * (playerOdds[bet.player_id] / 2);
+      placeRank = 2;
+    } 
+    else if (raceData.third_place_id && bet.player_id === raceData.third_place_id) {
+      // Third place gets half odds (if third place was set)
+      winnings = bet.amount * (playerOdds[bet.player_id] / 2);
+      placeRank = 3;
+    }
+    
+    if (winnings > 0) {
+      // First get the current user balance
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .select('balance')
+        .eq('id', parseInt(bet.user_id.toString(), 10))
+        .single();
+        
+      if (userError || !userData) {
+        console.error('Error fetching user balance:', userError);
+        continue; // Skip to next bet if user not found
+      }
       
-      // Update user balance
+      // Then update user balance for winning bets
       await supabase
         .from('users')
         .update({ 
-          balance: supabase.rpc('increment_balance', { 
-            row_id: parseInt(bet.user_id.toString(), 10),
-            amount: winnings
-          })
+          balance: userData.balance + winnings 
         })
-        .eq('id', parseInt(bet.user_id.toString(), 10))
+        .eq('id', parseInt(bet.user_id.toString(), 10));
+        
+      console.log(`Updated balance for user ${bet.user_id} - added ${winnings} coins`);
     }
     
     // Mark bet as settled
@@ -531,9 +665,12 @@ export async function settleRace(raceId: string): Promise<Race | null> {
       .from('bets')
       .update({ 
         settled: true,
-        winnings
+        winnings,
+        place_rank: placeRank
       })
-      .eq('id', bet.id)
+      .eq('id', bet.id);
+      
+    console.log(`Settled bet ${bet.id} with winnings: ${winnings}`);
   }
   
   return {
@@ -542,8 +679,10 @@ export async function settleRace(raceId: string): Promise<Race | null> {
     status: updatedRaceData.status,
     createdAt: updatedRaceData.created_at,
     settledAt: updatedRaceData.settled_at,
-    winnerId: updatedRaceData.winner_id?.toString()
-  }
+    winnerId: updatedRaceData.winner_id?.toString(),
+    secondPlaceId: updatedRaceData.second_place_id?.toString(),
+    thirdPlaceId: updatedRaceData.third_place_id?.toString()
+  };
 }
 
 export async function createUser(name: string, email: string, isAdmin = false): Promise<User | null> {
@@ -609,16 +748,27 @@ export async function deleteRace(raceId: string): Promise<boolean> {
   
   // If there are unsettled bets, refund them
   for (const bet of unsettledBetsData) {
-    // Update user balance
+    // Get current user balance
+    const { data: userData, error: userError } = await supabase
+      .from('users')
+      .select('balance')
+      .eq('id', parseInt(bet.user_id.toString(), 10))
+      .single();
+      
+    if (userError || !userData) {
+      console.error('Error fetching user balance:', userError);
+      continue; // Skip to next bet if user not found
+    }
+    
+    // Update user balance with refund
     await supabase
       .from('users')
       .update({ 
-        balance: supabase.rpc('increment_balance', { 
-          row_id: parseInt(bet.user_id.toString(), 10),
-          amount: bet.amount
-        })
+        balance: userData.balance + bet.amount
       })
       .eq('id', parseInt(bet.user_id.toString(), 10))
+      
+    console.log(`Refunded ${bet.amount} coins to user ${bet.user_id} for canceled bet`);
       
     // Mark bet as settled
     await supabase

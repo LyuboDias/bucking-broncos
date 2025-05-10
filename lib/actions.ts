@@ -10,6 +10,8 @@ import {
   createUser,
   updateUserBalance,
   deleteRace,
+  setRaceSecondPlace,
+  setRaceThirdPlace,
 } from "./data"
 
 export async function createRaceAction(name: string) {
@@ -39,6 +41,22 @@ export async function updateRaceStatusAction(raceId: string, status: "upcoming" 
 export async function setRaceWinnerAction(raceId: string, playerId: string) {
   try {
     return { success: true, data: await setRaceWinner(raceId, playerId) }
+  } catch (error) {
+    return { success: false, error: (error as Error).message }
+  }
+}
+
+export async function setRaceSecondPlaceAction(raceId: string, playerId: string) {
+  try {
+    return { success: true, data: await setRaceSecondPlace(raceId, playerId) }
+  } catch (error) {
+    return { success: false, error: (error as Error).message }
+  }
+}
+
+export async function setRaceThirdPlaceAction(raceId: string, playerId: string) {
+  try {
+    return { success: true, data: await setRaceThirdPlace(raceId, playerId) }
   } catch (error) {
     return { success: false, error: (error as Error).message }
   }

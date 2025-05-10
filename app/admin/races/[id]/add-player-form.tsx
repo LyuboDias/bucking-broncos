@@ -74,6 +74,23 @@ export default function AddPlayerForm({ raceId }: { raceId: string }) {
     }
   }
 
+  // Handle odds change with proper validation
+  const handleOddsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // If input is empty, set odds to an empty string temporarily
+    if (value === '') {
+      // @ts-ignore - we'll handle the validation when submitting
+      setPlayerOdds('');
+      return;
+    }
+    
+    // Convert to number and update state
+    const numValue = parseFloat(value);
+    if (!isNaN(numValue)) {
+      setPlayerOdds(numValue);
+    }
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -101,7 +118,7 @@ export default function AddPlayerForm({ raceId }: { raceId: string }) {
               step="0.1"
               placeholder="2.0"
               value={playerOdds}
-              onChange={(e) => setPlayerOdds(Number(e.target.value))}
+              onChange={handleOddsChange}
             />
             <div className="text-sm text-muted-foreground">Higher odds mean lower probability but higher payout</div>
           </div>

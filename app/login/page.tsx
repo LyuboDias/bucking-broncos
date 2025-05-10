@@ -55,10 +55,18 @@ export default function LoginPage() {
     setIsLoading(true)
 
     try {
-      await register(registerName, registerPassword)
+      const username = await register(registerName, registerPassword)
       toast({
-        title: "Account created successfully",
-        description: "You have been logged in with a generated username",
+        title: "Account created successfully!",
+        description: (
+          <div className="space-y-2">
+            <div className="text-xl font-bold py-2 px-3 bg-muted rounded-md text-center">
+              {username}
+            </div>
+            <p className="font-medium">⚠️ Please save this username - you'll need it to log in!</p>
+          </div>
+        ),
+        duration: 10000, // Show for 10 seconds so user has time to read it
       })
       router.push("/")
     } catch (error) {

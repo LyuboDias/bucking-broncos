@@ -17,7 +17,7 @@ type AuthContextType = {
   loading: boolean
   login: (email: string, password: string) => Promise<void>
   logout: () => void
-  register: (name: string, password: string) => Promise<void>
+  register: (name: string, password: string) => Promise<string>
   updateUserBalance: (newBalance: number) => void
 }
 
@@ -26,7 +26,7 @@ const AuthContext = createContext<AuthContextType>({
   loading: true,
   login: async () => {},
   logout: () => {},
-  register: async () => {},
+  register: async () => "",
   updateUserBalance: () => {}
 })
 
@@ -115,6 +115,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Set the user in the state and localStorage
       setUser(newUser);
       localStorage.setItem('user', JSON.stringify(newUser));
+      
+      // Return the username for display in toast
+      return newUser.username;
     } catch (error) {
       console.error('Registration error:', error);
       throw error;

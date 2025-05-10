@@ -1,4 +1,4 @@
-import { getRace, getPlayersForRace, getBetsForRace } from "@/lib/data"
+import { getRace, getPlayersForRace, getBetsForRace, getUser } from "@/lib/data"
 import { notFound } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import AdminCheck from "../../admin-check"
@@ -14,6 +14,17 @@ export default async function AdminRacePage({ params }: { params: { id: string }
 
   const players = await getPlayersForRace(race.id)
   const bets = await getBetsForRace(race.id)
+  
+  // Get usernames for each bet
+  const betsWithUserPromises = bets.map(async (bet) => {
+    const user = await getUser(bet.userId)
+    return {
+      ...bet,
+      username: user?.name || `User #${bet.userId}`
+    }
+  })
+  
+  const betsWithUsers = await Promise.all(betsWithUserPromises)
 
   // Get total bet amount for each player
   const playerBets = players.map((player) => {
@@ -70,10 +81,10 @@ export default async function AdminRacePage({ params }: { params: { id: string }
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {bets.map((bet) => (
+                {betsWithUsers.map((bet) => (
                   <div key={bet.id} className="flex justify-between items-center pb-4 border-b last:border-0">
                     <div>
-                      <div className="font-medium">User #{bet.userId}</div>
+                      <div className="font-medium">{bet.username}</div>
                       <div className="text-sm text-muted-foreground">
                         Bet on: {players.find((p) => p.id === bet.playerId)?.name}
                       </div>

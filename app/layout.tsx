@@ -5,7 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { AuthProvider } from "@/components/auth-provider"
 import { Toaster } from "@/components/ui/toaster"
 import Header from "@/components/header"
-import { NAVY_BLUE, ORANGE } from "@/lib/colors"
+import { NAVY_BLUE, ORANGE } from "@/app/constants"
 
 const inter = Inter({ subsets: ["latin"] })
 

@@ -6,7 +6,7 @@ import { Button } from "./ui/button"
 import { usePathname } from "next/navigation"
 import { Trophy, Home, User, LogOut, Settings } from "lucide-react"
 import { useState } from "react"
-import { NAVY_BLUE, GREY, ORANGE, GREEN } from "@/lib/colors"
+import { NAVY_BLUE, GREY, ORANGE, GREEN } from "@/app/constants"
 
 export default function Header() {
   const { user, logout } = useAuth()

@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label"
 import { useToast } from "@/hooks/use-toast"
 import Link from "next/link"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ORANGE, GREEN, GREY } from "@/app/constants"
 
 export default function LoginPage() {
   const { login, register } = useAuth()
@@ -75,14 +76,20 @@ export default function LoginPage() {
     <div className="flex justify-center items-center min-h-[80vh]">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl text-center">Welcome</CardTitle>
-          <CardDescription className="text-center">Login or create an account to place bets</CardDescription>
+          <CardTitle className="text-4xl text-center" style={{ color: ORANGE }}>Welcome</CardTitle>
+          <CardDescription className="text-center" style={{ color: GREY }}>
+            Login or create an account to place bets
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="login">
             <TabsList className="grid w-full grid-cols-2 mb-6">
-              <TabsTrigger value="login">Login</TabsTrigger>
-              <TabsTrigger value="register">Register</TabsTrigger>
+              <TabsTrigger value="login" className="login-tab tab-trigger" >
+                Login
+              </TabsTrigger>
+              <TabsTrigger value="register" className="register-tab tab-trigger" >
+                Register
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="login">
@@ -102,13 +109,13 @@ export default function LoginPage() {
                   <Input
                     id="password"
                     type="password"
-                    placeholder="password"
+                    placeholder="123456"
                     value={loginPassword}
                     onChange={(e) => setLoginPassword(e.target.value)}
                     required
                   />
                 </div>
-                <Button type="submit" className="w-full" disabled={isLoading}>
+                <Button type="submit" className="w-full" style={{ background: GREEN, color: '#fff', borderColor: GREEN }} disabled={isLoading}>
                   {isLoading ? "Logging in..." : "Login"}
                 </Button>
               </form>
@@ -120,7 +127,7 @@ export default function LoginPage() {
                   <Label htmlFor="name">Name</Label>
                   <Input
                     id="name"
-                    placeholder="Your name"
+                    placeholder="Peter Griffin"
                     value={registerName}
                     onChange={(e) => setRegisterName(e.target.value)}
                     required
@@ -131,16 +138,16 @@ export default function LoginPage() {
                   <Input
                     id="register-password"
                     type="password"
-                    placeholder="Create a password"
+                    placeholder="123456"
                     value={registerPassword}
                     onChange={(e) => setRegisterPassword(e.target.value)}
                     required
                   />
                 </div>
-                <Button type="submit" className="w-full" disabled={isLoading}>
+                <Button type="submit" className="w-full" style={{ background: GREEN, color: '#fff', borderColor: GREEN }} disabled={isLoading}>
                   {isLoading ? "Creating account..." : "Create account"}
                 </Button>
-                <p className="text-xs text-muted-foreground mt-2">
+                <p className="text-xs text-muted-foreground mt-2" style={{ color: GREY }}>
                   A unique username will be automatically generated based on your name.
                 </p>
               </form>
@@ -148,7 +155,7 @@ export default function LoginPage() {
           </Tabs>
         </CardContent>
         <CardFooter className="flex justify-center">
-          <Link href="/" className="text-sm text-muted-foreground hover:text-primary">
+          <Link href="/" className="text-sm text-muted-foreground hover:text-primary" style={{ color: GREY }}>
             Back to home
           </Link>
         </CardFooter>

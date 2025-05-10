@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Trophy, Clock, Users } from "lucide-react"
-import { GREEN, GREY, ORANGE } from "@/lib/colors"
+import { GREEN, GREY, ORANGE } from "@/app/constants"
 
 export default async function Home() {
   const races = await getRaces()

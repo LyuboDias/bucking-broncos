@@ -54,8 +54,11 @@ export async function POST(request: Request) {
     }
     
     // Return the new user (without password)
-    const { password_hash, ...userWithoutPassword } = newUser;
-    return NextResponse.json(userWithoutPassword);
+    const { password_hash, is_admin, ...userWithoutPasswordAndAdmin } = newUser;
+    return NextResponse.json({
+      ...userWithoutPasswordAndAdmin,
+      isAdmin: is_admin
+    });
     
   } catch (error) {
     console.error('Registration error:', error);

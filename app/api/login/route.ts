@@ -34,9 +34,12 @@ export async function POST(request: Request) {
       );
     }
     
-    // Return the user without the password hash
-    const { password_hash, ...userWithoutPassword } = user;
-    return NextResponse.json(userWithoutPassword);
+    // Return the user without the password hash and map is_admin to isAdmin
+    const { password_hash, is_admin, ...userWithoutPasswordAndAdmin } = user;
+    return NextResponse.json({
+      ...userWithoutPasswordAndAdmin,
+      isAdmin: is_admin
+    });
     
   } catch (error) {
     console.error('Login error:', error);

@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label"
 import { useToast } from "@/hooks/use-toast"
 import { addPlayerAction } from "@/lib/actions"
 import { useRouter } from "next/navigation"
+import { ORANGE, GREY, GREEN } from "@/app/constants"
 
 export default function AddPlayerForm({ raceId }: { raceId: string }) {
   const { toast } = useToast()
@@ -94,23 +95,24 @@ export default function AddPlayerForm({ raceId }: { raceId: string }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Add Participant</CardTitle>
-        <CardDescription>Add a new participant to this race</CardDescription>
+        <CardTitle style={{ color: ORANGE }}>Add Participant</CardTitle>
+        <CardDescription style={{ color: GREY }}>Add a new participant to this race</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="playerName">Participant Name</Label>
+            <Label htmlFor="playerName" style={{ color: GREY }}>Participant Name</Label>
             <Input
               id="playerName"
               placeholder="Enter participant name"
               value={playerName}
               onChange={(e) => setPlayerName(e.target.value)}
+              style={{ color: '#000' }}
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="playerOdds">Odds (multiplier)</Label>
+            <Label htmlFor="playerOdds" style={{ color: GREY }}>Odds (multiplier)</Label>
             <Input
               id="playerOdds"
               type="number"
@@ -119,11 +121,17 @@ export default function AddPlayerForm({ raceId }: { raceId: string }) {
               placeholder="2.0"
               value={playerOdds}
               onChange={handleOddsChange}
+              style={{ color: '#000' }}
             />
-            <div className="text-sm text-muted-foreground">Higher odds mean lower probability but higher payout</div>
+            <div className="text-sm" style={{ color: GREY }}>Higher odds mean lower probability but higher payout</div>
           </div>
 
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
+          <Button
+            type="submit"
+            className="w-full"
+            style={{ background: GREEN, color: '#fff' }}
+            disabled={isSubmitting}
+          >
             {isSubmitting ? "Adding..." : "Add Participant"}
           </Button>
         </form>

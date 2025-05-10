@@ -28,6 +28,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import { ORANGE, GREY, GREEN } from "@/app/constants"
 
 export default function ManageRaceForm({
   race,
@@ -342,11 +343,13 @@ export default function ManageRaceForm({
 
   return (
     <>
-      <Card>
+      <Card
+        style={{ border: `3px solid ${ORANGE}`, boxShadow: 'none', outline: 'none' }}
+      >
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <div>
-            <CardTitle>Manage Race</CardTitle>
-            <CardDescription>Control the race status and determine the winner</CardDescription>
+            <CardTitle style={{ color: ORANGE }}>Manage Race</CardTitle>
+            <CardDescription style={{ color: GREY }}>Control the race status and determine the winner</CardDescription>
           </div>
           <Button
             variant="destructive"
@@ -362,18 +365,18 @@ export default function ManageRaceForm({
         <CardContent className="space-y-6">
           {players.length === 0 && (
             <Alert>
-              <AlertCircle className="h-4 w-4" />
-              <AlertTitle>No participants</AlertTitle>
-              <AlertDescription>Add participants to the race before opening it for betting</AlertDescription>
+              <AlertCircle className="h-4 w-4" style={{ color: ORANGE }} />
+              <AlertTitle style={{ color: ORANGE }}>No participants</AlertTitle>
+              <AlertDescription style={{ color: '#000' }}>Add participants to the race before opening it for betting</AlertDescription>
             </Alert>
           )}
 
           {race.status === "upcoming" && (
             <div className="space-y-4">
-              <div className="text-sm">
+              <div className="text-sm" style={{ color: GREY }}>
                 This race is currently in the setup phase. Add all participants before opening it for betting.
               </div>
-              <Button onClick={handleOpenRace} className="w-full" disabled={isSubmitting || players.length === 0}>
+              <Button onClick={handleOpenRace} className="w-full" style={{ background: GREEN, color: '#fff' }} disabled={isSubmitting || players.length === 0}>
                 Open Race for Betting
               </Button>
             </div>
@@ -381,27 +384,27 @@ export default function ManageRaceForm({
 
           {race.status === "open" && (
             <div className="space-y-6">
-              <div className="text-sm">
+              <div className="text-sm" style={{ color: GREY }}>
                 This race is open for betting. Set the places and then settle the race when all bets are placed.
               </div>
 
               <div className="border rounded-md p-4 bg-muted/30">
-                <h3 className="font-semibold mb-2">Race Standings</h3>
+                <h3 className="font-semibold mb-2" style={{ color: GREY }}>Race Standings</h3>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <Trophy className="h-5 w-5 text-yellow-500" />
-                    <span className="font-medium">1st Place:</span>
-                    <span>{players.find(p => p.id === race.winnerId)?.name || 'Not set'}</span>
+                    <span className="font-medium" style={{ color: GREY }}>1st Place:</span>
+                    <span style={{ color: GREY }}>{players.find(p => p.id === race.winnerId)?.name || 'Not set'}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Medal className="h-5 w-5 text-gray-400" />
-                    <span className="font-medium">2nd Place:</span>
-                    <span>{players.find(p => p.id === race.secondPlaceId)?.name || 'Not set'}</span>
+                    <span className="font-medium" style={{ color: GREY }}>2nd Place:</span>
+                    <span style={{ color: GREY }}>{players.find(p => p.id === race.secondPlaceId)?.name || 'Not set'}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Award className="h-5 w-5 text-amber-700" />
-                    <span className="font-medium">3rd Place:</span>
-                    <span>{players.find(p => p.id === race.thirdPlaceId)?.name || 'Not set (optional)'}</span>
+                    <span className="font-medium" style={{ color: GREY }}>3rd Place:</span>
+                    <span style={{ color: GREY }}>{players.find(p => p.id === race.thirdPlaceId)?.name || 'Not set (optional)'}</span>
                   </div>
                 </div>
               </div>
@@ -409,7 +412,7 @@ export default function ManageRaceForm({
               <div className="space-y-5">
                 {/* First Place Selector */}
                 <div className="space-y-3">
-                  <div className="font-medium flex items-center gap-2">
+                  <div className="font-medium flex items-center gap-2" style={{ color: GREY }}>
                     <Trophy className="h-5 w-5 text-yellow-500" />
                     <span>Select 1st Place Winner</span>
                   </div>
@@ -458,6 +461,7 @@ export default function ManageRaceForm({
                     size="sm"
                     disabled={isSubmitting || !selectedWinner}
                     className="ml-auto"
+                    style={{ background: GREEN, color: '#fff' }}
                   >
                     Set 1st Place
                   </Button>
@@ -465,7 +469,7 @@ export default function ManageRaceForm({
 
                 {/* Second Place Selector */}
                 <div className="space-y-3">
-                  <div className="font-medium flex items-center gap-2">
+                  <div className="font-medium flex items-center gap-2" style={{ color: GREY }}>
                     <Medal className="h-5 w-5 text-gray-400" />
                     <span>Select 2nd Place</span>
                   </div>
@@ -514,6 +518,7 @@ export default function ManageRaceForm({
                     size="sm"
                     disabled={isSubmitting || !selectedSecondPlace}
                     className="ml-auto"
+                    style={{ background: GREEN, color: '#fff' }}
                   >
                     Set 2nd Place
                   </Button>
@@ -521,7 +526,7 @@ export default function ManageRaceForm({
 
                 {/* Third Place Selector */}
                 <div className="space-y-3">
-                  <div className="font-medium flex items-center gap-2">
+                  <div className="font-medium flex items-center gap-2" style={{ color: GREY }}>
                     <Award className="h-5 w-5 text-amber-700" />
                     <span>Select 3rd Place (Optional)</span>
                   </div>
@@ -570,96 +575,16 @@ export default function ManageRaceForm({
                     size="sm"
                     disabled={isSubmitting || !selectedThirdPlace}
                     className="ml-auto"
+                    style={{ background: GREEN, color: '#fff' }}
                   >
                     Set 3rd Place
                   </Button>
                 </div>
               </div>
-
-              <div className="pt-4 border-t">
-                <Alert className="mb-4">
-                  <AlertCircle className="h-4 w-4" />
-                  <AlertTitle>Racing Results</AlertTitle>
-                  <AlertDescription>
-                    <ul className="mt-2 text-sm list-disc pl-5 space-y-1">
-                      <li>1st place winners receive full odds payout</li>
-                      <li>2nd and 3rd place winners receive half odds payout</li>
-                      <li>You must set 1st and 2nd place before settling the race</li>
-                      <li>3rd place is optional</li>
-                    </ul>
-                  </AlertDescription>
-                </Alert>
-                
-                <Button 
-                  onClick={handleSettleRace} 
-                  className="w-full"
-                  disabled={isSubmitting || !race.winnerId || !race.secondPlaceId}
-                >
-                  Settle Race
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {race.status === "settled" && (
-            <div className="space-y-4">
-              <div className="text-sm">
-                This race has been settled. The results were:
-              </div>
-              
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <Trophy className="h-5 w-5 text-yellow-500" />
-                  <span className="font-medium">1st Place:</span>
-                  <span>{players.find(p => p.id === race.winnerId)?.name}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Medal className="h-5 w-5 text-gray-400" />
-                  <span className="font-medium">2nd Place:</span>
-                  <span>{players.find(p => p.id === race.secondPlaceId)?.name}</span>
-                </div>
-                {race.thirdPlaceId && (
-                  <div className="flex items-center gap-2">
-                    <Award className="h-5 w-5 text-amber-700" />
-                    <span className="font-medium">3rd Place:</span>
-                    <span>{players.find(p => p.id === race.thirdPlaceId)?.name}</span>
-                  </div>
-                )}
-              </div>
-              
-              <Button variant="outline" onClick={() => router.push(`/races/${race.id}`)} className="w-full">
-                View Race Results
-              </Button>
             </div>
           )}
         </CardContent>
       </Card>
-
-      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure you want to delete this race?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the race "{race.name}" and all associated data.
-              {race.status === "open" && (
-                <div className="mt-2 text-red-500 font-medium">
-                  Warning: Any unsettled bets will be refunded to users.
-                </div>
-              )}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={isSubmitting}>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleDeleteRace}
-              disabled={isSubmitting}
-              className="bg-red-500 hover:bg-red-600"
-            >
-              {isSubmitting ? "Deleting..." : "Delete Race"}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </>
   )
 }

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Settings, Plus } from "lucide-react"
 import AdminCheck from "./admin-check"
 import CreateRaceForm from "./create-race-form"
+import { ORANGE, GREY, GREEN } from "@/app/constants"
 
 export default async function AdminPage() {
   const races = await getRaces()
@@ -27,14 +28,14 @@ export default async function AdminPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Manage Races</CardTitle>
-              <CardDescription>Edit race details, add players, and settle races</CardDescription>
+              <CardTitle style={{ color: ORANGE }}>Manage Races</CardTitle>
+              <CardDescription style={{ color: GREY }}>Edit race details, add players, and settle races</CardDescription>
               <div className="flex justify-end">
                 <Link href="/admin/races">
                   <Button
-                    variant="outline"
                     size="sm"
-                    className="flex items-center gap-1 border-green-600 text-green-700"
+                    style={{ background: GREEN, color: '#fff' }}
+                    className="flex items-center gap-1"
                   >
                     View All Races
                   </Button>
@@ -46,19 +47,24 @@ export default async function AdminPage() {
                 {sortedRaces.map((race) => (
                   <div key={race.id} className="flex justify-between items-center pb-4 border-b last:border-0">
                     <div>
-                      <div className="font-medium">{race.name}</div>
-                      <div className="text-sm text-muted-foreground">Status: {race.status}</div>
+                      <div className="font-medium" style={{ color: GREY }}>{race.name}</div>
+                      <div className="text-sm" style={{ color: GREY }}>Status: {race.status}</div>
                     </div>
                     <Link href={`/admin/races/${race.id}`}>
-                      <Button variant="outline" size="sm">
-                        <Settings className="h-4 w-4 mr-1" />
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        style={{ border: `2px solid ${ORANGE}`, color: '#000', background: '#fff' }}
+                        className="flex items-center gap-1"
+                      >
+                        <Settings className="h-4 w-4 mr-1" style={{ color: ORANGE }} />
                         Manage
                       </Button>
                     </Link>
                   </div>
                 ))}
 
-                {sortedRaces.length === 0 && <div className="text-center py-4 text-muted-foreground">No races found</div>}
+                {sortedRaces.length === 0 && <div className="text-center py-4" style={{ color: GREY }}>No races found</div>}
               </div>
             </CardContent>
           </Card>

@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import AdminCheck from "../../admin-check"
 import AddPlayerForm from "./add-player-form"
 import ManageRaceForm from "./manage-race-form"
+import { ORANGE, GREY, GREEN } from "@/app/constants"
 
 export default async function AdminRacePage({ params }: { params: { id: string } }) {
   const race = await getRace(params.id)
@@ -47,18 +48,18 @@ export default async function AdminRacePage({ params }: { params: { id: string }
           <div className="text-2xl font-semibold mt-2">{race.name}</div>
           <div className="mt-2">
             {race.status === "open" && (
-              <span className="bg-green-100 text-green-800 text-sm font-semibold px-3 py-1 rounded-full">
-                Status: Open for Betting
+              <span className="text-sm font-semibold rounded-full" style={{ background: GREEN, color: '#fff', fontSize: '0.85rem', padding: '2px 16px' }}>
+                Open for Betting
               </span>
             )}
             {race.status === "upcoming" && (
-              <span className="bg-amber-50 text-amber-700 border border-amber-400 text-sm font-semibold px-3 py-1 rounded-full">
-                Status: Upcoming
+              <span className="text-sm font-semibold rounded-full" style={{ background: ORANGE, color: '#fff', fontSize: '0.85rem', padding: '2px 16px' }}>
+                Upcoming
               </span>
             )}
             {race.status === "settled" && (
-              <span className="bg-blue-100 text-blue-800 text-sm font-semibold px-3 py-1 rounded-full">
-                Status: Settled
+              <span className="text-sm font-semibold rounded-full" style={{ background: '#fff', color: GREEN, fontSize: '0.85rem', padding: '2px 16px', border: `1px solid ${GREEN}` }}>
+                Settled
               </span>
             )}
           </div>
@@ -76,8 +77,8 @@ export default async function AdminRacePage({ params }: { params: { id: string }
           {/* 3. Bets Placed */}
           <Card>
             <CardHeader>
-              <CardTitle>Bets Placed</CardTitle>
-              <CardDescription>{bets.length} bets placed on this race</CardDescription>
+              <CardTitle style={{ color: ORANGE }}>Bets Placed</CardTitle>
+              <CardDescription style={{ color: GREY }}>{bets.length} bets placed on this race</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -85,18 +86,19 @@ export default async function AdminRacePage({ params }: { params: { id: string }
                   <div key={bet.id} className="flex justify-between items-center pb-4 border-b last:border-0">
                     <div>
                       <div className="font-medium">{bet.username}</div>
-                      <div className="text-sm text-muted-foreground">
-                        Bet on: {players.find((p) => p.id === bet.playerId)?.name}
+                      <div className="text-sm">
+                        <span style={{ color: GREY }}>Bet on: </span>
+                        <span style={{ color: ORANGE }}>{players.find((p) => p.id === bet.playerId)?.name}</span>
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="font-semibold">{bet.amount} coins</div>
-                      <div className="text-sm text-muted-foreground">{bet.settled ? "Settled" : "Pending"}</div>
+                      <div className="font-semibold" style={{ color: GREEN }}>{bet.amount} coins</div>
+                      <div className="text-sm" style={{ color: GREY }}>{bet.settled ? "Settled" : "Pending"}</div>
                     </div>
                   </div>
                 ))}
                 {bets.length === 0 && (
-                  <div className="text-center py-4 text-muted-foreground">No bets placed yet</div>
+                  <div className="text-center py-4" style={{ color: GREY }}>No bets placed yet</div>
                 )}
               </div>
             </CardContent>
@@ -105,28 +107,28 @@ export default async function AdminRacePage({ params }: { params: { id: string }
           {/* 4. Race Participants */}
           <Card>
             <CardHeader>
-              <CardTitle>Race Participants</CardTitle>
-              <CardDescription>{players.length} participants in this race</CardDescription>
+              <CardTitle style={{ color: ORANGE }}>Race Participants</CardTitle>
+              <CardDescription style={{ color: GREY }}>{players.length} participants in this race</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {players.map((player) => (
                   <div key={player.id} className="flex justify-between items-center pb-4 border-b last:border-0">
                     <div>
-                      <div className="font-medium">{player.name}</div>
-                      <div className="text-sm text-muted-foreground">
+                      <div className="font-medium" style={{ color: '#fff' }}>{player.name}</div>
+                      <div className="text-sm" style={{ color: GREY }}>
                         {bets.filter((bet) => bet.playerId === player.id).length} bets •
-                        {bets.filter((bet) => bet.playerId === player.id).reduce((sum, bet) => sum + bet.amount, 0)} coins
+                        <span style={{ color: GREEN }}>{bets.filter((bet) => bet.playerId === player.id).reduce((sum, bet) => sum + bet.amount, 0)} coins</span>
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="font-semibold">{player.odds}x</div>
-                      <div className="text-sm text-muted-foreground">odds</div>
+                      <div className="font-semibold" style={{ color: ORANGE }}>{player.odds}x</div>
+                      <div className="text-sm" style={{ color: GREY }}>odds</div>
                     </div>
                   </div>
                 ))}
                 {players.length === 0 && (
-                  <div className="text-center py-4 text-muted-foreground">No participants added yet</div>
+                  <div className="text-center py-4" style={{ color: GREY }}>No participants added yet</div>
                 )}
               </div>
             </CardContent>

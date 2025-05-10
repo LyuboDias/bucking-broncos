@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Settings, ArrowLeft } from "lucide-react"
 import AdminCheck from "../admin-check"
 import CreateRaceForm from "../create-race-form"
+import { ORANGE, GREY, GREEN } from "@/app/constants"
 
 export default async function AdminRacesPage() {
   const races = await getRaces()
@@ -15,8 +16,12 @@ export default async function AdminRacesPage() {
         <div className="w-full max-w-2xl text-center mx-auto">
           <div className="flex items-center justify-center gap-4">
             <Link href="/admin">
-              <Button variant="outline" size="icon">
-                <ArrowLeft className="h-4 w-4" />
+              <Button
+                variant="outline"
+                size="icon"
+                style={{ border: `2px solid ${ORANGE}`, color: ORANGE }}
+              >
+                <ArrowLeft className="h-4 w-4" style={{ color: ORANGE }} />
               </Button>
             </Link>
             <div>
@@ -31,8 +36,8 @@ export default async function AdminRacesPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>All Races</CardTitle>
-              <CardDescription>Edit race details, add players, and settle races</CardDescription>
+              <CardTitle style={{ color: ORANGE }}>All Races</CardTitle>
+              <CardDescription style={{ color: GREY }}>Edit race details, add players, and settle races</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -41,29 +46,54 @@ export default async function AdminRacesPage() {
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                       <div className="flex flex-col items-start">
                         <div className="flex items-center gap-3">
-                          <span className="font-bold text-xl">{race.name}</span>
+                          <span className="font-bold text-xl" style={{ color: ORANGE }}>{race.name}</span>
                           {race.status === "open" && (
-                            <span className="bg-green-100 text-green-800 text-sm font-semibold px-3 py-1 rounded-full">
+                            <span className="text-sm font-semibold rounded-full" style={{ background: GREEN, color: '#fff', fontSize: '0.5rem', padding: '1px 8px' }}>
                               Open for Betting
                             </span>
                           )}
                           {race.status === "upcoming" && (
-                            <span className="bg-amber-50 text-amber-700 border border-amber-400 text-sm font-semibold px-3 py-1 rounded-full">
+                            <span className="text-sm font-semibold rounded-full" style={{ background: ORANGE, color: '#fff', fontSize: '0.5rem', padding: '1px 8px' }}>
                               Upcoming
                             </span>
                           )}
+                          {race.status === "settled" && (
+                            <span
+                              className="text-sm font-semibold rounded-full"
+                              style={{
+                                background: "#fff",
+                                color: GREEN,
+                                fontSize: "0.5rem",
+                                padding: "1px 8px",
+                                border: `1px solid ${GREEN}`,
+                              }}
+                            >
+                              Settled
+                            </span>
+                          )}
                         </div>
-                        <div className="text-muted-foreground mt-1">
+                        <div className="text-muted-foreground mt-1" style={{ color: GREY, fontSize: '0.85rem' }}>
                           Created on {new Date(race.createdAt).toLocaleDateString()}
                         </div>
                       </div>
                       <div className="flex gap-2">
                         <Link href={`/races/${race.id}`}>
-                          <Button variant="outline" size="sm">View</Button>
+                          <Button
+                            size="sm"
+                            style={{ background: GREEN, color: '#fff' }}
+                            className="flex items-center gap-1"
+                          >
+                            View
+                          </Button>
                         </Link>
                         <Link href={`/admin/races/${race.id}`}>
-                          <Button variant="default" size="sm">
-                            <Settings className="h-4 w-4 mr-1" />
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            style={{ border: `2px solid ${ORANGE}`, color: '#000', background: '#fff' }}
+                            className="flex items-center gap-1"
+                          >
+                            <Settings className="h-4 w-4 mr-1" style={{ color: ORANGE }} />
                             Manage
                           </Button>
                         </Link>

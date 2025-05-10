@@ -6,7 +6,7 @@ import { Button } from "./ui/button"
 import { usePathname } from "next/navigation"
 import { Trophy, Home, User, LogOut, Settings } from "lucide-react"
 import { useState } from "react"
-import { NAVY_BLUE, GREY, ORANGE } from "@/lib/colors"
+import { NAVY_BLUE, GREY, ORANGE, GREEN } from "@/lib/colors"
 
 export default function Header() {
   const { user, logout } = useAuth()
@@ -47,8 +47,8 @@ export default function Header() {
             </Button>
           ) : (
             <Link href="/login">
-              <Button variant="outline" size="icon" className="flex items-center justify-center">
-                <User className="h-4 w-4" style={{ color: ORANGE }} />
+              <Button variant="outline" size="icon" className="flex items-center justify-center" style={{ background: GREEN, borderColor: GREEN, color: '#fff' }}>
+                <User className="h-4 w-4" style={{ color: '#fff' }} />
               </Button>
             </Link>
           )}
@@ -114,8 +114,8 @@ export default function Header() {
             </>
           ) : (
             <Link href="/login">
-              <Button variant="outline" size="sm" className="flex items-center gap-1" style={{ color: GREY }}>
-                <User className="h-4 w-4" style={{ color: ORANGE }} />
+              <Button variant="outline" size="sm" className="flex items-center gap-1" style={{ background: GREEN, borderColor: GREEN, color: '#fff' }}>
+                <User className="h-4 w-4" style={{ color: '#fff' }} />
                 <span>Login</span>
               </Button>
             </Link>

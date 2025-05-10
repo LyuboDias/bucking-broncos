@@ -1,7 +1,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Trophy, Medal, Coins } from "lucide-react";
-import { GREEN, BLUE, ORANGE, GRAY, GREY } from "@/lib/colors";
+import { GREEN, ORANGE, GREY } from "@/app/constants";
 import { getUsers } from "@/lib/data";
+
 
 export default async function LeaderboardPage() {
   // Fetch all users from Supabase

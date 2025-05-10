@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Trophy, Clock, Users } from "lucide-react"
+import { GREEN, GREY, ORANGE } from "@/app/constants"
 
 export default async function Home() {
   const races = await getRaces()
@@ -16,7 +17,7 @@ export default async function Home() {
   return (
     <div className="space-y-8 flex flex-col items-center">
       <div className="w-full max-w-2xl text-center mx-auto">
-        <h1 className="text-3xl font-bold tracking-tight">Races</h1>
+        <h1 className="text-6xl font-bold tracking-tight">Races</h1>
       </div>
 
       <div className="grid gap-6 w-full max-w-2xl">
@@ -26,13 +27,13 @@ export default async function Home() {
             <Card key={race.id} className="overflow-hidden">
               <CardHeader className="pb-3">
                 <div className="flex justify-between items-start">
-                  <CardTitle className="text-xl">{race.name}</CardTitle>
+                  <CardTitle className="text-2xl font-bold" style={{ color: ORANGE }}>{race.name}</CardTitle>
                   <StatusBadge status={race.status} />
                 </div>
-                <CardDescription>{new Date(race.createdAt).toLocaleDateString()}</CardDescription>
+                <CardDescription style={{ color: GREY }}>{new Date(race.createdAt).toLocaleDateString()}</CardDescription>
               </CardHeader>
               <CardContent className="pb-3">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
+                <div className="flex items-center gap-2 text-sm mb-4" style={{ color: GREY }}>
                   <Users className="h-4 w-4" />
                   <span>{players.length} participants</span>
                 </div>
@@ -42,13 +43,14 @@ export default async function Home() {
                     <div key={player.id} className="flex justify-between items-center">
                       <div className="font-medium">{player.name}</div>
                       <div className="text-sm">
-                        Odds: <span className="font-semibold">{player.odds}x</span>
+                        <span style={{ color: GREY }}>Odds: </span>
+                        <span style={{ color: ORANGE, fontWeight: 700 }}>{player.odds}x</span>
                       </div>
                     </div>
                   ))}
 
                   {players.length > 3 && (
-                    <div className="text-sm text-muted-foreground text-center pt-1">
+                    <div className="text-sm text-center pt-1" style={{ color: ORANGE }}>
                       +{players.length - 3} more participants
                     </div>
                   )}
@@ -58,7 +60,14 @@ export default async function Home() {
                 <Link href={`/races/${race.id}`} className="w-full">
                   <Button
                     variant={race.status === "open" ? "default" : "outline"}
-                    className={`w-full ${race.status === "open" ? "bg-green-600 hover:bg-green-700 text-white border-green-600" : ""}`}
+                    className="w-full"
+                    style={
+                      race.status === "open"
+                        ? { background: GREEN, borderColor: GREEN, color: "#fff" }
+                        : race.status === "settled"
+                        ? {}
+                        : { color: ORANGE, border: `2px solid ${ORANGE}`, background: "#fff" }
+                    }
                   >
                     {race.status === "settled"
                       ? "View Results"
@@ -82,15 +91,15 @@ function StatusBadge({ status }: { status: string }) {
       return (
         <Badge
           variant="outline"
-          className="flex items-center gap-1 border-amber-400 text-amber-700 bg-amber-50"
+          style={{ background: ORANGE, color: "#fff", border: "none" }}
         >
-          <Clock className="h-3 w-3" />
+          <Clock className="h-3 w-3 pr-1" style={{ color: "#fff" }} />
           <span>Upcoming</span>
         </Badge>
       )
     case "open":
       return (
-        <Badge variant="secondary" className="flex items-center gap-1 bg-green-100 text-green-800 hover:bg-green-100">
+        <Badge variant="secondary" style={{ background: GREEN, color: "#fff" }}>
           <span>Open for Betting</span>
         </Badge>
       )

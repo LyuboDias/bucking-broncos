@@ -92,3 +92,22 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Amatic SC', Arial, sans-serif;
+  font-weight: 700;
+}
+
+.card-header {
+  font-family: 'Amatic SC', Arial, sans-serif;
+  font-weight: 700;
+}
+
+.tab-trigger {
+  background: #f79d0d79;
+  color: #05020269;
+}
+
+input[type="text"], input[type="password"], input:not([type]) {
+  color: #000;
+}

@@ -1,10 +1,11 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Trophy, Medal } from "lucide-react";
+import { GREEN, ORANGE, GREY } from "@/lib/colors";
 
 export default function LeaderboardPage() {
   const mockPlayers = [
-    { id: 1, name: "Alice", points: 320 },
-    { id: 2, name: "Bob", points: 320 },
+    { id: 1, name: "Alice", points: 1200 },
+    { id: 2, name: "Charlie", points: 1200 },
     { id: 3, name: "Charlie", points: 250 },
     { id: 4, name: "Diana", points: 200 },
     { id: 5, name: "Eve", points: 180 },
@@ -20,9 +21,9 @@ export default function LeaderboardPage() {
     { id: 15, name: "Olivia", points: 130 },
     { id: 16, name: "Peggy", points: 125 },
     { id: 17, name: "Rupert", points: 110 },
-    { id: 18, name: "Sybil", points: 100 },
-    { id: 19, name: "Trent", points: 100 },
-    { id: 20, name: "Victor", points: 100 },
+    { id: 18, name: "Sybil", points: 15 },
+    { id: 19, name: "Trent", points: 15 },
+    { id: 20, name: "Victor", points: 15 },
   ];
 
   const topPlayers = [...mockPlayers]
@@ -41,20 +42,20 @@ export default function LeaderboardPage() {
   return (
     <div className="space-y-8 flex flex-col items-center">
       <div className="w-full max-w-2xl text-center mx-auto">
-        <h1 className="text-3xl font-bold tracking-tight">Leaderboard</h1>
+        <h1 className="text-6xl font-bold tracking-tight">Leaderboard</h1>
         <p className="text-muted-foreground mt-2">Top 5 players by points</p>
       </div>
 
-      <div className="flex flex-col md:flex-row md:gap-24 gap-8 w-full max-w-12xl">
+      <div className="flex flex-col md:flex-row md:gap-24 gap-8 w-full max-w-12xl items-stretch">
         {/* Top Players */}
         <div className="flex-1">
-          <Card>
+          <Card className="h-full">
             <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2">
-                <Trophy className="h-5 w-5 text-yellow-500" />
+              <CardTitle className="flex items-center gap-2 text-3xl font-bold">
+                <Trophy className="h-5 w-5" style={{ color: ORANGE }} />
                 Top Players
               </CardTitle>
-              <CardDescription>Based on total points</CardDescription>
+              <CardDescription style={{ color: GREY }}>Based on total points</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -63,22 +64,35 @@ export default function LeaderboardPage() {
                     <div className="flex items-center gap-3">
                       <div className="flex items-center justify-center w-8 h-8 rounded-full bg-muted font-semibold text-sm">
                         {player.points === topScore ? (
-                          <Trophy className="h-4 w-4 text-yellow-500" />
+                          <Trophy className="h-4 w-4" style={{ color: ORANGE }} />
                         ) : player.points === secondTopScore ? (
-                          <Medal className="h-4 w-4 text-gray-400" />
+                          <Medal className="h-4 w-4" style={{ color: ORANGE }} />
                         ) : (
-                          index + 1
+                          <span style={{ color: ORANGE }}>{index + 1}</span>
                         )}
                       </div>
                       <div>
-                        <div className={`font-medium ${player.points === topScore ? "border border-green-600 rounded-full px-3 py-1 text-green-700" : ""}`}>
+                        <div
+                          className={`font-medium ${player.points === topScore ? "border rounded-full px-3 py-1" : ""}`}
+                          style={player.points === topScore ? { color: GREEN, borderColor: GREEN } : {}}
+                        >
                           {player.name}
                         </div>
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className={`font-semibold ${player.points === topScore ? "text-green-600" : ""}`}>
-                        {player.points} points
+                      <div
+                        className="font-semibold"
+                        style={player.points === topScore ? { color: GREEN } : {}}
+                      >
+                        <span
+                          role="img"
+                          aria-label="money bag"
+                          style={player.points === topScore ? { marginRight: 4, fontSize: '1.5rem', color: GREEN, verticalAlign: 'middle' } : { marginRight: 4 }}
+                        >
+                          💰
+                        </span>
+                        {player.points}
                       </div>
                     </div>
                   </div>
@@ -91,34 +105,41 @@ export default function LeaderboardPage() {
 
         {/* Bottom Players */}
         <div className="flex-1">
-          <Card>
+          <Card className="h-full">
             <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2">
-                <Trophy className="h-5 w-5 text-red-500" />
+              <CardTitle className="flex items-center gap-2 text-3xl font-bold">
+                <Trophy className="h-5 w-5" style={{ color: ORANGE }} />
                 Bottom Players
               </CardTitle>
-              <CardDescription>Lowest scoring 5 players</CardDescription>
+              <CardDescription style={{ color: GREY }}>Lowest scoring 5 players</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {bottomPlayers.map((player, index) => (
                   <div key={player.id} className="flex justify-between items-center pb-4 border-b last:border-0">
                     <div className="flex items-center gap-3">
-                      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-muted font-semibold text-sm">
-                        {index + 1}
-                      </div>
                       <div className="flex items-center gap-2">
-                        <div className={`font-medium ${player.points === minScore ? "border border-red-600 rounded-full px-3 py-1 text-red-700" : ""}`}>
+                        <div
+                          className={`font-medium ${player.points === minScore ? "border rounded-full px-3 py-1" : ""}`}
+                          style={player.points === minScore ? { color: ORANGE, borderColor: ORANGE } : {}}
+                        >
                           {player.name}
                         </div>
-                        {player.points === minScore && (
-                          <span className="text-xl" title="Oops!">💩</span>
-                        )}
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className={`font-semibold ${player.points === minScore ? "text-red-600" : ""}`}>
-                        {player.points} points
+                      <div
+                        className="font-semibold"
+                        style={player.points === minScore ? { color: ORANGE } : {}}
+                      >
+                        <span
+                          role="img"
+                          aria-label="money bag"
+                          style={player.points === minScore ? { marginRight: 4, fontSize: '.7rem', color: GREEN, verticalAlign: 'middle' } : { marginRight: 4 }}
+                        >
+                          💰
+                        </span>
+                        {player.points}
                       </div>
                     </div>
                   </div>

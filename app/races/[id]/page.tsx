@@ -113,7 +113,7 @@ export default function RacePage() {
     <div className="space-y-8 flex flex-col items-center">
       <div className="w-full max-w-2xl text-center mx-auto flex flex-col items-center">
         <div className="flex flex-col items-center gap-2">
-          <h1 className="text-3xl font-bold tracking-tight">{race.name}</h1>
+          <h1 className="text-6xl font-bold tracking-tight">{race.name}</h1>
           <p className="text-muted-foreground">
             Created on {new Date(race.createdAt).toLocaleDateString()}
             {race.settledAt && ` • Settled on ${new Date(race.settledAt).toLocaleDateString()}`}

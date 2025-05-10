@@ -43,7 +43,7 @@ export default async function AdminRacePage({ params }: { params: { id: string }
     <AdminCheck>
       <div className="space-y-8 flex flex-col items-center">
         <div className="w-full max-w-2xl text-center mx-auto flex flex-col items-center">
-          <h1 className="text-3xl font-bold tracking-tight">Manage Race</h1>
+          <h1 className="text-6xl font-bold tracking-tight">Manage Race</h1>
           <div className="text-2xl font-semibold mt-2">{race.name}</div>
           <div className="mt-2">
             {race.status === "open" && (

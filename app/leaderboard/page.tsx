@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Trophy, Medal } from "lucide-react";
-import { GREEN, ORANGE, GREY } from "@/lib/colors";
+import { GREEN, ORANGE, GREY } from "@/app/constants";
 
 export default function LeaderboardPage() {
   const mockPlayers = [

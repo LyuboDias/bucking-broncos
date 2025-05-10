@@ -14,7 +14,7 @@ import { placeBetAction } from "@/lib/actions"
 import { useRouter } from "next/navigation"
 import type { Race, Player } from "@/lib/types"
 import Link from "next/link"
-import { GREEN } from "@/lib/colors"
+import { GREEN } from "@/app/constants"
 
 export default function PlaceBetForm({
   race,

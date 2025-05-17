@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import AdminCheck from "../../admin-check"
 import AddPlayerForm from "./add-player-form"
 import ManageRaceForm from "./manage-race-form"
+import CollapsibleCard from "./collapsible-card"
 import { ORANGE, GREY, GREEN } from "@/app/constants"
 
 // Define the props type for the page component
@@ -72,73 +73,80 @@ export default async function AdminRacePage({ params }: AdminRacePageProps) {
         </div>
 
         <div className="w-full max-w-2xl flex flex-col gap-8">
-          {/* 1. Add Participant */}
-          <AddPlayerForm raceId={race.id} />
-
-          {/* 2. Manage Race */}
+          {/* 1. Manage Race (moved to top) */}
           <Card>
             <ManageRaceForm race={race} players={players} />
           </Card>
 
-          {/* 3. Bets Placed */}
-          <Card>
-            <CardHeader>
-              <CardTitle style={{ color: ORANGE }}>Bets Placed</CardTitle>
-              <CardDescription style={{ color: GREY }}>{bets.length} bets placed on this race</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {betsWithUsers.map((bet) => (
-                  <div key={bet.id} className="flex justify-between items-center pb-4 border-b last:border-0">
-                    <div>
-                      <div className="font-medium">{bet.username}</div>
-                      <div className="text-sm">
-                        <span style={{ color: GREY }}>Bet on: </span>
-                        <span style={{ color: ORANGE }}>{players.find((p) => p.id === bet.playerId)?.name}</span>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="font-semibold" style={{ color: GREEN }}>{bet.amount} coins</div>
-                      <div className="text-sm" style={{ color: GREY }}>{bet.settled ? "Settled" : "Pending"}</div>
-                    </div>
-                  </div>
-                ))}
-                {bets.length === 0 && (
-                  <div className="text-center py-4" style={{ color: GREY }}>No bets placed yet</div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
+          {/* 2. Add Participant (only for upcoming races) */}
+          {race.status === "upcoming" && (
+            <CollapsibleCard 
+              title="Add Participant" 
+              description={`Add participants to the race`}
+              titleColor={ORANGE}
+              descriptionColor={GREY}
+            >
+              <AddPlayerForm raceId={race.id} />
+            </CollapsibleCard>
+          )}
 
-          {/* 4. Race Participants */}
-          <Card>
-            <CardHeader>
-              <CardTitle style={{ color: ORANGE }}>Race Participants</CardTitle>
-              <CardDescription style={{ color: GREY }}>{players.length} participants in this race</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {players.map((player) => (
-                  <div key={player.id} className="flex justify-between items-center pb-4 border-b last:border-0">
-                    <div>
-                      <div className="font-medium" style={{ color: '#fff' }}>{player.name}</div>
-                      <div className="text-sm" style={{ color: GREY }}>
-                        {bets.filter((bet) => bet.playerId === player.id).length} bets •
-                        <span style={{ color: GREEN }}>{bets.filter((bet) => bet.playerId === player.id).reduce((sum, bet) => sum + bet.amount, 0)} coins</span>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="font-semibold" style={{ color: ORANGE }}>{player.odds}x</div>
-                      <div className="text-sm" style={{ color: GREY }}>odds</div>
+          {/* 3. Race Participants */}
+          <CollapsibleCard
+            title="Race Participants"
+            description={`${players.length} participants in this race`}
+            titleColor={ORANGE}
+            descriptionColor={GREY}
+          >
+            <div className="space-y-4">
+              {players.map((player) => (
+                <div key={player.id} className="flex justify-between items-center pb-4 border-b last:border-0">
+                  <div>
+                    <div className="font-medium" style={{ color: '#fff' }}>{player.name}</div>
+                    <div className="text-sm" style={{ color: GREY }}>
+                      {bets.filter((bet) => bet.playerId === player.id).length} bets •
+                      <span style={{ color: GREEN }}>{bets.filter((bet) => bet.playerId === player.id).reduce((sum, bet) => sum + bet.amount, 0)} coins</span>
                     </div>
                   </div>
-                ))}
-                {players.length === 0 && (
-                  <div className="text-center py-4" style={{ color: GREY }}>No participants added yet</div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
+                  <div className="text-right">
+                    <div className="font-semibold" style={{ color: ORANGE }}>{player.odds}x</div>
+                    <div className="text-sm" style={{ color: GREY }}>odds</div>
+                  </div>
+                </div>
+              ))}
+              {players.length === 0 && (
+                <div className="text-center py-4" style={{ color: GREY }}>No participants added yet</div>
+              )}
+            </div>
+          </CollapsibleCard>
+
+          {/* 4. Bets Placed (moved to bottom) */}
+          <CollapsibleCard
+            title="Bets Placed"
+            description={`${bets.length} bets placed on this race`}
+            titleColor={ORANGE}
+            descriptionColor={GREY}
+          >
+            <div className="space-y-4">
+              {betsWithUsers.map((bet) => (
+                <div key={bet.id} className="flex justify-between items-center pb-4 border-b last:border-0">
+                  <div>
+                    <div className="font-medium">{bet.username}</div>
+                    <div className="text-sm">
+                      <span style={{ color: GREY }}>Bet on: </span>
+                      <span style={{ color: ORANGE }}>{players.find((p) => p.id === bet.playerId)?.name}</span>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="font-semibold" style={{ color: GREEN }}>{bet.amount} coins</div>
+                    <div className="text-sm" style={{ color: GREY }}>{bet.settled ? "Settled" : "Pending"}</div>
+                  </div>
+                </div>
+              ))}
+              {bets.length === 0 && (
+                <div className="text-center py-4" style={{ color: GREY }}>No bets placed yet</div>
+              )}
+            </div>
+          </CollapsibleCard>
         </div>
       </div>
     </AdminCheck>

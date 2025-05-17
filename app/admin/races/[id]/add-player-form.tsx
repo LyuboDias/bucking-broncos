@@ -3,7 +3,6 @@
 import type React from "react"
 
 import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -93,49 +92,41 @@ export default function AddPlayerForm({ raceId }: { raceId: string }) {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle style={{ color: ORANGE }}>Add Participant</CardTitle>
-        <CardDescription style={{ color: GREY }}>Add a new participant to this race</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="playerName" style={{ color: GREY }}>Participant Name</Label>
-            <Input
-              id="playerName"
-              placeholder="Enter participant name"
-              value={playerName}
-              onChange={(e) => setPlayerName(e.target.value)}
-              style={{ color: '#000' }}
-            />
-          </div>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="playerName" style={{ color: GREY }}>Participant Name</Label>
+        <Input
+          id="playerName"
+          placeholder="Enter participant name"
+          value={playerName}
+          onChange={(e) => setPlayerName(e.target.value)}
+          style={{ color: '#000' }}
+        />
+      </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="playerOdds" style={{ color: GREY }}>Odds (multiplier)</Label>
-            <Input
-              id="playerOdds"
-              type="number"
-              min="1.1"
-              step="0.1"
-              placeholder="2.0"
-              value={playerOdds}
-              onChange={handleOddsChange}
-              style={{ color: '#000' }}
-            />
-            <div className="text-sm" style={{ color: GREY }}>Higher odds mean lower probability but higher payout</div>
-          </div>
+      <div className="space-y-2">
+        <Label htmlFor="playerOdds" style={{ color: GREY }}>Odds (multiplier)</Label>
+        <Input
+          id="playerOdds"
+          type="number"
+          min="1.1"
+          step="0.1"
+          placeholder="2.0"
+          value={playerOdds}
+          onChange={handleOddsChange}
+          style={{ color: '#000' }}
+        />
+        <div className="text-sm" style={{ color: GREY }}>Higher odds mean lower probability but higher payout</div>
+      </div>
 
-          <Button
-            type="submit"
-            className="w-full"
-            style={{ background: GREEN, color: '#fff' }}
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? "Adding..." : "Add Participant"}
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
+      <Button
+        type="submit"
+        className="w-full"
+        style={{ background: GREEN, color: '#fff' }}
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? "Adding..." : "Add Participant"}
+      </Button>
+    </form>
   )
 }

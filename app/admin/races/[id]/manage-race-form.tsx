@@ -14,10 +14,16 @@ import {
 } from "@/lib/actions"
 import { useRouter } from "next/navigation"
 import type { Race, Player } from "@/lib/types"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
-import { AlertCircle, Trash, Trophy, Award, Medal } from "lucide-react"
+import { AlertCircle, Trash, Trophy, Award, Medal, ChevronDown } from "lucide-react"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -28,6 +34,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import CollapsibleCard from "./collapsible-card"
 import { ORANGE, GREY, GREEN } from "@/app/constants"
 
 export default function ManageRaceForm({
@@ -374,213 +381,192 @@ export default function ManageRaceForm({
           {race.status === "upcoming" && (
             <div className="space-y-4">
               <div className="text-sm" style={{ color: GREY }}>
-                This race is currently in the setup phase. Add all participants before opening it for betting.
+                This race is currently in the setup phase. You can set the winners and then open it for betting.
               </div>
-              <Button onClick={handleOpenRace} className="w-full" style={{ background: GREEN, color: '#fff' }} disabled={isSubmitting || players.length === 0}>
+              
+              {/* Race standings summary - always visible */}
+              <div className="border rounded-md p-3 bg-muted/30">
+                <h3 className="font-semibold mb-2 text-sm" style={{ color: GREY }}>Race Standings</h3>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <Trophy className="h-4 w-4 text-yellow-500" />
+                    <span className="text-sm font-medium" style={{ color: GREY }}>1st:</span>
+                    <span className="text-sm" style={{ color: GREY }}>{players.find(p => p.id === race.winnerId)?.name || 'Not set'}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Medal className="h-4 w-4 text-gray-400" />
+                    <span className="text-sm font-medium" style={{ color: GREY }}>2nd:</span>
+                    <span className="text-sm" style={{ color: GREY }}>{players.find(p => p.id === race.secondPlaceId)?.name || 'Not set'}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Award className="h-4 w-4 text-amber-700" />
+                    <span className="text-sm font-medium" style={{ color: GREY }}>3rd:</span>
+                    <span className="text-sm" style={{ color: GREY }}>{players.find(p => p.id === race.thirdPlaceId)?.name || 'Not set'}</span>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Winner Selection - collapsible */}
+              <CollapsibleCard
+                title="Set Winners"
+                description="Select winners for 1st, 2nd, and 3rd places"
+                titleColor={ORANGE}
+                descriptionColor={GREY}
+              >
+                <div className="space-y-3">
+                  <div className="grid grid-cols-[auto_1fr_auto] gap-2 items-center">
+                    <Trophy className="h-4 w-4 text-yellow-500" />
+                    <Select value={selectedWinner} onValueChange={setSelectedWinner}>
+                      <SelectTrigger className="h-8 text-sm">
+                        <SelectValue placeholder="Select 1st place" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {players.map((player) => (
+                          <SelectItem 
+                            key={`first-${player.id}`} 
+                            value={player.id} 
+                            disabled={(race.secondPlaceId === player.id || race.thirdPlaceId === player.id) && race.winnerId !== player.id}
+                          >
+                            {player.name} ({player.odds}x)
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Button 
+                      onClick={handleSetWinner} 
+                      size="sm"
+                      variant="outline"
+                      className="h-8 px-2 text-xs"
+                      disabled={isSubmitting || !selectedWinner}
+                      style={{ borderColor: GREEN, color: GREEN }}
+                    >
+                      Set
+                    </Button>
+                  </div>
+
+                  <div className="grid grid-cols-[auto_1fr_auto] gap-2 items-center">
+                    <Medal className="h-4 w-4 text-gray-400" />
+                    <Select value={selectedSecondPlace} onValueChange={setSelectedSecondPlace}>
+                      <SelectTrigger className="h-8 text-sm">
+                        <SelectValue placeholder="Select 2nd place" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {players.map((player) => (
+                          <SelectItem 
+                            key={`second-${player.id}`} 
+                            value={player.id} 
+                            disabled={(race.winnerId === player.id || race.thirdPlaceId === player.id) && race.secondPlaceId !== player.id}
+                          >
+                            {player.name} ({player.odds}x)
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Button 
+                      onClick={handleSetSecondPlace} 
+                      size="sm"
+                      variant="outline"
+                      className="h-8 px-2 text-xs"
+                      disabled={isSubmitting || !selectedSecondPlace}
+                      style={{ borderColor: GREEN, color: GREEN }}
+                    >
+                      Set
+                    </Button>
+                  </div>
+
+                  <div className="grid grid-cols-[auto_1fr_auto] gap-2 items-center">
+                    <Award className="h-4 w-4 text-amber-700" />
+                    <Select value={selectedThirdPlace} onValueChange={setSelectedThirdPlace}>
+                      <SelectTrigger className="h-8 text-sm">
+                        <SelectValue placeholder="Select 3rd place (optional)" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {players.map((player) => (
+                          <SelectItem 
+                            key={`third-${player.id}`} 
+                            value={player.id} 
+                            disabled={(race.winnerId === player.id || race.secondPlaceId === player.id) && race.thirdPlaceId !== player.id}
+                          >
+                            {player.name} ({player.odds}x)
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Button 
+                      onClick={handleSetThirdPlace} 
+                      size="sm"
+                      variant="outline"
+                      className="h-8 px-2 text-xs"
+                      disabled={isSubmitting || !selectedThirdPlace}
+                      style={{ borderColor: GREEN, color: GREEN }}
+                    >
+                      Set
+                    </Button>
+                  </div>
+                </div>
+              </CollapsibleCard>
+              
+              {/* Show warning if 1st or 2nd place is not set */}
+              {(!race.winnerId || !race.secondPlaceId) && (
+                <Alert variant="destructive" className="mb-2">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>Winners required</AlertTitle>
+                  <AlertDescription>
+                    You must set both 1st and 2nd place winners before opening the race for betting.
+                  </AlertDescription>
+                </Alert>
+              )}
+              
+              <Button 
+                onClick={handleOpenRace} 
+                className="w-full" 
+                style={{ background: GREEN, color: '#fff' }} 
+                disabled={isSubmitting || players.length === 0 || !race.winnerId || !race.secondPlaceId}
+              >
                 Open Race for Betting
               </Button>
             </div>
           )}
 
           {race.status === "open" && (
-            <div className="space-y-6">
+            <div className="space-y-4">
               <div className="text-sm" style={{ color: GREY }}>
-                This race is open for betting. Set the places and then settle the race when all bets are placed.
+                This race is open for betting. Winners have been set and cannot be changed.
               </div>
 
-              <div className="border rounded-md p-4 bg-muted/30">
-                <h3 className="font-semibold mb-2" style={{ color: GREY }}>Race Standings</h3>
-                <div className="space-y-2">
+              {/* Race standings summary - always visible */}
+              <div className="border rounded-md p-3 bg-muted/30">
+                <h3 className="font-semibold mb-2 text-sm" style={{ color: GREY }}>Race Standings</h3>
+                <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <Trophy className="h-5 w-5 text-yellow-500" />
-                    <span className="font-medium" style={{ color: GREY }}>1st Place:</span>
-                    <span style={{ color: GREY }}>{players.find(p => p.id === race.winnerId)?.name || 'Not set'}</span>
+                    <Trophy className="h-4 w-4 text-yellow-500" />
+                    <span className="text-sm font-medium" style={{ color: GREY }}>1st:</span>
+                    <span className="text-sm" style={{ color: GREY }}>{players.find(p => p.id === race.winnerId)?.name || 'Not set'}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Medal className="h-5 w-5 text-gray-400" />
-                    <span className="font-medium" style={{ color: GREY }}>2nd Place:</span>
-                    <span style={{ color: GREY }}>{players.find(p => p.id === race.secondPlaceId)?.name || 'Not set'}</span>
+                    <Medal className="h-4 w-4 text-gray-400" />
+                    <span className="text-sm font-medium" style={{ color: GREY }}>2nd:</span>
+                    <span className="text-sm" style={{ color: GREY }}>{players.find(p => p.id === race.secondPlaceId)?.name || 'Not set'}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Award className="h-5 w-5 text-amber-700" />
-                    <span className="font-medium" style={{ color: GREY }}>3rd Place:</span>
-                    <span style={{ color: GREY }}>{players.find(p => p.id === race.thirdPlaceId)?.name || 'Not set (optional)'}</span>
+                    <Award className="h-4 w-4 text-amber-700" />
+                    <span className="text-sm font-medium" style={{ color: GREY }}>3rd:</span>
+                    <span className="text-sm" style={{ color: GREY }}>{players.find(p => p.id === race.thirdPlaceId)?.name || 'Not set'}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="space-y-5">
-                {/* First Place Selector */}
-                <div className="space-y-3">
-                  <div className="font-medium flex items-center gap-2" style={{ color: GREY }}>
-                    <Trophy className="h-5 w-5 text-yellow-500" />
-                    <span>Select 1st Place Winner</span>
-                  </div>
-                  <RadioGroup value={selectedWinner} onValueChange={setSelectedWinner}>
-                    {players.map((player) => {
-                      const isWinner = race.winnerId === player.id;
-                      const isSelected = selectedWinner === player.id;
-                      const placement = getPlacementInfo(player.id);
-                      
-                      return (
-                        <div 
-                          key={`first-${player.id}`} 
-                          className={`flex items-center space-x-2 border p-3 rounded-md transition-all ${
-                            isWinner 
-                              ? "border-yellow-500 bg-yellow-50 shadow-sm" 
-                              : isSelected 
-                                ? "border-blue-400 bg-blue-50" 
-                                : placement ? "opacity-50" : ""
-                          }`}
-                        >
-                          <RadioGroupItem 
-                            value={player.id} 
-                            id={`first-${player.id}`} 
-                            disabled={placement && !isWinner ? true : undefined}
-                          />
-                          <Label 
-                            htmlFor={`first-${player.id}`} 
-                            className="font-medium cursor-pointer flex items-center gap-2 flex-1"
-                          >
-                            {player.name} ({player.odds}x)
-                            {placement && (
-                              <span className={`ml-auto flex items-center font-semibold gap-1 ${
-                                isWinner ? "text-yellow-600" : "text-gray-500"
-                              }`}>
-                                {placement.icon}
-                                {placement.text}
-                              </span>
-                            )}
-                          </Label>
-                        </div>
-                      );
-                    })}
-                  </RadioGroup>
-                  <Button 
-                    onClick={handleSetWinner} 
-                    size="sm"
-                    disabled={isSubmitting || !selectedWinner}
-                    className="ml-auto"
-                    style={{ background: GREEN, color: '#fff' }}
-                  >
-                    Set 1st Place
-                  </Button>
-                </div>
-
-                {/* Second Place Selector */}
-                <div className="space-y-3">
-                  <div className="font-medium flex items-center gap-2" style={{ color: GREY }}>
-                    <Medal className="h-5 w-5 text-gray-400" />
-                    <span>Select 2nd Place</span>
-                  </div>
-                  <RadioGroup value={selectedSecondPlace} onValueChange={setSelectedSecondPlace}>
-                    {players.map((player) => {
-                      const isSecondPlace = race.secondPlaceId === player.id;
-                      const isSelected = selectedSecondPlace === player.id;
-                      const placement = getPlacementInfo(player.id);
-                      
-                      return (
-                        <div 
-                          key={`second-${player.id}`} 
-                          className={`flex items-center space-x-2 border p-3 rounded-md transition-all ${
-                            isSecondPlace 
-                              ? "border-gray-400 bg-gray-50 shadow-sm" 
-                              : isSelected 
-                                ? "border-blue-400 bg-blue-50" 
-                                : placement ? "opacity-50" : ""
-                          }`}
-                        >
-                          <RadioGroupItem 
-                            value={player.id} 
-                            id={`second-${player.id}`}
-                            disabled={placement && !isSecondPlace ? true : undefined}
-                          />
-                          <Label 
-                            htmlFor={`second-${player.id}`} 
-                            className="font-medium cursor-pointer flex items-center gap-2 flex-1"
-                          >
-                            {player.name} ({player.odds}x)
-                            {placement && (
-                              <span className={`ml-auto flex items-center font-semibold gap-1 ${
-                                isSecondPlace ? "text-gray-600" : "text-gray-500"
-                              }`}>
-                                {placement.icon}
-                                {placement.text}
-                              </span>
-                            )}
-                          </Label>
-                        </div>
-                      );
-                    })}
-                  </RadioGroup>
-                  <Button 
-                    onClick={handleSetSecondPlace} 
-                    size="sm"
-                    disabled={isSubmitting || !selectedSecondPlace}
-                    className="ml-auto"
-                    style={{ background: GREEN, color: '#fff' }}
-                  >
-                    Set 2nd Place
-                  </Button>
-                </div>
-
-                {/* Third Place Selector */}
-                <div className="space-y-3">
-                  <div className="font-medium flex items-center gap-2" style={{ color: GREY }}>
-                    <Award className="h-5 w-5 text-amber-700" />
-                    <span>Select 3rd Place (Optional)</span>
-                  </div>
-                  <RadioGroup value={selectedThirdPlace} onValueChange={setSelectedThirdPlace}>
-                    {players.map((player) => {
-                      const isThirdPlace = race.thirdPlaceId === player.id;
-                      const isSelected = selectedThirdPlace === player.id;
-                      const placement = getPlacementInfo(player.id);
-                      
-                      return (
-                        <div 
-                          key={`third-${player.id}`} 
-                          className={`flex items-center space-x-2 border p-3 rounded-md transition-all ${
-                            isThirdPlace 
-                              ? "border-amber-500 bg-amber-50 shadow-sm" 
-                              : isSelected 
-                                ? "border-blue-400 bg-blue-50" 
-                                : placement ? "opacity-50" : ""
-                          }`}
-                        >
-                          <RadioGroupItem 
-                            value={player.id} 
-                            id={`third-${player.id}`}
-                            disabled={placement && !isThirdPlace ? true : undefined}
-                          />
-                          <Label 
-                            htmlFor={`third-${player.id}`} 
-                            className="font-medium cursor-pointer flex items-center gap-2 flex-1"
-                          >
-                            {player.name} ({player.odds}x)
-                            {placement && (
-                              <span className={`ml-auto flex items-center font-semibold gap-1 ${
-                                isThirdPlace ? "text-amber-600" : "text-gray-500"
-                              }`}>
-                                {placement.icon}
-                                {placement.text}
-                              </span>
-                            )}
-                          </Label>
-                        </div>
-                      );
-                    })}
-                  </RadioGroup>
-                  <Button 
-                    onClick={handleSetThirdPlace} 
-                    size="sm"
-                    disabled={isSubmitting || !selectedThirdPlace}
-                    className="ml-auto"
-                    style={{ background: GREEN, color: '#fff' }}
-                  >
-                    Set 3rd Place
-                  </Button>
-                </div>
-              </div>
+              {/* Settle race button only appears when 1st and 2nd place are set */}
+              {race.winnerId && race.secondPlaceId && (
+                <Button 
+                  onClick={handleSettleRace} 
+                  className="w-full" 
+                  style={{ background: GREEN, color: '#fff' }}
+                  disabled={isSubmitting}
+                >
+                  Settle Race
+                </Button>
+              )}
             </div>
           )}
         </CardContent>

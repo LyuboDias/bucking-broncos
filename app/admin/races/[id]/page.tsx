@@ -6,7 +6,13 @@ import AddPlayerForm from "./add-player-form"
 import ManageRaceForm from "./manage-race-form"
 import { ORANGE, GREY, GREEN } from "@/app/constants"
 
-export default async function AdminRacePage({ params }: { params: { id: string } }) {
+// Define the props type for the page component
+type AdminRacePageProps = {
+  params: { id: string }
+}
+
+export default async function AdminRacePage({ params }: AdminRacePageProps) {
+  // Extract the ID directly to avoid the warning
   const race = await getRace(params.id)
 
   if (!race) {

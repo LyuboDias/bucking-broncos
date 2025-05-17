@@ -734,59 +734,111 @@ export async function updateUserBalance(userId: string, newBalance: number): Pro
 }
 
 export async function deleteRace(raceId: string): Promise<boolean> {
-  // Check if the race has any unsettled bets
-  const { data: unsettledBetsData, error: betsError } = await supabase
-    .from('bets')
-    .select('*')
-    .eq('race_id', parseInt(raceId, 10))
-    .eq('settled', false)
-    
-  if (betsError) {
-    console.error('Error checking for unsettled bets:', betsError)
-    throw new Error("Failed to check for unsettled bets")
+  // Parse race ID
+  const parsedRaceId = safeParseInt(raceId);
+  if (parsedRaceId === null) {
+    console.error('Invalid race ID format:', raceId);
+    throw new Error("Invalid race ID format");
   }
-  
-  // If there are unsettled bets, refund them
-  for (const bet of unsettledBetsData) {
-    // Get current user balance
-    const { data: userData, error: userError } = await supabase
-      .from('users')
-      .select('balance')
-      .eq('id', parseInt(bet.user_id.toString(), 10))
-      .single();
+
+  try {
+    // Start a transaction using supabase
+    // First, fetch all bets related to this race
+    const { data: betsData, error: betsError } = await supabase
+      .from('bets')
+      .select('*')
+      .eq('race_id', parsedRaceId);
       
-    if (userError || !userData) {
-      console.error('Error fetching user balance:', userError);
-      continue; // Skip to next bet if user not found
+    if (betsError) {
+      console.error('Error fetching bets for race:', betsError);
+      throw new Error("Failed to fetch bets for race");
     }
     
-    // Update user balance with refund
-    await supabase
-      .from('users')
-      .update({ 
-        balance: userData.balance + bet.amount
-      })
-      .eq('id', parseInt(bet.user_id.toString(), 10))
-      
-    console.log(`Refunded ${bet.amount} coins to user ${bet.user_id} for canceled bet`);
-      
-    // Mark bet as settled
-    await supabase
-      .from('bets')
-      .update({ settled: true, winnings: 0 })
-      .eq('id', bet.id)
-  }
-  
-  // Delete the race (this should cascade to delete related players due to the foreign key constraints)
-  const { error: deleteError } = await supabase
-    .from('races')
-    .delete()
-    .eq('id', parseInt(raceId, 10))
+    // Process each bet - refund unsettled bets
+    for (const bet of betsData) {
+      if (!bet.settled) {
+        // Get current user balance
+        const { data: userData, error: userError } = await supabase
+          .from('users')
+          .select('balance')
+          .eq('id', bet.user_id)
+          .single();
+          
+        if (userError || !userData) {
+          console.error('Error fetching user balance:', userError);
+          continue; // Skip to next bet if user not found
+        }
+        
+        // Update user balance with refund
+        await supabase
+          .from('users')
+          .update({ 
+            balance: userData.balance + bet.amount
+          })
+          .eq('id', bet.user_id);
+          
+        console.log(`Refunded ${bet.amount} coins to user ${bet.user_id} for canceled bet`);
+      }
+    }
     
-  if (deleteError) {
-    console.error('Error deleting race:', deleteError)
-    return false
+    // 1. Delete all bets related to this race
+    const { error: deleteBetsError } = await supabase
+      .from('bets')
+      .delete()
+      .eq('race_id', parsedRaceId);
+      
+    if (deleteBetsError) {
+      console.error('Error deleting bets for race:', deleteBetsError);
+      throw new Error("Failed to delete bets for race");
+    }
+    
+    console.log(`Deleted all bets for race ${raceId}`);
+
+    // 2. Remove references to players in the race (winner, second place, third place)
+    const { error: clearReferencesError } = await supabase
+      .from('races')
+      .update({
+        winner_id: null,
+        second_place_id: null,
+        third_place_id: null
+      })
+      .eq('id', parsedRaceId);
+      
+    if (clearReferencesError) {
+      console.error('Error clearing player references:', clearReferencesError);
+      throw new Error("Failed to clear player references");
+    }
+    
+    console.log(`Cleared player references for race ${raceId}`);
+    
+    // 3. Delete all players related to this race
+    const { error: deletePlayersError } = await supabase
+      .from('players')
+      .delete()
+      .eq('race_id', parsedRaceId);
+      
+    if (deletePlayersError) {
+      console.error('Error deleting players for race:', deletePlayersError);
+      throw new Error("Failed to delete players for race");
+    }
+    
+    console.log(`Deleted all players for race ${raceId}`);
+    
+    // 4. Finally delete the race itself
+    const { error: deleteRaceError } = await supabase
+      .from('races')
+      .delete()
+      .eq('id', parsedRaceId);
+      
+    if (deleteRaceError) {
+      console.error('Error deleting race:', deleteRaceError);
+      throw new Error("Failed to delete race");
+    }
+    
+    console.log(`Successfully deleted race ${raceId}`);
+    return true;
+  } catch (error) {
+    console.error('Error in delete race transaction:', error);
+    throw error;
   }
-  
-  return true
 }

@@ -10,7 +10,7 @@ import { NAVY_BLUE, ORANGE } from "@/app/constants"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
-  title: "Wacky Race App",
+  title: "Bucking Broncos App",
   description: "Place bets on races and compete on the leaderboard",
     generator: 'v0.dev'
 }
@@ -25,15 +25,16 @@ export default function RootLayout({
       <head>
         <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet" />
       </head>
-      <body className={inter.className}>
+      <body className={inter.className} style={{ background: `url('/full-logo.png') center center / 100% 100% no-repeat`, width: '100vw', height: '100vh', minHeight: '100vh', position: 'relative' }}>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(255,255,255,0.70)', pointerEvents: 'none', zIndex: 0 }} />
         <ThemeProvider attribute="class" defaultTheme="light" forcedTheme="light" enableSystem={false}>
           <AuthProvider>
-            <div className="min-h-screen flex flex-col">
+            <div className="min-h-screen flex flex-col" style={{ position: 'relative', zIndex: 1 }}>
               <Header />
               <main className="flex-1 container mx-auto py-6 px-4">{children}</main>
               <footer className="border-t py-4" style={{ background: NAVY_BLUE }}>
                 <div className="container mx-auto text-center text-sm" style={{ color: ORANGE }}>
-                  © {new Date().getFullYear()} Wacky Race App
+                  © {new Date().getFullYear()} Bucking Broncos App
                 </div>
               </footer>
             </div>

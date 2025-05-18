@@ -122,7 +122,7 @@ export default function PlaceBetForm({
         </CardHeader>
         <CardContent>
           <Link href="/login">
-            <Button>Log in to place bets</Button>
+            <Button style={{ background: GREEN, color: '#fff' }}>Log in to place bets</Button>
           </Link>
         </CardContent>
       </Card>

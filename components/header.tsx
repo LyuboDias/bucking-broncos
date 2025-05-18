@@ -15,12 +15,11 @@ export default function Header() {
 
   return (
     <header className="border-b" style={{ background: NAVY_BLUE, color: GREY }}>
-      <div className="container mx-auto py-4 px-4 flex items-center justify-between">
+      <div className="container mx-auto h-16 px-4 flex items-center justify-between">
         {/* Title container with min width */}
-        <div className="flex flex-col md:min-w-[300px]">
-          <Link href="/" className="font-bold text-xl flex items-center gap-2" style={{ color: GREY }}>
-            <Trophy className="h-6 w-6" style={{ color: ORANGE }} /> 
-            Wacky Race
+        <div className="flex flex-col md:min-w-[300px] h-full justify-center">
+          <Link href="/" className="font-bold text-xl flex items-center gap-2 h-full" style={{ color: GREY }}>
+            <img src="/logo.png" alt="Bucking Broncos Logo" style={{ height: '100%', maxHeight: '100%', width: 'auto', display: 'block' }} />
           </Link>
           {/* Mobile: User info under the title */}
           <div className="md:hidden mt-1 text-xs">

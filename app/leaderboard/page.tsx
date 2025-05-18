@@ -42,7 +42,7 @@ export default async function LeaderboardPage() {
     <div className="space-y-8 flex flex-col items-center">
       <div className="w-full max-w-2xl text-center mx-auto">
         <h1 className="text-6xl font-bold tracking-tight">Leaderboard</h1>
-        <p className="text-muted-foreground mt-2">Top users by coin balance</p>
+        <p className="mt-2">Top users by coin balance</p>
       </div>
 
       <div className="flex flex-col md:flex-row md:gap-24 gap-8 w-full max-w-12xl items-stretch">

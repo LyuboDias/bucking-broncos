@@ -1,4 +1,4 @@
-# Wacky Races Supabase Setup
+# Bucking Broncos Supabase Setup
 
 ## Environment Variables
 

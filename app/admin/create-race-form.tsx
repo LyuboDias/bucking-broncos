@@ -76,7 +76,7 @@ export default function CreateRaceForm() {
             <Label htmlFor="raceName">Race Name</Label>
             <Input
               id="raceName"
-              placeholder="Wacky Race"
+              placeholder="Bucking Broncos"
               value={raceName}
               onChange={(e) => setRaceName(e.target.value)}
             />

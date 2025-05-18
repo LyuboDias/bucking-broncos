@@ -26,9 +26,18 @@ export default async function Home() {
           sortedRaces.map((race) => (
             <Card key={race.id} className="overflow-hidden">
               <CardHeader className="pb-3">
-                <div className="flex justify-between items-start">
-                  <CardTitle className="text-2xl font-bold" style={{ color: ORANGE }}>{race.name}</CardTitle>
-                  <StatusBadge status={race.status} />
+                <div className="flex items-center w-full">
+                  <div className="flex-1">
+                    <CardTitle className="text-2xl font-bold" style={{ color: ORANGE }}>{race.name}</CardTitle>
+                  </div>
+                  {race.status === "open" && (
+                    <div className="flex-1 flex justify-center">
+                      <div style={{ color: '#fff', fontWeight: 600, fontSize: '1.1rem' }}>4:35min left</div>
+                    </div>
+                  )}
+                  <div className="flex-1 flex justify-end">
+                    <StatusBadge status={race.status} />
+                  </div>
                 </div>
               </CardHeader>
               <CardFooter>
@@ -59,12 +68,12 @@ export default async function Home() {
                 <Flag className="h-10 w-10" style={{ color: ORANGE }} />
               </div>
               <h3 className="text-xl font-semibold mb-2" style={{ color: ORANGE }}>No Races Available</h3>
-              <p className="text-gray-500 mb-6 max-w-md">
+              <p className="text-gray-500 mb-6 max-w-md" style={{ color: GREY }}>
                 There are no races available at the moment. Races will appear here once they're created.
               </p>
               <div className="flex items-center gap-2 text-sm px-4 py-2 bg-gray-100 rounded-full">
-                <Info className="h-4 w-4" style={{ color: GREY }} />
-                <span style={{ color: GREY }}>Check back soon for upcoming races!</span>
+                <Info className="h-4 w-4" style={{ color: '#000' }} />
+                <span style={{ color: '#000' }}>After creating a race, you can add players and manage settings</span>
               </div>
             </CardContent>
           </Card>

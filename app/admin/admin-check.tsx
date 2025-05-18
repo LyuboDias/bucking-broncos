@@ -27,7 +27,7 @@ export default function AdminCheck({ children }: { children: React.ReactNode }) 
       <div className="flex justify-center items-center min-h-[60vh]">
         <div className="text-center">
           <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full mx-auto"></div>
-          <p className="mt-4 text-muted-foreground">Loading...</p>
+          <p className="mt-4 ">Loading...</p>
         </div>
       </div>
     )

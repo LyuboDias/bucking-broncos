@@ -26,7 +26,7 @@ export default async function AdminRacesPage() {
             </Link>
             <div>
               <h1 className="text-6xl font-bold tracking-tight">Manage Races</h1>
-              <p className="text-muted-foreground mt-2">View and manage all races</p>
+              <p className=" mt-2">View and manage all races</p>
             </div>
           </div>
         </div>

@@ -20,7 +20,7 @@ export default async function AdminPage() {
       <div className="space-y-8">
         <div className="w-full max-w-2xl text-center mx-auto">
           <h1 className="text-6xl font-bold tracking-tight">Admin Dashboard</h1>
-          <p className="text-muted-foreground mt-2">Manage races, players, and bets</p>
+          <p className=" mt-2">Manage races, players, and bets</p>
         </div>
 
         <div className="w-full max-w-2xl mx-auto space-y-8">
@@ -75,7 +75,7 @@ export default async function AdminPage() {
                     </p>
                     <div className="flex items-center gap-2 text-sm px-3 py-1.5 bg-gray-100 rounded-full">
                       <Flag className="h-3.5 w-3.5" style={{ color: GREEN }} />
-                      <span style={{ color: GREY }}>
+                      <span style={{ color: '#000' }}>
                         After creating a race, you can add players and manage settings
                       </span>
                     </div>

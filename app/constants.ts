@@ -1,5 +1,5 @@
 // Navy blue background
-export const NAVY_BLUE = "#103F54";
+export const NAVY_BLUE = "#04203D";
 
 // Orange (secondary color)
 export const ORANGE = "#F79F0D";

@@ -15,27 +15,25 @@ export default function Header() {
 
   return (
     <header className="border-b" style={{ background: NAVY_BLUE, color: GREY }}>
-      <div className="container mx-auto h-16 px-4 flex items-center justify-between">
+      <div className="container mx-auto h-34 px-4 flex items-center justify-between py-2">
         {/* Title container with min width */}
         <div className="flex flex-col md:min-w-[300px] h-full justify-center">
           <Link href="/" className="font-bold text-xl flex items-center gap-2 h-full" style={{ color: GREY }}>
-            <img src="/logo.png" alt="Bucking Broncos Logo" style={{ height: '100%', maxHeight: '100%', width: 'auto', display: 'block' }} />
+            <img src="/logo.png" alt="Bucking Broncos Logo" style={{ height: '100%', maxHeight: '100%', width: '190px', display: 'block' }} />
           </Link>
-          {/* Mobile: User info under the title */}
-          <div className="md:hidden mt-1 text-xs">
-            {user && (
-              <>
-                <div className="font-semibold flex items-center gap-1">
-                  <span style={{ color: ORANGE }}>User:</span>
-                  <span style={{ color: GREY, textTransform: 'capitalize' }}>{user.username}</span>
-                  {user.isAdmin && <span style={{ color: GREY }}> (Admin)</span>}
-                </div>
-                <div className="text-xs" style={{ color: GREY }}>
-                  <span style={{ color: ORANGE }}>Balance:</span> <span className="font-medium" style={{ color: GREY }}>{user.balance} coins</span>
-                </div>
-              </>
-            )}
-          </div>
+          {/* Mobile: User info and balance stacked under logo */}
+          {user && (
+            <div className="md:hidden flex flex-col mt-4 text-xs">
+              <div className="font-semibold flex items-center gap-1">
+                <span style={{ color: ORANGE }}>User:</span>
+                <span style={{ color: GREY, textTransform: 'capitalize' }}>{user.username}</span>
+                {user.isAdmin && <span style={{ color: GREY }}> (Admin)</span>}
+              </div>
+              <div className="text-xs" style={{ color: GREY }}>
+                <span style={{ color: ORANGE }}>Balance:</span> <span className="font-medium" style={{ color: GREY }}>{user.balance} coins</span>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Mobile: Log out/login and menu button side by side, top right */}

@@ -24,9 +24,16 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet" />
+        <style>{`
+          @media (max-width: 768px) {
+            body {
+              background-repeat: repeat !important;
+            }
+          }
+        `}</style>
       </head>
-      <body className={inter.className} style={{ background: `url('/full-logo.png') center center / 100% 100% no-repeat`, width: '100vw', height: '100vh', minHeight: '100vh', position: 'relative' }}>
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(255,255,255,0.70)', pointerEvents: 'none', zIndex: 0 }} />
+      <body className={inter.className} style={{ background: `url('/full-logo.png') center center / 100% 100% no-repeat`, width: '100vw', minHeight: '100vh', position: 'relative' }}>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(255,255,255,0.75)', pointerEvents: 'none', zIndex: 0 }} />
         <ThemeProvider attribute="class" defaultTheme="light" forcedTheme="light" enableSystem={false}>
           <AuthProvider>
             <div className="min-h-screen flex flex-col" style={{ position: 'relative', zIndex: 1 }}>

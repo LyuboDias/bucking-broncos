@@ -2,8 +2,6 @@
 
 ## Environment Variables
 
-
-
 Create a `.env.local` file in the root directory with your Supabase credentials:
 
 ```

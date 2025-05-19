@@ -44,3 +44,4 @@ After setting up Supabase and creating your tables:
 2. The Row Level Security policies should already be set up by the `supabase_auth_setup.sql` script.
 
 3. Restart your application with `npm run dev` 
+

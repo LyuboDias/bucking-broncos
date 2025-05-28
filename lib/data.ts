@@ -250,7 +250,9 @@ export async function createRace(name: string): Promise<Race | null> {
     status: data.status,
     createdAt: data.created_at,
     settledAt: data.settled_at,
-    winnerId: data.winner_id?.toString()
+    winnerId: data.winner_id?.toString(),
+    secondPlaceId: data.second_place_id?.toString(),
+    thirdPlaceId: data.third_place_id?.toString()
   }
 }
 
@@ -309,7 +311,9 @@ export async function updateRaceStatus(raceId: string, status: "upcoming" | "ope
     status: data.status,
     createdAt: data.created_at,
     settledAt: data.settled_at,
-    winnerId: data.winner_id?.toString()
+    winnerId: data.winner_id?.toString(),
+    secondPlaceId: data.second_place_id?.toString(),
+    thirdPlaceId: data.third_place_id?.toString()
   }
 }
 
@@ -345,7 +349,9 @@ export async function setRaceWinner(raceId: string, playerId: string): Promise<R
     status: data.status,
     createdAt: data.created_at,
     settledAt: data.settled_at,
-    winnerId: data.winner_id?.toString()
+    winnerId: data.winner_id?.toString(),
+    secondPlaceId: data.second_place_id?.toString(),
+    thirdPlaceId: data.third_place_id?.toString()
   }
 }
 

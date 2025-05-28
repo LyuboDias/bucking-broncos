@@ -39,13 +39,11 @@ export default function CreateRaceForm() {
       if (result.success) {
         toast({
           title: "Race created successfully",
-          description: "Redirecting to admin dashboard",
+          description: "The race has been added to your dashboard",
         })
 
-        // Instead of trying to navigate to the race management page,
-        // just go back to the admin dashboard
-        router.push("/admin")
-        router.refresh()
+        // Clear the form
+        setRaceName("")
       } else {
         toast({
           title: "Error creating race",

@@ -1,5 +1,6 @@
 "use server"
 
+import { revalidatePath } from "next/cache"
 import {
   createRace,
   addPlayerToRace,
@@ -16,7 +17,12 @@ import {
 
 export async function createRaceAction(name: string) {
   try {
-    return { success: true, data: await createRace(name) }
+    const result = await createRace(name)
+    if (result) {
+      revalidatePath("/admin")
+      revalidatePath("/admin/races")
+    }
+    return { success: true, data: result }
   } catch (error) {
     return { success: false, error: (error as Error).message }
   }
@@ -24,7 +30,13 @@ export async function createRaceAction(name: string) {
 
 export async function addPlayerAction(raceId: string, name: string, odds: number) {
   try {
-    return { success: true, data: await addPlayerToRace(raceId, name, odds) }
+    const result = await addPlayerToRace(raceId, name, odds)
+    if (result) {
+      revalidatePath("/admin")
+      revalidatePath("/admin/races")
+      revalidatePath(`/admin/races/${raceId}`)
+    }
+    return { success: true, data: result }
   } catch (error) {
     return { success: false, error: (error as Error).message }
   }
@@ -32,7 +44,14 @@ export async function addPlayerAction(raceId: string, name: string, odds: number
 
 export async function updateRaceStatusAction(raceId: string, status: "upcoming" | "open" | "settled") {
   try {
-    return { success: true, data: await updateRaceStatus(raceId, status) }
+    const result = await updateRaceStatus(raceId, status)
+    if (result) {
+      revalidatePath("/admin")
+      revalidatePath("/admin/races")
+      revalidatePath(`/admin/races/${raceId}`)
+      revalidatePath(`/races/${raceId}`)
+    }
+    return { success: true, data: result }
   } catch (error) {
     return { success: false, error: (error as Error).message }
   }
@@ -96,7 +115,12 @@ export async function updateUserBalanceAction(userId: string, newBalance: number
 
 export async function deleteRaceAction(raceId: string) {
   try {
-    return { success: true, data: await deleteRace(raceId) }
+    const result = await deleteRace(raceId)
+    if (result) {
+      revalidatePath("/admin")
+      revalidatePath("/admin/races")
+    }
+    return { success: true, data: result }
   } catch (error) {
     return { success: false, error: (error as Error).message }
   }

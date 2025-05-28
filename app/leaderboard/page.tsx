@@ -3,6 +3,9 @@ import { Trophy, Medal, Coins, User } from "lucide-react";
 import { GREEN, ORANGE, GREY } from "@/app/constants";
 import { getUsers } from "@/lib/data";
 
+// Force dynamic rendering and disable caching
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 export default async function LeaderboardPage() {
   // Fetch all users from Supabase

@@ -19,6 +19,8 @@ export async function createRaceAction(name: string) {
   try {
     const result = await createRace(name)
     if (result) {
+      revalidatePath("/")
+      revalidatePath("/races")
       revalidatePath("/admin")
       revalidatePath("/admin/races")
     }
@@ -32,6 +34,9 @@ export async function addPlayerAction(raceId: string, name: string, odds: number
   try {
     const result = await addPlayerToRace(raceId, name, odds)
     if (result) {
+      revalidatePath("/")
+      revalidatePath("/races")
+      revalidatePath(`/races/${raceId}`)
       revalidatePath("/admin")
       revalidatePath("/admin/races")
       revalidatePath(`/admin/races/${raceId}`)
@@ -46,10 +51,12 @@ export async function updateRaceStatusAction(raceId: string, status: "upcoming" 
   try {
     const result = await updateRaceStatus(raceId, status)
     if (result) {
+      revalidatePath("/")
+      revalidatePath("/races")
+      revalidatePath(`/races/${raceId}`)
       revalidatePath("/admin")
       revalidatePath("/admin/races")
       revalidatePath(`/admin/races/${raceId}`)
-      revalidatePath(`/races/${raceId}`)
     }
     return { success: true, data: result }
   } catch (error) {
@@ -61,10 +68,12 @@ export async function setRaceWinnerAction(raceId: string, playerId: string) {
   try {
     const result = await setRaceWinner(raceId, playerId)
     if (result) {
+      revalidatePath("/")
+      revalidatePath("/races")
+      revalidatePath(`/races/${raceId}`)
       revalidatePath("/admin")
       revalidatePath("/admin/races")
       revalidatePath(`/admin/races/${raceId}`)
-      revalidatePath(`/races/${raceId}`)
     }
     return { success: true, data: result }
   } catch (error) {
@@ -76,10 +85,12 @@ export async function setRaceSecondPlaceAction(raceId: string, playerId: string)
   try {
     const result = await setRaceSecondPlace(raceId, playerId)
     if (result) {
+      revalidatePath("/")
+      revalidatePath("/races")
+      revalidatePath(`/races/${raceId}`)
       revalidatePath("/admin")
       revalidatePath("/admin/races")
       revalidatePath(`/admin/races/${raceId}`)
-      revalidatePath(`/races/${raceId}`)
     }
     return { success: true, data: result }
   } catch (error) {
@@ -91,10 +102,12 @@ export async function setRaceThirdPlaceAction(raceId: string, playerId: string) 
   try {
     const result = await setRaceThirdPlace(raceId, playerId)
     if (result) {
+      revalidatePath("/")
+      revalidatePath("/races")
+      revalidatePath(`/races/${raceId}`)
       revalidatePath("/admin")
       revalidatePath("/admin/races")
       revalidatePath(`/admin/races/${raceId}`)
-      revalidatePath(`/races/${raceId}`)
     }
     return { success: true, data: result }
   } catch (error) {
@@ -106,9 +119,11 @@ export async function placeBetAction(userId: string, raceId: string, playerId: s
   try {
     const result = await placeBet(userId, raceId, playerId, amount)
     if (result) {
+      revalidatePath("/")
+      revalidatePath("/races")
       revalidatePath(`/races/${raceId}`)
-      revalidatePath(`/admin/races/${raceId}`)
       revalidatePath("/leaderboard")
+      revalidatePath(`/admin/races/${raceId}`)
     }
     return { success: true, data: result }
   } catch (error) {
@@ -120,12 +135,13 @@ export async function settleRaceAction(raceId: string) {
   try {
     const result = await settleRace(raceId)
     if (result) {
+      revalidatePath("/")
+      revalidatePath("/races")
+      revalidatePath(`/races/${raceId}`)
+      revalidatePath("/leaderboard")
       revalidatePath("/admin")
       revalidatePath("/admin/races")
       revalidatePath(`/admin/races/${raceId}`)
-      revalidatePath(`/races/${raceId}`)
-      revalidatePath("/leaderboard")
-      revalidatePath("/")
     }
     return { success: true, data: result }
   } catch (error) {
@@ -153,6 +169,8 @@ export async function deleteRaceAction(raceId: string) {
   try {
     const result = await deleteRace(raceId)
     if (result) {
+      revalidatePath("/")
+      revalidatePath("/races")
       revalidatePath("/admin")
       revalidatePath("/admin/races")
     }

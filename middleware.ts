@@ -10,6 +10,27 @@ export async function middleware(req: NextRequest) {
     response.headers.set('Expires', '0');
   }
   
+  // Add cache control headers for races pages
+  if (req.nextUrl.pathname.startsWith('/races')) {
+    response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    response.headers.set('Pragma', 'no-cache');
+    response.headers.set('Expires', '0');
+  }
+  
+  // Add cache control headers for leaderboard page
+  if (req.nextUrl.pathname === '/leaderboard') {
+    response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    response.headers.set('Pragma', 'no-cache');
+    response.headers.set('Expires', '0');
+  }
+  
+  // Add cache control headers for home page
+  if (req.nextUrl.pathname === '/') {
+    response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    response.headers.set('Pragma', 'no-cache');
+    response.headers.set('Expires', '0');
+  }
+  
   return response;
 }
 

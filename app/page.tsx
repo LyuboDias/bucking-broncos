@@ -6,6 +6,10 @@ import { Button } from "@/components/ui/button"
 import { Trophy, Clock, Flag, Info } from "lucide-react"
 import { GREEN, GREY, ORANGE } from "@/app/constants"
 
+// Force dynamic rendering and disable caching
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default async function Home() {
   const races = await getRaces()
 

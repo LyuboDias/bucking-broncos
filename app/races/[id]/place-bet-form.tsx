@@ -8,7 +8,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useToast } from "@/hooks/use-toast"
 import { placeBetAction } from "@/lib/actions"
 import { useRouter } from "next/navigation"
@@ -140,19 +139,26 @@ export default function PlaceBetForm({
           <div className="space-y-4">
             <div>
               <Label style={{ color: GREY }}>Select a participant</Label>
-              <RadioGroup value={selectedPlayer} onValueChange={setSelectedPlayer} className="mt-2">
+              <div className="mt-2 space-y-2">
                 {players.map((player) => (
-                  <div key={player.id} className="flex items-center justify-between space-x-2 border p-3 rounded-md">
+                  <div
+                    key={player.id}
+                    onClick={() => setSelectedPlayer(player.id)}
+                    className={`flex items-center justify-between p-3 rounded-md border cursor-pointer transition-all duration-200 hover:border-orange-300 ${
+                      selectedPlayer === player.id
+                        ? 'border-orange-600 bg-orange-200 shadow-md'
+                        : 'border-gray-200 bg-white hover:bg-gray-50'
+                    }`}
+                  >
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value={player.id} id={player.id} />
-                      <Label htmlFor={player.id} className="font-medium cursor-pointer" style={{ color: GREY }}>
+                      <div className="font-medium" style={{ color: selectedPlayer === player.id ? '#c2410c' : GREY }}>
                         {player.name}
-                      </Label>
+                      </div>
                     </div>
-                    <div className="text-sm font-semibold" style={{ color: ORANGE }}>{player.odds}x</div>
+                    <div className="text-sm font-semibold" style={{ color: selectedPlayer === player.id ? '#c2410c' : ORANGE }}>{player.odds}x</div>
                   </div>
                 ))}
-              </RadioGroup>
+              </div>
             </div>
 
             <div className="space-y-2">

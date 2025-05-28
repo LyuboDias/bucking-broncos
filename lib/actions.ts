@@ -1,5 +1,6 @@
 "use server"
 
+import { revalidatePath } from "next/cache"
 import {
   createRace,
   addPlayerToRace,
@@ -16,7 +17,12 @@ import {
 
 export async function createRaceAction(name: string) {
   try {
-    return { success: true, data: await createRace(name) }
+    const result = await createRace(name)
+    if (result) {
+      revalidatePath("/admin")
+      revalidatePath("/admin/races")
+    }
+    return { success: true, data: result }
   } catch (error) {
     return { success: false, error: (error as Error).message }
   }
@@ -24,7 +30,13 @@ export async function createRaceAction(name: string) {
 
 export async function addPlayerAction(raceId: string, name: string, odds: number) {
   try {
-    return { success: true, data: await addPlayerToRace(raceId, name, odds) }
+    const result = await addPlayerToRace(raceId, name, odds)
+    if (result) {
+      revalidatePath("/admin")
+      revalidatePath("/admin/races")
+      revalidatePath(`/admin/races/${raceId}`)
+    }
+    return { success: true, data: result }
   } catch (error) {
     return { success: false, error: (error as Error).message }
   }
@@ -32,7 +44,14 @@ export async function addPlayerAction(raceId: string, name: string, odds: number
 
 export async function updateRaceStatusAction(raceId: string, status: "upcoming" | "open" | "settled") {
   try {
-    return { success: true, data: await updateRaceStatus(raceId, status) }
+    const result = await updateRaceStatus(raceId, status)
+    if (result) {
+      revalidatePath("/admin")
+      revalidatePath("/admin/races")
+      revalidatePath(`/admin/races/${raceId}`)
+      revalidatePath(`/races/${raceId}`)
+    }
+    return { success: true, data: result }
   } catch (error) {
     return { success: false, error: (error as Error).message }
   }
@@ -40,7 +59,14 @@ export async function updateRaceStatusAction(raceId: string, status: "upcoming" 
 
 export async function setRaceWinnerAction(raceId: string, playerId: string) {
   try {
-    return { success: true, data: await setRaceWinner(raceId, playerId) }
+    const result = await setRaceWinner(raceId, playerId)
+    if (result) {
+      revalidatePath("/admin")
+      revalidatePath("/admin/races")
+      revalidatePath(`/admin/races/${raceId}`)
+      revalidatePath(`/races/${raceId}`)
+    }
+    return { success: true, data: result }
   } catch (error) {
     return { success: false, error: (error as Error).message }
   }
@@ -48,7 +74,14 @@ export async function setRaceWinnerAction(raceId: string, playerId: string) {
 
 export async function setRaceSecondPlaceAction(raceId: string, playerId: string) {
   try {
-    return { success: true, data: await setRaceSecondPlace(raceId, playerId) }
+    const result = await setRaceSecondPlace(raceId, playerId)
+    if (result) {
+      revalidatePath("/admin")
+      revalidatePath("/admin/races")
+      revalidatePath(`/admin/races/${raceId}`)
+      revalidatePath(`/races/${raceId}`)
+    }
+    return { success: true, data: result }
   } catch (error) {
     return { success: false, error: (error as Error).message }
   }
@@ -56,7 +89,14 @@ export async function setRaceSecondPlaceAction(raceId: string, playerId: string)
 
 export async function setRaceThirdPlaceAction(raceId: string, playerId: string) {
   try {
-    return { success: true, data: await setRaceThirdPlace(raceId, playerId) }
+    const result = await setRaceThirdPlace(raceId, playerId)
+    if (result) {
+      revalidatePath("/admin")
+      revalidatePath("/admin/races")
+      revalidatePath(`/admin/races/${raceId}`)
+      revalidatePath(`/races/${raceId}`)
+    }
+    return { success: true, data: result }
   } catch (error) {
     return { success: false, error: (error as Error).message }
   }
@@ -64,7 +104,13 @@ export async function setRaceThirdPlaceAction(raceId: string, playerId: string) 
 
 export async function placeBetAction(userId: string, raceId: string, playerId: string, amount: number) {
   try {
-    return { success: true, data: await placeBet(userId, raceId, playerId, amount) }
+    const result = await placeBet(userId, raceId, playerId, amount)
+    if (result) {
+      revalidatePath(`/races/${raceId}`)
+      revalidatePath(`/admin/races/${raceId}`)
+      revalidatePath("/leaderboard")
+    }
+    return { success: true, data: result }
   } catch (error) {
     return { success: false, error: (error as Error).message }
   }
@@ -72,7 +118,16 @@ export async function placeBetAction(userId: string, raceId: string, playerId: s
 
 export async function settleRaceAction(raceId: string) {
   try {
-    return { success: true, data: await settleRace(raceId) }
+    const result = await settleRace(raceId)
+    if (result) {
+      revalidatePath("/admin")
+      revalidatePath("/admin/races")
+      revalidatePath(`/admin/races/${raceId}`)
+      revalidatePath(`/races/${raceId}`)
+      revalidatePath("/leaderboard")
+      revalidatePath("/")
+    }
+    return { success: true, data: result }
   } catch (error) {
     return { success: false, error: (error as Error).message }
   }
@@ -96,7 +151,12 @@ export async function updateUserBalanceAction(userId: string, newBalance: number
 
 export async function deleteRaceAction(raceId: string) {
   try {
-    return { success: true, data: await deleteRace(raceId) }
+    const result = await deleteRace(raceId)
+    if (result) {
+      revalidatePath("/admin")
+      revalidatePath("/admin/races")
+    }
+    return { success: true, data: result }
   } catch (error) {
     return { success: false, error: (error as Error).message }
   }

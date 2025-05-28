@@ -7,6 +7,10 @@ import AdminCheck from "./admin-check"
 import CreateRaceForm from "./create-race-form"
 import { ORANGE, GREY, GREEN } from "@/app/constants"
 
+// Force dynamic rendering and disable caching
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default async function AdminPage() {
   const races = await getRaces()
 

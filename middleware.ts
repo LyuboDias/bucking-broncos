@@ -1,8 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function middleware(req: NextRequest) {
-  // Simply pass through all requests without any auth checks
-  return NextResponse.next();
+  const response = NextResponse.next();
+  
+  // Add cache control headers for admin pages
+  if (req.nextUrl.pathname.startsWith('/admin')) {
+    response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    response.headers.set('Pragma', 'no-cache');
+    response.headers.set('Expires', '0');
+  }
+  
+  return response;
 }
 
 export const config = {

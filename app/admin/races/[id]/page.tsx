@@ -7,6 +7,10 @@ import ManageRaceForm from "./manage-race-form"
 import CollapsibleCard from "./collapsible-card"
 import { ORANGE, GREY, GREEN } from "@/app/constants"
 
+// Force dynamic rendering and disable caching
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 // Define the props type for the page component
 type AdminRacePageProps = {
   params: { id: string }

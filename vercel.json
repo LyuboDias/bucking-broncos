@@ -1,0 +1,41 @@
+{
+  "headers": [
+    {
+      "source": "/admin/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        },
+        {
+          "key": "Pragma",
+          "value": "no-cache"
+        },
+        {
+          "key": "Expires",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    }
+  ],
+  "functions": {
+    "app/admin/page.tsx": {
+      "maxDuration": 30
+    },
+    "app/admin/races/page.tsx": {
+      "maxDuration": 30
+    },
+    "app/admin/races/[id]/page.tsx": {
+      "maxDuration": 30
+    }
+  }
+} 

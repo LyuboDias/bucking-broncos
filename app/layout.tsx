@@ -12,7 +12,12 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata = {
   title: "Bucking Broncos App",
   description: "Place bets on races and compete on the leaderboard",
-    generator: 'v0.dev'
+  generator: 'v0.dev',
+  other: {
+    'Cache-Control': 'no-cache, no-store, must-revalidate',
+    'Pragma': 'no-cache',
+    'Expires': '0'
+  }
 }
 
 export default function RootLayout({

@@ -13,11 +13,10 @@ export const revalidate = 0
 export default async function Home() {
   const races = await getRaces()
 
-  // Sort races in the requested order: "open for betting" first, then "upcoming", finally "settled"
+  // Filter out upcoming races - only show "open for betting" first, then "settled"
   const openRaces = races.filter(race => race.status === "open")
-  const upcomingRaces = races.filter(race => race.status === "upcoming")
   const settledRaces = races.filter(race => race.status === "settled")
-  const sortedRaces = [...openRaces, ...upcomingRaces, ...settledRaces]
+  const sortedRaces = [...openRaces, ...settledRaces]
 
   return (
     <div className="space-y-8 flex flex-col items-center">
@@ -34,34 +33,25 @@ export default async function Home() {
                   <div className="flex-1">
                     <CardTitle className="text-2xl font-bold" style={{ color: ORANGE }}>{race.name}</CardTitle>
                   </div>
-                  {race.status === "open" && (
-                    <div className="flex-1 flex justify-center">
-                      <div style={{ color: '#fff', fontWeight: 600, fontSize: '1.1rem' }}>4:35min left</div>
-                    </div>
-                  )}
                   <div className="flex-1 flex justify-end">
                     <StatusBadge status={race.status} />
                   </div>
                 </div>
               </CardHeader>
               <CardFooter>
-                {race.status !== "upcoming" ? (
-                  <Link href={`/races/${race.id}`} className="w-full">
-                    <Button
-                      variant={race.status === "open" ? "default" : "outline"}
-                      className="w-full"
-                      style={
-                        race.status === "open"
-                          ? { background: GREEN, borderColor: GREEN, color: "#fff" }
-                          : { color: GREEN, border: `2px solid ${GREEN}`, background: "#fff" }
-                      }
-                    >
-                      {race.status === "settled" ? "View Results" : "Place Bet Now"}
-                    </Button>
-                  </Link>
-                ) : (
-                  <div className="h-2"></div> 
-                )}
+                <Link href={`/races/${race.id}`} className="w-full">
+                  <Button
+                    variant={race.status === "open" ? "default" : "outline"}
+                    className="w-full"
+                    style={
+                      race.status === "open"
+                        ? { background: GREEN, borderColor: GREEN, color: "#fff" }
+                        : { color: GREEN, border: `2px solid ${GREEN}`, background: "#fff" }
+                    }
+                  >
+                    {race.status === "settled" ? "View Results" : "Place Bet Now"}
+                  </Button>
+                </Link>
               </CardFooter>
             </Card>
           ))
@@ -71,9 +61,9 @@ export default async function Home() {
               <div className="rounded-full bg-gray-100 p-4 mb-4">
                 <Flag className="h-10 w-10" style={{ color: ORANGE }} />
               </div>
-              <h3 className="text-xl font-semibold mb-2" style={{ color: ORANGE }}>No Races Available</h3>
+              <h3 className="text-xl font-semibold mb-2" style={{ color: ORANGE }}>No Active Races</h3>
               <p className="text-gray-500 mb-6 max-w-md" style={{ color: GREY }}>
-                There are no races available at the moment. Races will appear here once they're created.
+                There are no active or completed races at the moment. Races will appear here once they're open for betting or settled.
               </p>
               <div className="flex items-center gap-2 text-sm px-4 py-2 bg-gray-100 rounded-full">
                 <Info className="h-4 w-4" style={{ color: '#000' }} />

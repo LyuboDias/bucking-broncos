@@ -62,6 +62,11 @@ export default async function AdminRacesPage() {
                                 Upcoming
                               </span>
                             )}
+                            {race.status === "closed" && (
+                              <span className="text-sm font-semibold rounded-full" style={{ background: ORANGE, color: '#fff', fontSize: '0.5rem', padding: '1px 8px' }}>
+                                Betting Closed
+                              </span>
+                            )}
                             {race.status === "settled" && (
                               <span
                                 className="text-sm font-semibold rounded-full"

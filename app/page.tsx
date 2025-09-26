@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Trophy, Clock, Flag, Info } from "lucide-react"
-import { GREEN, GREY, ORANGE } from "@/app/constants"
+import { GREEN, GREY, ORANGE, RED } from "@/app/constants"
 
 // Force dynamic rendering and disable caching
 export const dynamic = 'force-dynamic'
@@ -13,10 +13,11 @@ export const revalidate = 0
 export default async function Home() {
   const races = await getRaces()
 
-  // Filter out upcoming races - only show "open for betting" first, then "settled"
+  // Filter out upcoming races - show "open", "closed", then "settled"
   const openRaces = races.filter(race => race.status === "open")
+  const closedRaces = races.filter(race => race.status === "closed")
   const settledRaces = races.filter(race => race.status === "settled")
-  const sortedRaces = [...openRaces, ...settledRaces]
+  const sortedRaces = [...openRaces, ...closedRaces, ...settledRaces]
 
   return (
     <div className="space-y-8 flex flex-col items-center">
@@ -46,10 +47,14 @@ export default async function Home() {
                     style={
                       race.status === "open"
                         ? { background: GREEN, borderColor: GREEN, color: "#fff" }
-                        : { color: GREEN, border: `2px solid ${GREEN}`, background: "#fff" }
+                        : race.status === "settled"
+                        ? { color: RED, border: `2px solid ${RED}`, background: "#fecaca" }
+                        : race.status === "closed"
+                        ? { color: ORANGE, border: `2px solid ${ORANGE}`, background: "#fed7aa" }
+                        : { color: ORANGE, border: `2px solid ${ORANGE}`, background: "#fff" }
                     }
                   >
-                    {race.status === "settled" ? "View Results" : "Place Bet Now"}
+                    {race.status === "settled" ? "View Results" : race.status === "closed" ? "Betting Closed" : "Place Bet Now"}
                   </Button>
                 </Link>
               </CardFooter>
@@ -95,10 +100,16 @@ function StatusBadge({ status }: { status: string }) {
           <span>Open for Betting</span>
         </Badge>
       )
+    case "closed":
+      return (
+        <Badge variant="secondary" className="flex items-center gap-1" style={{ background: '#fed7aa', color: ORANGE }}>
+          <span>Betting Closed</span>
+        </Badge>
+      )
     case "settled":
       return (
-        <Badge variant="secondary" className="flex items-center gap-1" style={{ background: '#e6f9e6', color: GREEN }}>
-          <Trophy className="h-3 w-3" style={{ color: GREEN }} />
+        <Badge variant="secondary" className="flex items-center gap-1" style={{ background: '#fee2e2', color: RED }}>
+          <Trophy className="h-3 w-3" style={{ color: RED }} />
           <span>Settled</span>
         </Badge>
       )

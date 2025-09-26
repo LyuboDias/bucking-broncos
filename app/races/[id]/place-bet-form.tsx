@@ -11,16 +11,18 @@ import { Label } from "@/components/ui/label"
 import { useToast } from "@/hooks/use-toast"
 import { placeBetAction } from "@/lib/actions"
 import { useRouter } from "next/navigation"
-import type { Race, Player } from "@/lib/types"
+import type { Race, Player, Bet } from "@/lib/types"
 import Link from "next/link"
 import { GREEN, ORANGE, GREY } from "@/app/constants"
 
 export default function PlaceBetForm({
   race,
   players,
+  bets,
 }: {
   race: Race
   players: Player[]
+  bets: Bet[]
 }) {
   const { user, updateUserBalance } = useAuth()
   const { toast } = useToast()
@@ -29,6 +31,19 @@ export default function PlaceBetForm({
   const [selectedPlayer, setSelectedPlayer] = useState<string>("")
   const [betAmount, setBetAmount] = useState<string>("10")
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  // Validation for bet amount
+  const betAmountNumber = Number(betAmount)
+  const isValidBetAmount = betAmountNumber > 0 && betAmountNumber <= (user?.balance || 0)
+  const showInsufficientFundsError = betAmountNumber > 0 && betAmountNumber > (user?.balance || 0)
+
+  // Calculate betting statistics for each player
+  const getPlayerBetStats = (playerId: string) => {
+    const playerBets = bets.filter(bet => bet.playerId === playerId)
+    const totalBets = playerBets.length
+    const totalCoins = playerBets.reduce((sum, bet) => sum + bet.amount, 0)
+    return { totalBets, totalCoins }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -102,11 +117,17 @@ export default function PlaceBetForm({
         <CardHeader>
           <CardTitle style={{ color: ORANGE }}>Place a Bet</CardTitle>
           <CardDescription style={{ color: GREY }}>
-            THIS RACE IS <span style={{ color: ORANGE, fontWeight: 'bold' }}>NOT</span> OPEN FOR BETTING YET
+            THIS RACE IS <span style={{ color: ORANGE, fontWeight: 'bold' }}>NOT</span> OPEN FOR BETTING
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <p style={{ color: GREY }}>You can place bets once the race is open for betting.</p>
+          <p style={{ color: GREY }}>
+            {race.status === "upcoming" 
+              ? "You can place bets once the race is open for betting." 
+              : race.status === "closed"
+              ? "Betting has been closed for this race."
+              : "This race is no longer accepting bets."}
+          </p>
         </CardContent>
       </Card>
     )
@@ -140,24 +161,30 @@ export default function PlaceBetForm({
             <div>
               <Label style={{ color: GREY }}>Select a participant</Label>
               <div className="mt-2 space-y-2">
-                {players.map((player) => (
-                  <div
-                    key={player.id}
-                    onClick={() => setSelectedPlayer(player.id)}
-                    className={`flex items-center justify-between p-3 rounded-md border cursor-pointer transition-all duration-200 hover:border-orange-300 ${
-                      selectedPlayer === player.id
-                        ? 'border-orange-600 bg-orange-200 shadow-md'
-                        : 'border-gray-200 bg-white hover:bg-gray-50'
-                    }`}
-                  >
-                    <div className="flex items-center space-x-2">
-                      <div className="font-medium" style={{ color: selectedPlayer === player.id ? '#c2410c' : GREY }}>
-                        {player.name}
+                {players.map((player) => {
+                  const { totalBets, totalCoins } = getPlayerBetStats(player.id)
+                  return (
+                    <div
+                      key={player.id}
+                      onClick={() => setSelectedPlayer(player.id)}
+                      className={`flex items-center justify-between p-3 rounded-md border cursor-pointer transition-all duration-200 hover:border-orange-300 ${
+                        selectedPlayer === player.id
+                          ? 'border-orange-600 bg-orange-200 shadow-md'
+                          : 'border-gray-200 bg-white hover:bg-gray-50'
+                      }`}
+                    >
+                      <div className="flex flex-col space-y-1">
+                        <div className="font-medium" style={{ color: selectedPlayer === player.id ? '#c2410c' : '#000' }}>
+                          {player.name}
+                        </div>
+                        <div className="text-xs" style={{ color: selectedPlayer === player.id ? '#c2410c' : '#666' }}>
+                          {totalBets} bet{totalBets !== 1 ? 's' : ''} • {totalCoins} coins
+                        </div>
                       </div>
+                      <div className="text-sm font-semibold" style={{ color: selectedPlayer === player.id ? '#c2410c' : ORANGE }}>{player.odds}x</div>
                     </div>
-                    <div className="text-sm font-semibold" style={{ color: selectedPlayer === player.id ? '#c2410c' : ORANGE }}>{player.odds}x</div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             </div>
 
@@ -180,6 +207,11 @@ export default function PlaceBetForm({
                 style={{ color: "#000" }}
               />
               <div className="text-sm" style={{ color: GREY }}>Your balance: {user.balance} coins</div>
+              {showInsufficientFundsError && (
+                <div className="text-sm text-red-500 font-medium">
+                  You don't have enough coins to place this bet
+                </div>
+              )}
             </div>
 
             {selectedPlayer && (
@@ -196,7 +228,7 @@ export default function PlaceBetForm({
             type="submit"
             className="w-full"
             style={{ background: GREEN, borderColor: GREEN, color: '#fff' }}
-            disabled={isSubmitting}
+            disabled={isSubmitting || !isValidBetAmount || !selectedPlayer}
           >
             {isSubmitting ? "Placing Bet..." : "Place Bet"}
           </Button>

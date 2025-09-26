@@ -134,18 +134,23 @@ export default function AllUserBets({
               {!userId && <h3 className="font-semibold text-md">{userData.userName}</h3>}
               <div className="space-y-2 pl-4">
                 {userData.bets.map((bet) => (
-                  <div key={bet.id} className="flex justify-between items-center p-2 bg-gray-50 rounded-md">
+                  <div key={bet.id} className="flex justify-between items-center p-3 bg-gray-50 rounded-md">
                     <div>
                       <div className="font-medium" style={{ color: "#000" }}>{bet.playerName}</div>
-                      <div className="text-sm" style={{ color: "#000" }}>
+                      <div className="text-sm" style={{ color: "#374151" }}>
                         {bet.odds}x odds
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="font-semibold" style={{ color: ORANGE }}>{bet.amount} coins</div>
+                      <div className="text-sm" style={{ color: "#374151" }}>Stake: <span className="font-semibold" style={{ color: ORANGE }}>{bet.amount} coins</span></div>
+                      {!bet.settled && (
+                        <div className="text-sm" style={{ color: "#374151" }}>
+                          Potential Winnings: <span className="font-semibold" style={{ color: "#059669" }}>{bet.amount * bet.odds} coins</span>
+                        </div>
+                      )}
                       {bet.settled && (
                         <div className={`text-sm ${bet.winnings > 0 ? 'text-green-600' : 'text-red-500'}`}>
-                          {bet.winnings > 0 ? `+${bet.winnings} coins` : 'Lost'}
+                          {bet.winnings > 0 ? `Won: +${bet.winnings} coins` : 'Lost'}
                         </div>
                       )}
                     </div>

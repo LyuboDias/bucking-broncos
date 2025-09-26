@@ -1,7 +1,7 @@
 export type Race = {
   id: string
   name: string
-  status: "upcoming" | "open" | "settled"
+  status: "upcoming" | "open" | "closed" | "settled"
   createdAt: string
   settledAt?: string
   winnerId?: string

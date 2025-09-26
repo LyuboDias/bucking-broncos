@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Trophy, Clock, Users } from "lucide-react";
-import { GREEN, GREY, ORANGE } from "@/app/constants";
+import { GREEN, GREY, ORANGE, RED } from "@/app/constants";
 
 // Force dynamic rendering and disable caching
 export const dynamic = 'force-dynamic'
@@ -66,7 +66,9 @@ export default async function RacesPage() {
                       race.status === "open"
                         ? { background: GREEN, borderColor: GREEN, color: "#fff" }
                         : race.status === "settled"
-                        ? { color: GREEN, border: `2px solid ${GREEN}`, background: "#fff" }
+                        ? { color: RED, border: `2px solid ${RED}`, background: "#fecaca" }
+                        : race.status === "closed"
+                        ? { color: ORANGE, border: `2px solid ${ORANGE}`, background: "#fed7aa" }
                         : { color: ORANGE, border: `2px solid ${ORANGE}`, background: "#fff" }
                     }
                   >
@@ -74,6 +76,8 @@ export default async function RacesPage() {
                       ? "View Results"
                       : race.status === "open"
                       ? "Place Bet Now"
+                      : race.status === "closed"
+                      ? "Betting Closed"
                       : "View Race"}
                   </Button>
                 </Link>
@@ -104,10 +108,16 @@ function StatusBadge({ status }: { status: string }) {
           <span>Open for Betting</span>
         </Badge>
       );
+    case "closed":
+      return (
+        <Badge variant="secondary" className="flex items-center gap-1" style={{ background: '#fed7aa', color: ORANGE }}>
+          <span>Betting Closed</span>
+        </Badge>
+      );
     case "settled":
       return (
-        <Badge variant="secondary" className="flex items-center gap-1" style={{ background: '#e6f9e6', color: GREEN }}>
-          <Trophy className="h-3 w-3" style={{ color: GREEN }} />
+        <Badge variant="secondary" className="flex items-center gap-1" style={{ background: '#fee2e2', color: RED }}>
+          <Trophy className="h-3 w-3" style={{ color: RED }} />
           <span>Settled</span>
         </Badge>
       );

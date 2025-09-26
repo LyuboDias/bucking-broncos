@@ -286,7 +286,7 @@ export async function addPlayerToRace(raceId: string, name: string, odds: number
   }
 }
 
-export async function updateRaceStatus(raceId: string, status: "upcoming" | "open" | "settled"): Promise<Race | null> {
+export async function updateRaceStatus(raceId: string, status: "upcoming" | "open" | "closed" | "settled"): Promise<Race | null> {
   const parsedRaceId = safeParseInt(raceId);
   if (parsedRaceId === null) {
     console.error('Invalid race ID format:', raceId);

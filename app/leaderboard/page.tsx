@@ -45,17 +45,17 @@ export default async function LeaderboardPage() {
     <div className="space-y-8 flex flex-col items-center">
       <div className="w-full max-w-2xl text-center mx-auto">
         <h1 className="text-6xl font-bold tracking-tight">Leaderboard</h1>
-        <p className="mt-2">Top users by coin balance</p>
+        <p className="mt-2">Top players by coin balance</p>
       </div>
 
       <div className="flex flex-col md:flex-row md:gap-24 gap-8 w-full max-w-12xl items-stretch">
-        {/* Top Users */}
+        {/* Top Players */}
         <div className="flex-1">
           <Card className="h-full">
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-3xl font-bold">
                 <Trophy className="h-5 w-5" style={{ color: ORANGE }} />
-                Top Users
+                Top Players
               </CardTitle>
               <CardDescription style={{ color: GREY }}>Based on total coins</CardDescription>
             </CardHeader>
@@ -119,19 +119,19 @@ export default async function LeaderboardPage() {
                     </div>
                   );
                 })}
-                {topUsers.length === 0 && <div className="text-center py-4 text-muted-foreground">No users found</div>}
+                {topUsers.length === 0 && <div className="text-center py-4 text-muted-foreground">No players found</div>}
               </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Bottom Users */}
+        {/* Bottom Players */}
         <div className="flex-1">
           <Card className="h-full">
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-3xl font-bold">
                 <Medal className="h-5 w-5" style={{ color: ORANGE }} />
-                Bottom Users
+                Bottom Players
               </CardTitle>
               <CardDescription style={{ color: GREY }}>Lowest coin balances</CardDescription>
             </CardHeader>
@@ -165,7 +165,7 @@ export default async function LeaderboardPage() {
                     </div>
                   </div>
                 ))}
-                {bottomUsers.length === 0 && <div className="text-center py-4 text-muted-foreground">No users found</div>}
+                {bottomUsers.length === 0 && <div className="text-center py-4 text-muted-foreground">No players found</div>}
               </div>
             </CardContent>
           </Card>

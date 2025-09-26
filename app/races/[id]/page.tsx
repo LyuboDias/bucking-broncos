@@ -10,7 +10,7 @@ import AllUserBets from "./all-user-bets"
 import { useAuth } from "@/components/auth-provider"
 import type { Race, Player, Bet } from "@/lib/types"
 import { useParams } from "next/navigation"
-import { ORANGE, GREY, GREEN } from "@/app/constants"
+import { ORANGE, GREY, GREEN, RED } from "@/app/constants"
 
 export default function RacePage() {
   const params = useParams()
@@ -132,7 +132,7 @@ export default function RacePage() {
         </div>
       ) : (
         <div className="flex flex-col gap-6 w-full max-w-2xl mx-auto">
-          <PlaceBetForm race={race} players={players} />
+          <PlaceBetForm race={race} players={players} bets={bets} />
           {bets.length > 0 && <AllUserBets bets={bets} players={players} userId={userIdStr} />}
         </div>
       )}
@@ -157,9 +157,15 @@ function StatusBadge({ status }: { status: string }) {
           Open for Betting
         </Badge>
       )
+    case "closed":
+      return (
+        <Badge variant="secondary" style={{ background: '#fed7aa', color: ORANGE, borderColor: ORANGE, fontWeight: 'bold' }}>
+          Betting Closed
+        </Badge>
+      )
     case "settled":
       return (
-        <Badge variant="secondary" style={{ background: '#fff', color: GREEN, borderColor: GREEN, fontWeight: 'bold' }}>
+        <Badge variant="secondary" style={{ background: '#fee2e2', color: RED, borderColor: RED, fontWeight: 'bold' }}>
           Settled
         </Badge>
       )

@@ -47,7 +47,7 @@ export async function addPlayerAction(raceId: string, name: string, odds: number
   }
 }
 
-export async function updateRaceStatusAction(raceId: string, status: "upcoming" | "open" | "settled") {
+export async function updateRaceStatusAction(raceId: string, status: "upcoming" | "open" | "closed" | "settled") {
   try {
     const result = await updateRaceStatus(raceId, status)
     if (result) {

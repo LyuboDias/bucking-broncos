@@ -106,6 +106,66 @@ export default function ManageRaceForm({
     }
   }
 
+  const handleCloseBetting = async () => {
+    setIsSubmitting(true)
+
+    try {
+      const result = await updateRaceStatusAction(race.id, "closed")
+
+      if (result.success) {
+        toast({
+          title: "Betting closed",
+          description: "Users can no longer place bets on this race",
+        })
+        router.refresh()
+      } else {
+        toast({
+          title: "Error closing betting",
+          description: result.error || "Something went wrong",
+          variant: "destructive",
+        })
+      }
+    } catch (error) {
+      toast({
+        title: "Error closing betting",
+        description: "Something went wrong",
+        variant: "destructive",
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const handleReopenBetting = async () => {
+    setIsSubmitting(true)
+
+    try {
+      const result = await updateRaceStatusAction(race.id, "open")
+
+      if (result.success) {
+        toast({
+          title: "Betting reopened",
+          description: "Users can now place bets on this race again",
+        })
+        router.refresh()
+      } else {
+        toast({
+          title: "Error reopening betting",
+          description: result.error || "Something went wrong",
+          variant: "destructive",
+        })
+      }
+    } catch (error) {
+      toast({
+        title: "Error reopening betting",
+        description: "Something went wrong",
+        variant: "destructive",
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   const handleSetWinner = async () => {
     if (!selectedWinner) {
       toast({
@@ -556,17 +616,83 @@ export default function ManageRaceForm({
                 </div>
               </div>
 
-              {/* Settle race button only appears when 1st and 2nd place are set */}
-              {race.winnerId && race.secondPlaceId && (
+              <div className="flex gap-2">
                 <Button 
-                  onClick={handleSettleRace} 
-                  className="w-full" 
-                  style={{ background: GREEN, color: '#fff' }}
+                  onClick={handleCloseBetting} 
+                  className="flex-1" 
+                  variant="outline"
+                  style={{ borderColor: ORANGE, color: ORANGE }}
                   disabled={isSubmitting}
                 >
-                  Settle Race
+                  Close Betting
                 </Button>
-              )}
+                
+                {/* Settle race button only appears when 1st and 2nd place are set */}
+                {race.winnerId && race.secondPlaceId && (
+                  <Button 
+                    onClick={handleSettleRace} 
+                    className="flex-1" 
+                    style={{ background: GREEN, color: '#fff' }}
+                    disabled={isSubmitting}
+                  >
+                    Settle Race
+                  </Button>
+                )}
+              </div>
+            </div>
+          )}
+
+          {race.status === "closed" && (
+            <div className="space-y-4">
+              <div className="text-sm" style={{ color: GREY }}>
+                Betting is closed for this race. Users cannot place new bets, but the race can be reopened for betting or settled.
+              </div>
+
+              {/* Race standings summary - always visible */}
+              <div className="border rounded-md p-3 bg-muted/30">
+                <h3 className="font-semibold mb-2 text-sm" style={{ color: GREY }}>Race Standings</h3>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <Trophy className="h-4 w-4 text-yellow-500" />
+                    <span className="text-sm font-medium" style={{ color: GREY }}>1st:</span>
+                    <span className="text-sm" style={{ color: GREY }}>{players.find(p => p.id === race.winnerId)?.name || 'Not set'}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Medal className="h-4 w-4 text-gray-400" />
+                    <span className="text-sm font-medium" style={{ color: GREY }}>2nd:</span>
+                    <span className="text-sm" style={{ color: GREY }}>{players.find(p => p.id === race.secondPlaceId)?.name || 'Not set'}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Award className="h-4 w-4 text-amber-700" />
+                    <span className="text-sm font-medium" style={{ color: GREY }}>3rd:</span>
+                    <span className="text-sm" style={{ color: GREY }}>{players.find(p => p.id === race.thirdPlaceId)?.name || 'Not set'}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex gap-2">
+                <Button 
+                  onClick={handleReopenBetting} 
+                  className="flex-1" 
+                  variant="outline"
+                  style={{ borderColor: GREEN, color: GREEN }}
+                  disabled={isSubmitting}
+                >
+                  Reopen Betting
+                </Button>
+                
+                {/* Settle race button only appears when 1st and 2nd place are set */}
+                {race.winnerId && race.secondPlaceId && (
+                  <Button 
+                    onClick={handleSettleRace} 
+                    className="flex-1" 
+                    style={{ background: GREEN, color: '#fff' }}
+                    disabled={isSubmitting}
+                  >
+                    Settle Race
+                  </Button>
+                )}
+              </div>
             </div>
           )}
         </CardContent>

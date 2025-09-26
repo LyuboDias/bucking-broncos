@@ -28,8 +28,8 @@ export default function CollapsibleCard({
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div>
-          <CardTitle style={{ color: titleColor }}>{title}</CardTitle>
-          <CardDescription style={{ color: descriptionColor }}>{description}</CardDescription>
+          <CardTitle className="text-4xl" style={{ color: titleColor }}>{title}</CardTitle>
+          <CardDescription className="text-2xl" style={{ color: descriptionColor }}>{description}</CardDescription>
         </div>
         <div className="rounded-full hover:bg-gray-100 p-1 transition-colors">
           {isExpanded ? (

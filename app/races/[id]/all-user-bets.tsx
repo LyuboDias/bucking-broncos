@@ -80,8 +80,8 @@ export default function AllUserBets({
     return (
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle>{userId ? "Your Bets" : "All Bets"}</CardTitle>
-          <CardDescription>{userId ? "Loading your bets..." : "Loading all bets..."}</CardDescription>
+          <CardTitle className="text-4xl">{userId ? "Your Bets" : "All Bets"}</CardTitle>
+          <CardDescription className="text-2xl">{userId ? "Loading your bets..." : "Loading all bets..."}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="text-muted-foreground text-center py-4">Loading bet information...</div>
@@ -95,8 +95,8 @@ export default function AllUserBets({
     return (
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle style={{ color: ORANGE }}>{userId ? "Your Bets" : "All Bets"}</CardTitle>
-          <CardDescription style={{ color: GREY }}>{userId ? "You haven't placed any bets on this race yet" : "No bets have been placed on this race yet"}</CardDescription>
+          <CardTitle className="text-4xl" style={{ color: ORANGE }}>{userId ? "Your Bets" : "All Bets"}</CardTitle>
+          <CardDescription className="text-2xl" style={{ color: GREY }}>{userId ? "You haven't placed any bets on this race yet" : "No bets have been placed on this race yet"}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="text-center py-4" style={{ color: GREY }}>No bets have been placed on this race yet</div>
@@ -122,11 +122,11 @@ export default function AllUserBets({
   const description = userId ? "Bets you've placed on this race" : "All bets placed on this race"
 
   return (
-    <Card>
-      <CardHeader className="pb-3">
-        <CardTitle style={{ color: ORANGE }}>{title}</CardTitle>
-        <CardDescription style={{ color: GREY }}>{description}</CardDescription>
-      </CardHeader>
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-4xl" style={{ color: ORANGE }}>{title}</CardTitle>
+          <CardDescription className="text-2xl" style={{ color: GREY }}>{description}</CardDescription>
+        </CardHeader>
       <CardContent>
         <div className="space-y-8">
           {Object.entries(betsByUser).map(([betUserId, userData]) => (

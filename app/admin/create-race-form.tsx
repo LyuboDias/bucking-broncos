@@ -65,8 +65,8 @@ export default function CreateRaceForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle style={{ color: ORANGE }}>Create New Race</CardTitle>
-        <CardDescription style={{ color: GREY }}>Add a new race to the platform</CardDescription>
+        <CardTitle className="text-4xl" style={{ color: ORANGE }}>Create New Race</CardTitle>
+        <CardDescription className="text-2xl" style={{ color: GREY }}>Add a new race to the platform</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">

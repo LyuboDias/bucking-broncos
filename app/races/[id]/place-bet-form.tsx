@@ -115,8 +115,8 @@ export default function PlaceBetForm({
     return (
       <Card>
         <CardHeader>
-          <CardTitle style={{ color: ORANGE }}>Place a Bet</CardTitle>
-          <CardDescription style={{ color: GREY }}>
+          <CardTitle className="text-4xl" style={{ color: ORANGE }}>Place a Bet</CardTitle>
+          <CardDescription className="text-2xl" style={{ color: GREY }}>
             THIS RACE IS <span style={{ color: ORANGE, fontWeight: 'bold' }}>NOT</span> OPEN FOR BETTING
           </CardDescription>
         </CardHeader>
@@ -137,8 +137,8 @@ export default function PlaceBetForm({
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Place a Bet</CardTitle>
-          <CardDescription>You need to be logged in to place bets</CardDescription>
+          <CardTitle className="text-4xl">Place a Bet</CardTitle>
+          <CardDescription className="text-2xl">You need to be logged in to place bets</CardDescription>
         </CardHeader>
         <CardContent>
           <Link href="/login">
@@ -151,10 +151,10 @@ export default function PlaceBetForm({
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle style={{ color: ORANGE }}>Place a Bet</CardTitle>
-        <CardDescription style={{ color: GREY }}>Select a participant and enter your bet amount</CardDescription>
-      </CardHeader>
+        <CardHeader>
+          <CardTitle className="text-4xl" style={{ color: ORANGE }}>Place a Bet</CardTitle>
+          <CardDescription className="text-2xl" style={{ color: GREY }}>Select a participant and enter your bet amount</CardDescription>
+        </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4">

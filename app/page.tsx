@@ -32,7 +32,7 @@ export default async function Home() {
               <CardHeader className="pb-3">
                 <div className="flex items-center w-full">
                   <div className="flex-1">
-                    <CardTitle className="text-2xl font-bold" style={{ color: ORANGE }}>{race.name}</CardTitle>
+                    <CardTitle className="text-4xl font-bold" style={{ color: ORANGE }}>{race.name}</CardTitle>
                   </div>
                   <div className="flex-1 flex justify-end">
                     <StatusBadge status={race.status} />

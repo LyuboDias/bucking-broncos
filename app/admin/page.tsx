@@ -32,8 +32,8 @@ export default async function AdminPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle style={{ color: ORANGE }}>Manage Races</CardTitle>
-              <CardDescription style={{ color: GREY }}>Edit race details, add players, and settle races</CardDescription>
+              <CardTitle className="text-4xl" style={{ color: ORANGE }}>Manage Races</CardTitle>
+              <CardDescription className="text-2xl" style={{ color: GREY }}>Edit race details, add players, and settle races</CardDescription>
               <div className="flex justify-end">
                 <Link href="/admin/races">
                   <Button

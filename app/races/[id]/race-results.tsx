@@ -85,11 +85,11 @@ export default function RaceResults({
     <div className="grid gap-6 md:grid-cols-2">
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle className="flex items-center gap-2" style={{ color: ORANGE }}>
-            <Trophy className="h-5 w-5" style={{ color: ORANGE }} />
+          <CardTitle className="flex items-center gap-2 text-4xl" style={{ color: ORANGE }}>
+            <Trophy className="h-8 w-8" style={{ color: ORANGE }} />
             Race Results
           </CardTitle>
-          <CardDescription style={{ color: GREY }}>
+          <CardDescription className="text-2xl" style={{ color: GREY }}>
             {winner ? (
               <span className="flex items-center gap-1">
                 <span className="font-medium">{winner.name}</span> took 1st place! 
@@ -161,8 +161,8 @@ export default function RaceResults({
 
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle style={{ color: ORANGE }}>Winning Bets</CardTitle>
-          <CardDescription style={{ color: GREY }}>
+          <CardTitle className="text-4xl" style={{ color: ORANGE }}>Winning Bets</CardTitle>
+          <CardDescription className="text-2xl" style={{ color: GREY }}>
             Bets on 1st place winner get full odds. 
             2nd and 3rd place bets get half odds.
           </CardDescription>

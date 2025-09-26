@@ -38,8 +38,8 @@ export default function AdminCheck({ children }: { children: React.ReactNode }) 
       <div className="flex justify-center items-center min-h-[60vh]">
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle>Admin Access Required</CardTitle>
-            <CardDescription>You need to log in to access this page</CardDescription>
+            <CardTitle className="text-4xl">Admin Access Required</CardTitle>
+            <CardDescription className="text-2xl">You need to log in to access this page</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col items-center gap-4">
             <Shield className="h-16 w-16 text-muted-foreground" />
@@ -57,8 +57,8 @@ export default function AdminCheck({ children }: { children: React.ReactNode }) 
       <div className="flex justify-center items-center min-h-[60vh]">
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle>Admin Access Required</CardTitle>
-            <CardDescription>You don't have permission to access this page</CardDescription>
+            <CardTitle className="text-4xl">Admin Access Required</CardTitle>
+            <CardDescription className="text-2xl">You don't have permission to access this page</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col items-center gap-4">
             <Shield className="h-16 w-16 text-muted-foreground" />

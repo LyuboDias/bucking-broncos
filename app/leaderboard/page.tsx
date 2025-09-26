@@ -53,11 +53,11 @@ export default async function LeaderboardPage() {
         <div className="flex-1">
           <Card className="h-full">
             <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2 text-3xl font-bold">
-                <Trophy className="h-5 w-5" style={{ color: ORANGE }} />
+              <CardTitle className="flex items-center gap-2 text-6xl font-bold">
+                <Trophy className="h-10 w-10" style={{ color: ORANGE }} />
                 Top Players
               </CardTitle>
-              <CardDescription style={{ color: GREY }}>Based on total coins</CardDescription>
+              <CardDescription className="text-4xl" style={{ color: GREY }}>Based on total coins</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -129,11 +129,11 @@ export default async function LeaderboardPage() {
         <div className="flex-1">
           <Card className="h-full">
             <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2 text-3xl font-bold">
-                <Medal className="h-5 w-5" style={{ color: ORANGE }} />
+              <CardTitle className="flex items-center gap-2 text-6xl font-bold">
+                <Medal className="h-10 w-10" style={{ color: ORANGE }} />
                 Bottom Players
               </CardTitle>
-              <CardDescription style={{ color: GREY }}>Lowest coin balances</CardDescription>
+              <CardDescription className="text-4xl" style={{ color: GREY }}>Lowest coin balances</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">

@@ -415,8 +415,8 @@ export default function ManageRaceForm({
       >
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <div>
-            <CardTitle style={{ color: ORANGE }}>Manage Race</CardTitle>
-            <CardDescription style={{ color: GREY }}>Control the race status and determine the winner</CardDescription>
+            <CardTitle className="text-4xl" style={{ color: ORANGE }}>Manage Race</CardTitle>
+            <CardDescription className="text-2xl" style={{ color: GREY }}>Control the race status and determine the winner</CardDescription>
           </div>
           <Button
             variant="destructive"

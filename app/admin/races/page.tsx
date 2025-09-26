@@ -40,8 +40,8 @@ export default async function AdminRacesPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle style={{ color: ORANGE }}>All Races</CardTitle>
-              <CardDescription style={{ color: GREY }}>Edit race details, add players, and settle races</CardDescription>
+              <CardTitle className="text-4xl" style={{ color: ORANGE }}>All Races</CardTitle>
+              <CardDescription className="text-2xl" style={{ color: GREY }}>Edit race details, add players, and settle races</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">

@@ -5,8 +5,10 @@ import {
   createRace,
   addPlayerToRace,
   updateRaceStatus,
+  bulkUpdateRaceStatus,
   setRaceWinner,
   placeBet,
+  updateBet,
   settleRace,
   createUser,
   updateUserBalance,
@@ -50,7 +52,7 @@ export async function addPlayerAction(raceId: string, name: string, odds: number
   }
 }
 
-export async function updateRaceStatusAction(raceId: string, status: "upcoming" | "open" | "closed" | "settled") {
+export async function updateRaceStatusAction(raceId: string, status: "upcoming" | "open" | "close" | "settled") {
   try {
     const result = await updateRaceStatus(raceId, status)
     if (result) {
@@ -64,6 +66,21 @@ export async function updateRaceStatusAction(raceId: string, status: "upcoming" 
     return { success: true, data: result }
   } catch (error) {
     return { success: false, error: (error as Error).message }
+  }
+}
+
+export async function bulkUpdateRaceStatusAction(status: "open" | "close") {
+  try {
+    const result = await bulkUpdateRaceStatus(status)
+    if (result.success) {
+      revalidatePath("/")
+      revalidatePath("/races")
+      revalidatePath("/admin")
+      revalidatePath("/admin/races")
+    }
+    return result
+  } catch (error) {
+    return { success: false, updatedCount: 0, skippedCount: 0, skippedRaces: [], error: (error as Error).message }
   }
 }
 
@@ -129,6 +146,22 @@ export async function placeBetAction(userId: string, raceId: string, playerId: s
       revalidatePath(`/admin/races/${raceId}`)
     }
     return { success: true, data: result }
+  } catch (error) {
+    return { success: false, error: (error as Error).message }
+  }
+}
+
+export async function updateBetAction(betId: string, newAmount: number, userId: string, raceId: string) {
+  try {
+    const result = await updateBet(betId, newAmount, userId)
+    if (result.success) {
+      revalidatePath("/")
+      revalidatePath("/races")
+      revalidatePath(`/races/${raceId}`)
+      revalidatePath("/leaderboard")
+      revalidatePath(`/admin/races/${raceId}`)
+    }
+    return result
   } catch (error) {
     return { success: false, error: (error as Error).message }
   }

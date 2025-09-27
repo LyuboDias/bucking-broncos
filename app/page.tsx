@@ -13,11 +13,11 @@ export const revalidate = 0
 export default async function Home() {
   const races = await getRaces()
 
-  // Filter out upcoming races - show "open", "closed", then "settled"
-  const openRaces = races.filter(race => race.status === "open")
-  const closedRaces = races.filter(race => race.status === "closed")
-  const settledRaces = races.filter(race => race.status === "settled")
-  const sortedRaces = [...openRaces, ...closedRaces, ...settledRaces]
+  // Filter out upcoming races - show "open", "close", and "settled" races
+  // Races are already sorted by created_at ascending from getRaces()
+  const visibleRaces = races.filter(race => 
+    race.status === "open" || race.status === "close" || race.status === "settled"
+  )
 
   return (
     <div className="space-y-8 flex flex-col items-center">
@@ -26,8 +26,8 @@ export default async function Home() {
       </div>
 
       <div className="grid gap-6 w-full max-w-2xl">
-        {sortedRaces.length > 0 ? (
-          sortedRaces.map((race) => (
+        {visibleRaces.length > 0 ? (
+          visibleRaces.map((race) => (
             <Card key={race.id} className="overflow-hidden">
               <CardHeader className="pb-3">
                 <div className="flex items-center w-full">
@@ -49,12 +49,16 @@ export default async function Home() {
                         ? { background: GREEN, borderColor: GREEN, color: "#fff" }
                         : race.status === "settled"
                         ? { color: RED, border: `2px solid ${RED}`, background: "#fecaca" }
-                        : race.status === "closed"
+                        : (race.status === "close" || race.status === "closed")
                         ? { color: ORANGE, border: `2px solid ${ORANGE}`, background: "#fed7aa" }
                         : { color: ORANGE, border: `2px solid ${ORANGE}`, background: "#fff" }
                     }
                   >
-                    {race.status === "settled" ? "View Results" : race.status === "closed" ? "Betting Closed" : "Place Bet Now"}
+                    {race.status === "settled" 
+                      ? "View Results" 
+                      : (race.status === "close" || race.status === "closed") 
+                      ? "View your bets" 
+                      : "Place Bet Now"}
                   </Button>
                 </Link>
               </CardFooter>
@@ -100,10 +104,11 @@ function StatusBadge({ status }: { status: string }) {
           <span>Open for Betting</span>
         </Badge>
       )
+    case "close":
     case "closed":
       return (
-        <Badge variant="secondary" className="flex items-center gap-1" style={{ background: '#fed7aa', color: ORANGE }}>
-          <span>Betting Closed</span>
+        <Badge variant="secondary" className="flex items-center gap-1" style={{ background: ORANGE, color: '#fff' }}>
+          <span>Closed</span>
         </Badge>
       )
     case "settled":

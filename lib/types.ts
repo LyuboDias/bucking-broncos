@@ -1,7 +1,7 @@
 export type Race = {
   id: string
   name: string
-  status: "upcoming" | "open" | "closed" | "settled"
+  status: "upcoming" | "open" | "close" | "settled"
   createdAt: string
   settledAt?: string
   winnerId?: string
@@ -22,6 +22,7 @@ export type Bet = {
   raceId: string
   playerId: string
   amount: number
+  odds: number
   createdAt: string
   settled: boolean
   winnings: number

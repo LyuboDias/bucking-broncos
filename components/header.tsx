@@ -125,30 +125,30 @@ export default function Header() {
         <nav className="md:hidden border-t px-4 py-2 flex flex-col gap-2" style={{ color: GREY, background: NAVY_BLUE }}>
           <Link
             href="/"
-            className={`flex items-center gap-1 py-2 font-medium`}
+            className={`flex items-center gap-2 py-3 font-medium text-2xl`}
             style={{ color: GREY }}
             onClick={() => setMenuOpen(false)}
           >
-            <Home className="h-4 w-4" style={{ color: ORANGE }} />
+            <Home className="h-6 w-6" style={{ color: ORANGE }} />
             <span>Races</span>
           </Link>
           <Link
             href="/leaderboard"
-            className={`flex items-center gap-1 py-2 font-medium`}
+            className={`flex items-center gap-2 py-3 font-medium text-2xl`}
             style={{ color: GREY }}
             onClick={() => setMenuOpen(false)}
           >
-            <Trophy className="h-4 w-4" style={{ color: ORANGE }} />
+            <Trophy className="h-6 w-6" style={{ color: ORANGE }} />
             <span>Leaderboard</span>
           </Link>
           {user?.isAdmin && (
             <Link
               href="/admin"
-              className={`flex items-center gap-1 py-2 font-medium`}
+              className={`flex items-center gap-2 py-3 font-medium text-2xl`}
               style={{ color: GREY }}
               onClick={() => setMenuOpen(false)}
             >
-              <Settings className="h-4 w-4" style={{ color: ORANGE }} />
+              <Settings className="h-6 w-6" style={{ color: ORANGE }} />
               <span>Admin</span>
             </Link>
           )}

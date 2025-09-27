@@ -23,6 +23,7 @@ export async function getRaces(): Promise<Race[]> {
   const { data, error } = await supabase
     .from('races')
     .select('*')
+    .order('created_at', { ascending: true })
     
   if (error) {
     console.error('Error fetching races:', error)
@@ -103,7 +104,7 @@ export async function getBetsForRace(raceId: string): Promise<Bet[]> {
 
   const { data, error } = await supabase
     .from('bets')
-    .select('*')
+    .select('*, players!inner(odds)')
     .eq('race_id', parsedId)
     
   if (error) {
@@ -117,6 +118,7 @@ export async function getBetsForRace(raceId: string): Promise<Bet[]> {
     raceId: bet.race_id.toString(),
     playerId: bet.player_id.toString(),
     amount: bet.amount,
+    odds: bet.players.odds,
     createdAt: bet.created_at,
     settled: bet.settled,
     winnings: bet.winnings
@@ -139,7 +141,7 @@ export async function getUserBetsForRace(userId: string, raceId: string): Promis
 
   const { data, error } = await supabase
     .from('bets')
-    .select('*')
+    .select('*, players!inner(odds)')
     .eq('user_id', parsedUserId)
     .eq('race_id', parsedRaceId)
     
@@ -154,6 +156,7 @@ export async function getUserBetsForRace(userId: string, raceId: string): Promis
     raceId: bet.race_id.toString(),
     playerId: bet.player_id.toString(),
     amount: bet.amount,
+    odds: bet.players.odds,
     createdAt: bet.created_at,
     settled: bet.settled,
     winnings: bet.winnings
@@ -312,7 +315,78 @@ export async function addPlayerToRace(raceId: string, name: string, odds: number
   }
 }
 
-export async function updateRaceStatus(raceId: string, status: "upcoming" | "open" | "closed" | "settled"): Promise<Race | null> {
+export async function bulkUpdateRaceStatus(status: "open" | "close"): Promise<{ success: boolean; updatedCount: number; skippedCount: number; skippedRaces: string[]; error?: string }> {
+  try {
+    // Get all races that can be updated (not settled)
+    const { data: races, error: fetchError } = await supabase
+      .from('races')
+      .select('id, name, status, winner_id, second_place_id')
+      .neq('status', 'settled');
+
+    if (fetchError) {
+      console.error('Error fetching races for bulk update:', fetchError);
+      return { success: false, updatedCount: 0, skippedCount: 0, skippedRaces: [], error: fetchError.message };
+    }
+
+    if (!races || races.length === 0) {
+      return { success: true, updatedCount: 0, skippedCount: 0, skippedRaces: [] };
+    }
+
+    let updatedCount = 0;
+    let skippedCount = 0;
+    let skippedRaces: string[] = [];
+
+    for (const race of races) {
+      // Skip if already in target status
+      if (race.status === status) {
+        skippedCount++;
+        skippedRaces.push(`${race.name} (already ${status})`);
+        continue;
+      }
+
+      // For opening races, check if they have required winners set
+      if (status === 'open') {
+        if (!race.winner_id || !race.second_place_id) {
+          console.log(`Skipping race ${race.id}: Missing first or second place winner`);
+          skippedCount++;
+          skippedRaces.push(`${race.name} (winners not set)`);
+          continue;
+        }
+      }
+
+      // For closing races, only close races that are currently "open"
+      if (status === 'close') {
+        if (race.status !== 'open') {
+          console.log(`Skipping race ${race.id}: Can only close open races (current status: ${race.status})`);
+          skippedCount++;
+          skippedRaces.push(`${race.name} (not open)`);
+          continue;
+        }
+      }
+
+      // Update the race status
+      const { error: updateError } = await supabase
+        .from('races')
+        .update({ status })
+        .eq('id', race.id);
+
+      if (updateError) {
+        console.error(`Error updating race ${race.id}:`, updateError);
+        skippedCount++;
+        skippedRaces.push(`${race.name} (update failed)`);
+      } else {
+        updatedCount++;
+      }
+    }
+
+    return { success: true, updatedCount, skippedCount, skippedRaces };
+  } catch (error) {
+    console.error('Error in bulkUpdateRaceStatus:', error);
+    return { success: false, updatedCount: 0, skippedCount: 0, skippedRaces: [], error: (error as Error).message };
+  }
+}
+
+export async function updateRaceStatus(raceId: string, status: "upcoming" | "open" | "close" | "settled"): Promise<Race | null> {
   const parsedRaceId = safeParseInt(raceId);
   if (parsedRaceId === null) {
     console.error('Invalid race ID format:', raceId);
@@ -484,6 +558,87 @@ export async function setRaceThirdPlace(raceId: string, playerId: string): Promi
   };
 }
 
+export async function updateBet(betId: string, newAmount: number, userId: string): Promise<{ success: boolean; bet?: Bet; error?: string }> {
+  const parsedBetId = safeParseInt(betId);
+  const parsedUserId = safeParseInt(userId);
+  
+  if (parsedBetId === null || parsedUserId === null) {
+    return { success: false, error: 'Invalid bet ID or user ID format' };
+  }
+
+  try {
+    // First, get the current bet to calculate balance changes
+    const { data: currentBet, error: fetchError } = await supabase
+      .from('bets')
+      .select('*, users!inner(balance), players!inner(odds)')
+      .eq('id', parsedBetId)
+      .eq('user_id', parsedUserId)
+      .eq('settled', false) // Only allow updates on unsettled bets
+      .single();
+
+    if (fetchError || !currentBet) {
+      return { success: false, error: 'Bet not found or already settled' };
+    }
+
+    const currentAmount = currentBet.amount;
+    const balanceChange = currentAmount - newAmount; // Positive if reducing bet, negative if increasing
+    const currentBalance = currentBet.users.balance;
+    const newBalance = currentBalance + balanceChange;
+
+    // Check if user has enough balance for the increase
+    if (newBalance < 0) {
+      return { success: false, error: 'Insufficient balance for this bet amount' };
+    }
+
+    // Update bet amount and user balance in a transaction-like manner
+    const { data: updatedBet, error: betError } = await supabase
+      .from('bets')
+      .update({ amount: newAmount })
+      .eq('id', parsedBetId)
+      .eq('user_id', parsedUserId)
+      .select()
+      .single();
+
+    if (betError) {
+      return { success: false, error: betError.message };
+    }
+
+    // Update user balance
+    const { error: balanceError } = await supabase
+      .from('users')
+      .update({ balance: newBalance })
+      .eq('id', parsedUserId);
+
+    if (balanceError) {
+      // Rollback bet update if balance update fails
+      await supabase
+        .from('bets')
+        .update({ amount: currentAmount })
+        .eq('id', parsedBetId);
+      
+      return { success: false, error: 'Failed to update balance' };
+    }
+
+    return {
+      success: true,
+      bet: {
+        id: updatedBet.id.toString(),
+        userId: updatedBet.user_id.toString(),
+        raceId: updatedBet.race_id.toString(),
+        playerId: updatedBet.player_id.toString(),
+        amount: updatedBet.amount,
+        createdAt: updatedBet.created_at,
+        settled: updatedBet.settled,
+        winnings: updatedBet.winnings,
+        odds: currentBet.players.odds
+      }
+    };
+  } catch (error) {
+    console.error('Error updating bet:', error);
+    return { success: false, error: (error as Error).message };
+  }
+}
+
 export async function placeBet(userId: string, raceId: string, playerId: string, amount: number): Promise<Bet | null> {
   const parsedUserId = safeParseInt(userId);
   const parsedRaceId = safeParseInt(raceId);
@@ -535,6 +690,18 @@ export async function placeBet(userId: string, raceId: string, playerId: string,
   
   if (raceData.status !== "open") {
     throw new Error("Race is not open for betting")
+  }
+  
+  // Get player odds
+  const { data: playerData, error: playerError } = await supabase
+    .from('players')
+    .select('odds')
+    .eq('id', parsedPlayerId)
+    .single()
+    
+  if (playerError || !playerData) {
+    console.error('Error fetching player odds:', playerError)
+    throw new Error("Player not found")
   }
   
   // Update user balance

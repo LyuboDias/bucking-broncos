@@ -15,7 +15,8 @@ import {
 import { useRouter } from "next/navigation"
 import type { Race, Player } from "@/lib/types"
 import { Label } from "@/components/ui/label"
-import { AlertCircle, Trash, Trophy, Award, Medal, ChevronDown } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import { AlertCircle, Trash, Trophy, Award, Medal, ChevronDown, Play, Square } from "lucide-react"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import {
   Select,
@@ -35,7 +36,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import CollapsibleCard from "./collapsible-card"
-import { ORANGE, GREY, GREEN } from "@/app/constants"
+import { ORANGE, GREY, GREEN, RED } from "@/app/constants"
 
 export default function ManageRaceForm({
   race,
@@ -56,6 +57,8 @@ export default function ManageRaceForm({
   const [selectedThirdPlace, setSelectedThirdPlace] = useState<string>(race.thirdPlaceId || "")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
+  const [isReopening, setIsReopening] = useState(false)
+  const [isSettling, setIsSettling] = useState(false)
 
   // Set Aneta as the default winner when the component mounts
   useEffect(() => {
@@ -165,6 +168,35 @@ export default function ManageRaceForm({
       setIsSubmitting(false)
     }
   }
+
+  const handleReopenRace = async () => {
+    setIsReopening(true)
+    try {
+      const result = await updateRaceStatusAction(race.id, "open")
+      if (result.success) {
+        toast({
+          title: "Race reopened",
+          description: "The race is now open for betting again",
+        })
+        router.refresh()
+      } else {
+        toast({
+          title: "Error reopening race",
+          description: result.error || "Something went wrong",
+          variant: "destructive",
+        })
+      }
+    } catch (error) {
+      toast({
+        title: "Error reopening race",
+        description: "Something went wrong",
+        variant: "destructive",
+      })
+    } finally {
+      setIsReopening(false)
+    }
+  }
+
 
   const handleSetWinner = async () => {
     if (!selectedWinner) {
@@ -408,6 +440,38 @@ export default function ManageRaceForm({
     return null;
   }
 
+  const StatusBadge = ({ status }: { status: string }) => {
+    switch (status) {
+      case "upcoming":
+        return (
+          <Badge style={{ background: '#fbbf24', color: '#000', borderColor: '#fbbf24' }}>
+            Upcoming
+          </Badge>
+        )
+      case "open":
+        return (
+          <Badge style={{ background: GREEN, color: '#fff', borderColor: GREEN }}>
+            Open for Betting
+          </Badge>
+        )
+      case "close":
+      case "closed":
+        return (
+          <Badge style={{ background: ORANGE, color: '#fff', borderColor: ORANGE }}>
+            Closed
+          </Badge>
+        )
+      case "settled":
+        return (
+          <Badge style={{ background: '#fecaca', color: '#dc2626', borderColor: '#dc2626' }}>
+            Settled
+          </Badge>
+        )
+      default:
+        return null
+    }
+  }
+
   return (
     <>
       <Card
@@ -415,7 +479,10 @@ export default function ManageRaceForm({
       >
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <div>
-            <CardTitle className="text-4xl" style={{ color: ORANGE }}>Manage Race</CardTitle>
+            <div className="flex items-center gap-3 mb-2">
+              <CardTitle className="text-4xl" style={{ color: ORANGE }}>Manage Race</CardTitle>
+              <StatusBadge status={race.status} />
+            </div>
             <CardDescription className="text-2xl" style={{ color: GREY }}>Control the race status and determine the winner</CardDescription>
           </div>
           <Button
@@ -642,10 +709,10 @@ export default function ManageRaceForm({
             </div>
           )}
 
-          {race.status === "closed" && (
+          {(race.status === "close" || race.status === "closed") && (
             <div className="space-y-4">
               <div className="text-sm" style={{ color: GREY }}>
-                Betting is closed for this race. Users cannot place new bets, but the race can be reopened for betting or settled.
+                Betting is closed for this race. Winners have been set and cannot be changed.
               </div>
 
               {/* Race standings summary - always visible */}
@@ -670,6 +737,40 @@ export default function ManageRaceForm({
                 </div>
               </div>
 
+              {/* Winner Selection - read-only view */}
+              <CollapsibleCard
+                title="View Winners"
+                description="Current winners (read-only)"
+                titleColor={ORANGE}
+                descriptionColor={GREY}
+              >
+                <div className="space-y-3">
+                  <div className="grid grid-cols-[auto_1fr] gap-2 items-center">
+                    <Trophy className="h-4 w-4 text-yellow-500" />
+                    <div className="h-8 px-3 py-1 border rounded-md bg-muted/50 flex items-center text-sm" style={{ color: GREY }}>
+                      {players.find(p => p.id === race.winnerId)?.name || 'Not set'} 
+                      {race.winnerId && ` (${players.find(p => p.id === race.winnerId)?.odds}x)`}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-[auto_1fr] gap-2 items-center">
+                    <Medal className="h-4 w-4 text-gray-400" />
+                    <div className="h-8 px-3 py-1 border rounded-md bg-muted/50 flex items-center text-sm" style={{ color: GREY }}>
+                      {players.find(p => p.id === race.secondPlaceId)?.name || 'Not set'}
+                      {race.secondPlaceId && ` (${players.find(p => p.id === race.secondPlaceId)?.odds}x)`}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-[auto_1fr] gap-2 items-center">
+                    <Award className="h-4 w-4 text-amber-700" />
+                    <div className="h-8 px-3 py-1 border rounded-md bg-muted/50 flex items-center text-sm" style={{ color: GREY }}>
+                      {players.find(p => p.id === race.thirdPlaceId)?.name || 'Not set'}
+                      {race.thirdPlaceId && ` (${players.find(p => p.id === race.thirdPlaceId)?.odds}x)`}
+                    </div>
+                  </div>
+                </div>
+              </CollapsibleCard>
+
               <div className="flex gap-2">
                 <Button 
                   onClick={handleReopenBetting} 
@@ -678,7 +779,7 @@ export default function ManageRaceForm({
                   style={{ borderColor: GREEN, color: GREEN }}
                   disabled={isSubmitting}
                 >
-                  Reopen Betting
+                  Re-open for betting
                 </Button>
                 
                 {/* Settle race button only appears when 1st and 2nd place are set */}
@@ -692,6 +793,77 @@ export default function ManageRaceForm({
                     Settle Race
                   </Button>
                 )}
+              </div>
+            </div>
+          )}
+
+          {race.status === "settled" && (
+            <div className="space-y-4">
+              <div className="text-sm" style={{ color: GREY }}>
+                This race has been settled. All winnings have been distributed to users.
+              </div>
+
+              {/* Race standings summary - always visible */}
+              <div className="border rounded-md p-3 bg-muted/30">
+                <h3 className="font-semibold mb-2 text-sm" style={{ color: GREY }}>Final Race Results</h3>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <Trophy className="h-4 w-4 text-yellow-500" />
+                    <span className="text-sm font-medium" style={{ color: GREY }}>1st:</span>
+                    <span className="text-sm font-semibold" style={{ color: GREY }}>{players.find(p => p.id === race.winnerId)?.name || 'Not set'}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Medal className="h-4 w-4 text-gray-400" />
+                    <span className="text-sm font-medium" style={{ color: GREY }}>2nd:</span>
+                    <span className="text-sm font-semibold" style={{ color: GREY }}>{players.find(p => p.id === race.secondPlaceId)?.name || 'Not set'}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Award className="h-4 w-4 text-amber-700" />
+                    <span className="text-sm font-medium" style={{ color: GREY }}>3rd:</span>
+                    <span className="text-sm font-semibold" style={{ color: GREY }}>{players.find(p => p.id === race.thirdPlaceId)?.name || 'Not set'}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Winner Selection - read-only view */}
+              <CollapsibleCard
+                title="Final Winners"
+                description="Race results (read-only)"
+                titleColor={ORANGE}
+                descriptionColor={GREY}
+              >
+                <div className="space-y-3">
+                  <div className="grid grid-cols-[auto_1fr] gap-2 items-center">
+                    <Trophy className="h-4 w-4 text-yellow-500" />
+                    <div className="h-8 px-3 py-1 border rounded-md bg-yellow-50 flex items-center text-sm font-semibold" style={{ color: '#000' }}>
+                      {players.find(p => p.id === race.winnerId)?.name || 'Not set'} 
+                      {race.winnerId && ` (${players.find(p => p.id === race.winnerId)?.odds}x)`}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-[auto_1fr] gap-2 items-center">
+                    <Medal className="h-4 w-4 text-gray-400" />
+                    <div className="h-8 px-3 py-1 border rounded-md bg-gray-50 flex items-center text-sm font-semibold" style={{ color: '#000' }}>
+                      {players.find(p => p.id === race.secondPlaceId)?.name || 'Not set'}
+                      {race.secondPlaceId && ` (${players.find(p => p.id === race.secondPlaceId)?.odds}x)`}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-[auto_1fr] gap-2 items-center">
+                    <Award className="h-4 w-4 text-amber-700" />
+                    <div className="h-8 px-3 py-1 border rounded-md bg-amber-50 flex items-center text-sm font-semibold" style={{ color: '#000' }}>
+                      {players.find(p => p.id === race.thirdPlaceId)?.name || 'Not set'}
+                      {race.thirdPlaceId && ` (${players.find(p => p.id === race.thirdPlaceId)?.odds}x)`}
+                    </div>
+                  </div>
+                </div>
+              </CollapsibleCard>
+
+              <div className="text-center">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-md" style={{ background: '#fecaca', color: '#dc2626' }}>
+                  <Trophy className="h-4 w-4" />
+                  <span className="font-semibold">Race Completed</span>
+                </div>
               </div>
             </div>
           )}

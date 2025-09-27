@@ -13,10 +13,7 @@ export const revalidate = 0
 export default async function RacesPage() {
   const races = await getRaces();
 
-  // Sort races: open for betting first, then the rest
-  const openRaces = races.filter(race => race.status === "open");
-  const otherRaces = races.filter(race => race.status !== "open");
-  const sortedRaces = [...openRaces, ...otherRaces];
+  // Races are already ordered by creation date ascending from getRaces()
 
   return (
     <div className="space-y-8 flex flex-col items-center">
@@ -24,7 +21,7 @@ export default async function RacesPage() {
         <h1 className="text-6xl font-bold tracking-tight">Races</h1>
       </div>
       <div className="grid gap-6 w-full max-w-2xl">
-        {await Promise.all(sortedRaces.map(async (race) => {
+        {await Promise.all(races.map(async (race) => {
           const players = await getPlayersForRace(race.id);
           return (
             <Card key={race.id} className="overflow-hidden">

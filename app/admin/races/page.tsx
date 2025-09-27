@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Settings, ArrowLeft, AlertCircle, PlusCircle } from "lucide-react"
 import AdminCheck from "../admin-check"
 import CreateRaceForm from "../create-race-form"
+import BulkRaceButtons from "./bulk-race-buttons"
 import { ORANGE, GREY, GREEN } from "@/app/constants"
 
 // Force dynamic rendering and disable caching
@@ -37,6 +38,17 @@ export default async function AdminRacesPage() {
 
         <div className="w-full max-w-2xl space-y-8">
           <CreateRaceForm />
+          
+          {/* Bulk Race Actions */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-4xl" style={{ color: ORANGE }}>Bulk Race Actions</CardTitle>
+              <CardDescription className="text-2xl" style={{ color: GREY }}>Open or close all races at once</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <BulkRaceButtons />
+            </CardContent>
+          </Card>
 
           <Card>
             <CardHeader>
@@ -58,24 +70,32 @@ export default async function AdminRacesPage() {
                               </span>
                             )}
                             {race.status === "upcoming" && (
-                              <span className="text-sm font-semibold rounded-full" style={{ background: ORANGE, color: '#fff', fontSize: '0.5rem', padding: '1px 8px' }}>
+                              <span className="text-sm font-semibold rounded-full" style={{ background: '#fbbf24', color: '#000', fontSize: '0.5rem', padding: '1px 8px' }}>
                                 Upcoming
                               </span>
                             )}
-                            {race.status === "closed" && (
-                              <span className="text-sm font-semibold rounded-full" style={{ background: ORANGE, color: '#fff', fontSize: '0.5rem', padding: '1px 8px' }}>
-                                Betting Closed
+                            {race.status === "close" && (
+                              <span
+                                className="text-sm font-semibold rounded-full"
+                                style={{
+                                  background: ORANGE,
+                                  color: "#fff",
+                                  fontSize: "0.5rem",
+                                  padding: "1px 8px",
+                                }}
+                              >
+                                Closed
                               </span>
                             )}
                             {race.status === "settled" && (
                               <span
                                 className="text-sm font-semibold rounded-full"
                                 style={{
-                                  background: "#fff",
-                                  color: GREEN,
+                                  background: "#fecaca",
+                                  color: "#dc2626",
                                   fontSize: "0.5rem",
                                   padding: "1px 8px",
-                                  border: `1px solid ${GREEN}`,
+                                  border: `1px solid #dc2626`,
                                 }}
                               >
                                 Settled

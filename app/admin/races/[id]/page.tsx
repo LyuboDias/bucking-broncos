@@ -68,8 +68,13 @@ export default async function AdminRacePage({ params }: AdminRacePageProps) {
                 Upcoming
               </span>
             )}
+            {(race.status === "close" || race.status === "closed") && (
+              <span className="text-sm font-semibold rounded-full" style={{ background: ORANGE, color: '#fff', fontSize: '0.85rem', padding: '2px 16px' }}>
+                Closed
+              </span>
+            )}
             {race.status === "settled" && (
-              <span className="text-sm font-semibold rounded-full" style={{ background: '#fff', color: GREEN, fontSize: '0.85rem', padding: '2px 16px', border: `1px solid ${GREEN}` }}>
+              <span className="text-sm font-semibold rounded-full" style={{ background: '#fecaca', color: '#dc2626', fontSize: '0.85rem', padding: '2px 16px', border: `1px solid #dc2626` }}>
                 Settled
               </span>
             )}

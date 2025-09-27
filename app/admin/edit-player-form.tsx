@@ -152,8 +152,8 @@ export default function EditPlayerForm({ user, onCancel, onSuccess }: EditPlayer
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl" style={{ color: ORANGE }}>Edit Player: {user.name}</CardTitle>
-        <CardDescription className="text-lg" style={{ color: GREY }}>Update player information</CardDescription>
+        <CardTitle className="text-4xl" style={{ color: ORANGE }}>Edit Player: {user.name}</CardTitle>
+        <CardDescription className="text-2xl" style={{ color: GREY }}>Update player information</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">

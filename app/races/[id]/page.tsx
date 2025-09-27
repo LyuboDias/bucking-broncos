@@ -128,12 +128,20 @@ export default function RacePage() {
       {race.status === "settled" ? (
         <div className="w-full space-y-8">
           <RaceResults race={race} players={players} bets={bets} winner={winner} />
-          <AllUserBets bets={bets} players={players} userId={userIdStr} />
+          <AllUserBets bets={bets} players={players} userId={userIdStr} raceId={race.id} />
+        </div>
+      ) : race.status === "close" ? (
+        <div className="flex flex-col gap-6 w-full max-w-2xl mx-auto">
+          <div className="text-center p-6 bg-orange-50 rounded-lg border border-orange-200">
+            <h3 className="text-lg font-semibold text-orange-800 mb-2">Betting is Closed</h3>
+            <p className="text-orange-600">This race is no longer accepting new bets. Please wait for the results.</p>
+          </div>
+          {bets.length > 0 && <AllUserBets bets={bets} players={players} userId={userIdStr} raceId={race.id} />}
         </div>
       ) : (
         <div className="flex flex-col gap-6 w-full max-w-2xl mx-auto">
           <PlaceBetForm race={race} players={players} bets={bets} />
-          {bets.length > 0 && <AllUserBets bets={bets} players={players} userId={userIdStr} />}
+          {bets.length > 0 && <AllUserBets bets={bets} players={players} userId={userIdStr} raceId={race.id} />}
         </div>
       )}
     </div>
@@ -146,7 +154,7 @@ function StatusBadge({ status }: { status: string }) {
       return (
         <Badge
           variant="outline"
-          style={{ background: ORANGE, color: '#fff', borderColor: ORANGE }}
+          style={{ background: '#fbbf24', color: '#000', borderColor: '#fbbf24' }}
         >
           Upcoming
         </Badge>
@@ -157,15 +165,15 @@ function StatusBadge({ status }: { status: string }) {
           Open for Betting
         </Badge>
       )
-    case "closed":
+    case "close":
       return (
-        <Badge variant="secondary" style={{ background: '#fed7aa', color: ORANGE, borderColor: ORANGE, fontWeight: 'bold' }}>
-          Betting Closed
+        <Badge variant="secondary" style={{ background: ORANGE, color: '#fff', borderColor: ORANGE, fontWeight: 'bold' }}>
+          Closed
         </Badge>
       )
     case "settled":
       return (
-        <Badge variant="secondary" style={{ background: '#fee2e2', color: RED, borderColor: RED, fontWeight: 'bold' }}>
+        <Badge variant="secondary" style={{ background: '#fecaca', color: '#dc2626', borderColor: '#dc2626', fontWeight: 'bold' }}>
           Settled
         </Badge>
       )

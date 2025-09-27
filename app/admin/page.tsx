@@ -15,10 +15,8 @@ export const revalidate = 0
 export default async function AdminPage() {
   const races = await getRaces()
 
-  // Sort races: open first, then the rest, and show only the first 4
-  const openRaces = races.filter(race => race.status === "open")
-  const otherRaces = races.filter(race => race.status !== "open")
-  const sortedRaces = [...openRaces, ...otherRaces].slice(0, 4)
+  // Show only the first 4 races (ordered by creation date ascending)
+  const displayRaces = races.slice(0, 4)
 
   return (
     <AdminCheck>
@@ -49,8 +47,8 @@ export default async function AdminPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {sortedRaces.length > 0 ? (
-                  sortedRaces.map((race) => (
+                {displayRaces.length > 0 ? (
+                  displayRaces.map((race) => (
                     <div key={race.id} className="flex justify-between items-center pb-4 border-b last:border-0">
                       <div>
                         <div className="font-medium" style={{ color: GREY }}>{race.name}</div>

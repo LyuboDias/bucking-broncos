@@ -180,12 +180,13 @@ export default function ManagePlayersPanel() {
                 <AlertDialogTrigger asChild>
                   <Button
                     variant="outline"
-                    className="w-full flex items-center gap-2"
+                    className="w-full flex items-center gap-2 px-3 py-2 md:px-4 md:py-3 text-xs md:text-sm"
                     style={{ borderColor: RED, color: RED, background: "#fecaca" }}
                     disabled={loading || isDeletingAll || deletingPlayerId !== null}
                   >
-                    <Trash2 className="h-4 w-4" />
-                    {isDeletingAll ? "Deleting All..." : "Delete All Non-Admin Players"}
+                    <Trash2 className="h-3 w-3 md:h-4 md:w-4" />
+                    <span className="hidden sm:inline">{isDeletingAll ? "Deleting All..." : "Delete All Non-Admin Players"}</span>
+                    <span className="sm:hidden">{isDeletingAll ? "Deleting..." : "Delete All"}</span>
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
@@ -256,17 +257,17 @@ export default function ManagePlayersPanel() {
                           </div>
                         </div>
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex gap-1 md:gap-2">
                         <Button
                           size="sm"
                           variant="outline"
                           onClick={() => handleEditPlayer(player)}
-                          className="flex items-center gap-1"
+                          className="flex items-center gap-1 px-2 py-1 md:px-3 md:py-2 text-xs md:text-sm"
                           style={{ borderColor: ORANGE, color: ORANGE }}
                           disabled={deletingPlayerId === player.id}
                         >
-                          <Edit className="h-3 w-3" />
-                          Edit
+                          <Edit className="h-3 w-3 md:h-4 md:w-4" />
+                          <span className="hidden sm:inline">Edit</span>
                         </Button>
                         
                         <AlertDialog>
@@ -274,12 +275,12 @@ export default function ManagePlayersPanel() {
                             <Button
                               size="sm"
                               variant="outline"
-                              className="flex items-center gap-1"
+                              className="flex items-center gap-1 px-2 py-1 md:px-3 md:py-2 text-xs md:text-sm"
                               style={{ borderColor: RED, color: RED, background: "#fecaca" }}
                               disabled={deletingPlayerId === player.id}
                             >
-                              <Trash2 className="h-3 w-3" />
-                              {deletingPlayerId === player.id ? "..." : "Delete"}
+                              <Trash2 className="h-3 w-3 md:h-4 md:w-4" />
+                              <span className="hidden sm:inline">{deletingPlayerId === player.id ? "..." : "Delete"}</span>
                             </Button>
                           </AlertDialogTrigger>
                           <AlertDialogContent>

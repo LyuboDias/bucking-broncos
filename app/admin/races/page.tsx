@@ -74,7 +74,7 @@ export default async function AdminRacesPage() {
                                 Upcoming
                               </span>
                             )}
-                            {race.status === "close" && (
+                            {(race.status === "close" || race.status === "closed") && (
                               <span
                                 className="text-sm font-semibold rounded-full"
                                 style={{

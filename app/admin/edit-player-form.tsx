@@ -21,10 +21,12 @@ export default function EditPlayerForm({ user, onCancel, onSuccess }: EditPlayer
   const { toast } = useToast()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [isTogglingAdmin, setIsTogglingAdmin] = useState(false)
   const [formData, setFormData] = useState({
     name: user.name,
     balance: user.balance.toString(),
-    password: ""
+    password: "",
+    isAdmin: user.isAdmin
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -34,7 +36,7 @@ export default function EditPlayerForm({ user, onCancel, onSuccess }: EditPlayer
     try {
       const updates: { name?: string; balance?: number; password?: string } = {}
       
-      // Only include changed fields
+      // Only include changed fields (excluding admin status - handled separately)
       if (formData.name !== user.name) {
         updates.name = formData.name
       }
@@ -82,6 +84,38 @@ export default function EditPlayerForm({ user, onCancel, onSuccess }: EditPlayer
       })
     } finally {
       setIsSubmitting(false)
+    }
+  }
+
+  const handleToggleAdmin = async () => {
+    setIsTogglingAdmin(true)
+
+    try {
+      const newAdminStatus = !formData.isAdmin
+      const result = await updateUserAction(user.id, { isAdmin: newAdminStatus })
+
+      if (result.success) {
+        setFormData(prev => ({ ...prev, isAdmin: newAdminStatus }))
+        toast({
+          title: newAdminStatus ? "Admin privileges granted" : "Admin privileges removed",
+          description: `${user.name} is ${newAdminStatus ? "now" : "no longer"} an administrator`,
+        })
+        onSuccess()
+      } else {
+        toast({
+          title: "Error updating admin status",
+          description: result.error || "Something went wrong",
+          variant: "destructive",
+        })
+      }
+    } catch (error) {
+      toast({
+        title: "Error updating admin status",
+        description: "Something went wrong",
+        variant: "destructive",
+      })
+    } finally {
+      setIsTogglingAdmin(false)
     }
   }
 
@@ -165,6 +199,28 @@ export default function EditPlayerForm({ user, onCancel, onSuccess }: EditPlayer
             />
           </div>
 
+          <div className="pt-2">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleToggleAdmin}
+              disabled={isSubmitting || isDeleting || isTogglingAdmin}
+              className="w-full"
+              style={{ 
+                borderColor: formData.isAdmin ? GREY : ORANGE, 
+                color: formData.isAdmin ? GREY : ORANGE,
+                background: formData.isAdmin ? "#f3f4f6" : "#fed7aa"
+              }}
+            >
+              {isTogglingAdmin 
+                ? "Updating..." 
+                : formData.isAdmin 
+                  ? "Remove Admin Privileges" 
+                  : "Make Admin"
+              }
+            </Button>
+          </div>
+
           <div className="space-y-3 pt-4">
             <div className="flex gap-2">
               <Button
@@ -194,7 +250,7 @@ export default function EditPlayerForm({ user, onCancel, onSuccess }: EditPlayer
                   variant="outline"
                   disabled={isSubmitting || isDeleting}
                   className="w-full"
-                  style={{ borderColor: RED, color: RED }}
+                  style={{ borderColor: RED, color: RED, background: "#fecaca" }}
                 >
                   {isDeleting ? "Deleting..." : "Delete Player"}
                 </Button>

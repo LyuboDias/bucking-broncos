@@ -744,7 +744,7 @@ export async function createUser(name: string, email: string, isAdmin = false): 
   }
 }
 
-export async function updateUser(userId: string, updates: { name?: string; balance?: number; password?: string }): Promise<User | null> {
+export async function updateUser(userId: string, updates: { name?: string; balance?: number; password?: string; isAdmin?: boolean }): Promise<User | null> {
   const parsedUserId = safeParseInt(userId);
   if (parsedUserId === null) {
     console.error('Invalid user ID format:', userId);
@@ -757,6 +757,7 @@ export async function updateUser(userId: string, updates: { name?: string; balan
   const updateData: any = {};
   if (updates.name !== undefined) updateData.name = updates.name;
   if (updates.balance !== undefined) updateData.balance = updates.balance;
+  if (updates.isAdmin !== undefined) updateData.is_admin = updates.isAdmin;
   
   // Handle password update - use password_hash column name from database
   if (updates.password) {
@@ -790,6 +791,56 @@ export async function updateUser(userId: string, updates: { name?: string; balan
     isAdmin: data.is_admin,
     balance: data.balance
   };
+}
+
+export async function deleteAllNonAdminUsers(): Promise<{ success: boolean; deletedCount: number; error?: string }> {
+  try {
+    // First, get all non-admin users
+    const { data: nonAdminUsers, error: fetchError } = await supabase
+      .from('users')
+      .select('id')
+      .eq('is_admin', false);
+
+    if (fetchError) {
+      console.error('Error fetching non-admin users:', fetchError);
+      return { success: false, deletedCount: 0, error: fetchError.message };
+    }
+
+    if (!nonAdminUsers || nonAdminUsers.length === 0) {
+      return { success: true, deletedCount: 0 };
+    }
+
+    const userIds = nonAdminUsers.map(user => user.id);
+    console.log('Deleting non-admin users:', userIds);
+
+    // Delete all bets for these users first (referential integrity)
+    const { error: betsError } = await supabase
+      .from('bets')
+      .delete()
+      .in('user_id', userIds);
+
+    if (betsError) {
+      console.error('Error deleting bets for non-admin users:', betsError);
+      return { success: false, deletedCount: 0, error: betsError.message };
+    }
+
+    // Then delete all non-admin users
+    const { error: usersError } = await supabase
+      .from('users')
+      .delete()
+      .eq('is_admin', false);
+
+    if (usersError) {
+      console.error('Error deleting non-admin users:', usersError);
+      return { success: false, deletedCount: 0, error: usersError.message };
+    }
+
+    console.log(`Successfully deleted ${nonAdminUsers.length} non-admin users and their bets`);
+    return { success: true, deletedCount: nonAdminUsers.length };
+  } catch (error) {
+    console.error('Error in deleteAllNonAdminUsers:', error);
+    return { success: false, deletedCount: 0, error: (error as Error).message };
+  }
 }
 
 export async function deleteUser(userId: string): Promise<boolean> {

@@ -12,6 +12,7 @@ import {
   updateUserBalance,
   updateUser,
   deleteUser,
+  deleteAllNonAdminUsers,
   deleteRace,
   setRaceSecondPlace,
   setRaceThirdPlace,
@@ -182,7 +183,7 @@ export async function deleteRaceAction(raceId: string) {
   }
 }
 
-export async function updateUserAction(userId: string, updates: { name?: string; balance?: number; password?: string }) {
+export async function updateUserAction(userId: string, updates: { name?: string; balance?: number; password?: string; isAdmin?: boolean }) {
   try {
     const result = await updateUser(userId, updates)
     if (result) {
@@ -208,5 +209,20 @@ export async function deleteUserAction(userId: string) {
     return { success: true, data: result }
   } catch (error) {
     return { success: false, error: (error as Error).message }
+  }
+}
+
+export async function deleteAllNonAdminUsersAction() {
+  try {
+    const result = await deleteAllNonAdminUsers()
+    if (result.success) {
+      revalidatePath("/")
+      revalidatePath("/leaderboard")
+      revalidatePath("/admin")
+      revalidatePath("/races")
+    }
+    return result
+  } catch (error) {
+    return { success: false, deletedCount: 0, error: (error as Error).message }
   }
 }

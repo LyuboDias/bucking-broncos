@@ -9,7 +9,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { ChevronDown, ChevronUp, Search, Edit, User, Coins, Trash2 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { searchUsers, getUsers } from "@/lib/data"
-import { deleteUserAction } from "@/lib/actions"
+import { deleteUserAction, deleteAllNonAdminUsersAction } from "@/lib/actions"
 import type { User } from "@/lib/types"
 import EditPlayerForm from "./edit-player-form"
 import { ORANGE, GREY, GREEN, RED } from "@/app/constants"
@@ -22,6 +22,7 @@ export default function ManagePlayersPanel() {
   const [searchTerm, setSearchTerm] = useState("")
   const [editingPlayer, setEditingPlayer] = useState<User | null>(null)
   const [deletingPlayerId, setDeletingPlayerId] = useState<string | null>(null)
+  const [isDeletingAll, setIsDeletingAll] = useState(false)
 
   const loadPlayers = async (search: string = "") => {
     setLoading(true)
@@ -96,6 +97,36 @@ export default function ManagePlayersPanel() {
     }
   }
 
+  const handleDeleteAllNonAdmins = async () => {
+    setIsDeletingAll(true)
+
+    try {
+      const result = await deleteAllNonAdminUsersAction()
+
+      if (result.success) {
+        toast({
+          title: "Non-admin players deleted successfully",
+          description: `${result.deletedCount} player${result.deletedCount !== 1 ? 's' : ''} and all their bets have been removed`,
+        })
+        loadPlayers(searchTerm) // Reload the list
+      } else {
+        toast({
+          title: "Error deleting players",
+          description: result.error || "Something went wrong",
+          variant: "destructive",
+        })
+      }
+    } catch (error) {
+      toast({
+        title: "Error deleting players",
+        description: "Something went wrong",
+        variant: "destructive",
+      })
+    } finally {
+      setIsDeletingAll(false)
+    }
+  }
+
   if (editingPlayer) {
     return (
       <EditPlayerForm
@@ -141,6 +172,53 @@ export default function ManagePlayersPanel() {
                   className="pl-10"
                 />
               </div>
+            </div>
+
+            {/* Bulk Delete Button */}
+            <div className="pt-2">
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="w-full flex items-center gap-2"
+                    style={{ borderColor: RED, color: RED, background: "#fecaca" }}
+                    disabled={loading || isDeletingAll || deletingPlayerId !== null}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    {isDeletingAll ? "Deleting All..." : "Delete All Non-Admin Players"}
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>⚠️ Delete All Non-Admin Players</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      <strong>This is a DANGEROUS operation that cannot be undone!</strong>
+                      <br /><br />
+                      You are about to delete ALL players who are not administrators. This will:
+                      <br />
+                      • Delete all non-admin player accounts
+                      <br />
+                      • Delete ALL bets placed by these players
+                      <br />
+                      • Remove them from leaderboards permanently
+                      <br /><br />
+                      <strong>Admin accounts will be preserved.</strong>
+                      <br /><br />
+                      Are you absolutely sure you want to proceed?
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel disabled={isDeletingAll}>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={handleDeleteAllNonAdmins}
+                      disabled={isDeletingAll}
+                      style={{ background: RED, color: '#fff' }}
+                    >
+                      {isDeletingAll ? "Deleting..." : "Yes, Delete All Non-Admins"}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
 
             {/* Players List */}
@@ -197,7 +275,7 @@ export default function ManagePlayersPanel() {
                               size="sm"
                               variant="outline"
                               className="flex items-center gap-1"
-                              style={{ borderColor: RED, color: RED }}
+                              style={{ borderColor: RED, color: RED, background: "#fecaca" }}
                               disabled={deletingPlayerId === player.id}
                             >
                               <Trash2 className="h-3 w-3" />

@@ -544,7 +544,7 @@ export default function ManageRaceForm({
                   <div className="grid grid-cols-[auto_1fr_auto] gap-2 items-center">
                     <Trophy className="h-4 w-4 text-yellow-500" />
                     <Select value={selectedWinner} onValueChange={setSelectedWinner}>
-                      <SelectTrigger className="h-8 text-sm">
+                      <SelectTrigger className="h-8 text-sm" style={{ color: '#000000' }}>
                         <SelectValue placeholder="Select 1st place" />
                       </SelectTrigger>
                       <SelectContent>
@@ -574,7 +574,7 @@ export default function ManageRaceForm({
                   <div className="grid grid-cols-[auto_1fr_auto] gap-2 items-center">
                     <Medal className="h-4 w-4 text-gray-400" />
                     <Select value={selectedSecondPlace} onValueChange={setSelectedSecondPlace}>
-                      <SelectTrigger className="h-8 text-sm">
+                      <SelectTrigger className="h-8 text-sm" style={{ color: '#000000' }}>
                         <SelectValue placeholder="Select 2nd place" />
                       </SelectTrigger>
                       <SelectContent>
@@ -604,7 +604,7 @@ export default function ManageRaceForm({
                   <div className="grid grid-cols-[auto_1fr_auto] gap-2 items-center">
                     <Award className="h-4 w-4 text-amber-700" />
                     <Select value={selectedThirdPlace} onValueChange={setSelectedThirdPlace}>
-                      <SelectTrigger className="h-8 text-sm">
+                      <SelectTrigger className="h-8 text-sm" style={{ color: '#000000' }}>
                         <SelectValue placeholder="Select 3rd place (optional)" />
                       </SelectTrigger>
                       <SelectContent>

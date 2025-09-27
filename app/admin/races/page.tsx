@@ -2,7 +2,7 @@ import { getRaces } from "@/lib/data"
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Settings, ArrowLeft, AlertCircle, PlusCircle } from "lucide-react"
+import { Settings, ArrowLeft, AlertCircle, PlusCircle, BarChart3 } from "lucide-react"
 import AdminCheck from "../admin-check"
 import CreateRaceForm from "../create-race-form"
 import BulkRaceButtons from "./bulk-race-buttons"
@@ -113,7 +113,17 @@ export default async function AdminRacesPage() {
                               style={{ background: GREEN, color: '#fff' }}
                               className="flex items-center gap-1"
                             >
-                              View
+                              Preview
+                            </Button>
+                          </Link>
+                          <Link href={`/admin/races/${race.id}/stats`} target="_blank" rel="noopener noreferrer">
+                            <Button
+                              size="sm"
+                              style={{ background: ORANGE, color: '#fff' }}
+                              className="flex items-center gap-1"
+                            >
+                              <BarChart3 className="h-4 w-4 mr-1" />
+                              View Stats
                             </Button>
                           </Link>
                           <Link href={`/admin/races/${race.id}`}>

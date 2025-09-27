@@ -64,27 +64,27 @@ export default function Header() {
         <nav className="hidden md:flex items-center gap-6 w-full max-w-2xl justify-center">
           <Link
             href="/"
-            className={`flex items-center gap-1 font-medium`}
+            className={`flex items-center gap-2 font-medium text-3xl`}
             style={{ color: GREY }}
           >
-            <Home className="h-4 w-4" style={{ color: ORANGE }} />
+            <Home className="h-8 w-8" style={{ color: ORANGE }} />
             <span>Races</span>
           </Link>
           <Link
             href="/leaderboard"
-            className={`flex items-center gap-1 font-medium`}
+            className={`flex items-center gap-2 font-medium text-3xl`}
             style={{ color: GREY }}
           >
-            <Trophy className="h-4 w-4" style={{ color: ORANGE }} />
+            <Trophy className="h-8 w-8" style={{ color: ORANGE }} />
             <span>Leaderboard</span>
           </Link>
           {user?.isAdmin && (
             <Link
               href="/admin"
-              className={`flex items-center gap-1 font-medium`}
+              className={`flex items-center gap-2 font-medium text-3xl`}
               style={{ color: GREY }}
             >
-              <Settings className="h-4 w-4" style={{ color: ORANGE }} />
+              <Settings className="h-8 w-8" style={{ color: ORANGE }} />
               <span>Admin</span>
             </Link>
           )}

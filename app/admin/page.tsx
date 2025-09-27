@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Settings, Plus, Flag, AlertCircle } from "lucide-react"
 import AdminCheck from "./admin-check"
 import CreateRaceForm from "./create-race-form"
+import ManagePlayersPanel from "./manage-players-panel"
 import { ORANGE, GREY, GREEN } from "@/app/constants"
 
 // Force dynamic rendering and disable caching
@@ -88,6 +89,8 @@ export default async function AdminPage() {
               </div>
             </CardContent>
           </Card>
+
+          <ManagePlayersPanel />
         </div>
       </div>
     </AdminCheck>

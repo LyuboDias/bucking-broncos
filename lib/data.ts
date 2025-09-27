@@ -175,9 +175,33 @@ export async function getUsers(): Promise<User[]> {
     id: user.id.toString(),
     name: user.name,
     email: user.email,
+    username: user.username,
     isAdmin: user.is_admin,
     balance: user.balance
   }))
+}
+
+export async function searchUsers(searchTerm: string, limit: number = 10, offset: number = 0): Promise<User[]> {
+  const { data, error } = await supabase
+    .from('users')
+    .select('*')
+    .ilike('name', `%${searchTerm}%`)
+    .order('name', { ascending: true })
+    .range(offset, offset + limit - 1);
+
+  if (error) {
+    console.error('Error searching users:', error);
+    return [];
+  }
+
+  return data.map(user => ({
+    id: user.id.toString(),
+    name: user.name,
+    email: user.email,
+    username: user.username,
+    isAdmin: user.is_admin,
+    balance: user.balance
+  }));
 }
 
 export async function getUser(id: string): Promise<User | null> {
@@ -202,6 +226,7 @@ export async function getUser(id: string): Promise<User | null> {
     id: data.id.toString(),
     name: data.name,
     email: data.email,
+    username: data.username,
     isAdmin: data.is_admin,
     balance: data.balance
   }
@@ -223,6 +248,7 @@ export async function getUserByEmail(email: string): Promise<User | null> {
     id: data.id.toString(),
     name: data.name,
     email: data.email,
+    username: data.username,
     isAdmin: data.is_admin,
     balance: data.balance
   }
@@ -712,8 +738,103 @@ export async function createUser(name: string, email: string, isAdmin = false): 
     id: data.id.toString(),
     name: data.name,
     email: data.email,
+    username: data.username,
     isAdmin: data.is_admin,
     balance: data.balance
+  }
+}
+
+export async function updateUser(userId: string, updates: { name?: string; balance?: number; password?: string }): Promise<User | null> {
+  const parsedUserId = safeParseInt(userId);
+  if (parsedUserId === null) {
+    console.error('Invalid user ID format:', userId);
+    return null;
+  }
+
+  console.log('Attempting to update user with ID:', parsedUserId, 'Updates:', updates);
+
+  // Prepare update object - match actual database column names
+  const updateData: any = {};
+  if (updates.name !== undefined) updateData.name = updates.name;
+  if (updates.balance !== undefined) updateData.balance = updates.balance;
+  
+  // Handle password update - use password_hash column name from database
+  if (updates.password) {
+    // Hash the password using the same method as registration
+    const passwordHash = Buffer.from(updates.password).toString('base64');
+    updateData.password_hash = passwordHash;
+    console.log('Password will be hashed and updated in password_hash column');
+  }
+
+  console.log('Update data being sent to database:', updateData);
+
+  const { data, error } = await supabase
+    .from('users')
+    .update(updateData)
+    .eq('id', parsedUserId)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error updating user:', error);
+    return null;
+  }
+
+  console.log('Updated user data from database:', data);
+
+  return {
+    id: data.id.toString(),
+    name: data.name,
+    email: data.email,
+    username: data.username || data.email?.split('@')[0] || '', // Fallback for username
+    isAdmin: data.is_admin,
+    balance: data.balance
+  };
+}
+
+export async function deleteUser(userId: string): Promise<boolean> {
+  const parsedUserId = safeParseInt(userId);
+  if (parsedUserId === null) {
+    console.error('Invalid user ID format:', userId);
+    return false;
+  }
+
+  console.log('Attempting to delete user with ID:', parsedUserId);
+
+  try {
+    // First, delete all bets associated with this user to maintain referential integrity
+    console.log('Deleting bets for user ID:', parsedUserId);
+    const { data: betsData, error: betsError } = await supabase
+      .from('bets')
+      .delete()
+      .eq('user_id', parsedUserId)
+      .select();
+
+    if (betsError) {
+      console.error('Error deleting user bets:', betsError);
+      return false;
+    }
+
+    console.log('Deleted bets:', betsData?.length || 0);
+
+    // Then delete the user
+    console.log('Deleting user with ID:', parsedUserId);
+    const { data: userData, error: userError } = await supabase
+      .from('users')
+      .delete()
+      .eq('id', parsedUserId)
+      .select();
+
+    if (userError) {
+      console.error('Error deleting user:', userError);
+      return false;
+    }
+
+    console.log('Deleted user:', userData);
+    return true;
+  } catch (error) {
+    console.error('Error in deleteUser:', error);
+    return false;
   }
 }
 
@@ -734,6 +855,7 @@ export async function updateUserBalance(userId: string, newBalance: number): Pro
     id: data.id.toString(),
     name: data.name,
     email: data.email,
+    username: data.username,
     isAdmin: data.is_admin,
     balance: data.balance
   }

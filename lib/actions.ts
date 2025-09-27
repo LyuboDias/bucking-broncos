@@ -10,6 +10,8 @@ import {
   settleRace,
   createUser,
   updateUserBalance,
+  updateUser,
+  deleteUser,
   deleteRace,
   setRaceSecondPlace,
   setRaceThirdPlace,
@@ -173,6 +175,35 @@ export async function deleteRaceAction(raceId: string) {
       revalidatePath("/races")
       revalidatePath("/admin")
       revalidatePath("/admin/races")
+    }
+    return { success: true, data: result }
+  } catch (error) {
+    return { success: false, error: (error as Error).message }
+  }
+}
+
+export async function updateUserAction(userId: string, updates: { name?: string; balance?: number; password?: string }) {
+  try {
+    const result = await updateUser(userId, updates)
+    if (result) {
+      revalidatePath("/")
+      revalidatePath("/leaderboard")
+      revalidatePath("/admin")
+    }
+    return { success: true, data: result }
+  } catch (error) {
+    return { success: false, error: (error as Error).message }
+  }
+}
+
+export async function deleteUserAction(userId: string) {
+  try {
+    const result = await deleteUser(userId)
+    if (result) {
+      revalidatePath("/")
+      revalidatePath("/leaderboard")
+      revalidatePath("/admin")
+      revalidatePath("/races")
     }
     return { success: true, data: result }
   } catch (error) {

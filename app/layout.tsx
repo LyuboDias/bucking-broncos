@@ -37,7 +37,7 @@ export default function RootLayout({
           }
         `}</style>
       </head>
-      <body className={inter.className} style={{ background: `url('/full-logo.png') center center / 100% 100% no-repeat`, minHeight: '100vh', position: 'relative' }} suppressHydrationWarning>
+      <body className={inter.className} style={{ minHeight: '100vh', position: 'relative' }} suppressHydrationWarning>
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(255,255,255,0.75)', pointerEvents: 'none', zIndex: 0 }} suppressHydrationWarning />
         <ThemeProvider attribute="class" defaultTheme="light" forcedTheme="light" enableSystem={false}>
           <AuthProvider>

@@ -113,7 +113,7 @@ export default function ManageRaceForm({
     setIsSubmitting(true)
 
     try {
-      const result = await updateRaceStatusAction(race.id, "closed")
+      const result = await updateRaceStatusAction(race.id, "close")
 
       if (result.success) {
         toast({
@@ -709,7 +709,7 @@ export default function ManageRaceForm({
             </div>
           )}
 
-          {(race.status === "close" || race.status === "closed") && (
+          {(race.status === "close" || (race.status as string) === "closed") && (
             <div className="space-y-4">
               <div className="text-sm" style={{ color: GREY }}>
                 Betting is closed for this race. Winners have been set and cannot be changed.

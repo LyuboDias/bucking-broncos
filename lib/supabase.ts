@@ -6,9 +6,14 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
 if (!supabaseUrl || !supabaseKey) {
   console.error('Missing Supabase environment variables');
+  console.error('NEXT_PUBLIC_SUPABASE_URL:', supabaseUrl ? 'Set' : 'Missing');
+  console.error('NEXT_PUBLIC_SUPABASE_ANON_KEY:', supabaseKey ? 'Set' : 'Missing');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+// Only create client if we have valid credentials
+export const supabase = supabaseUrl && supabaseKey 
+  ? createClient(supabaseUrl, supabaseKey)
+  : createClient('', ''); // Fallback to prevent crashes, but queries will fail gracefully
 
 // Admin functions (these won't be affected by reverting)
 export const signUp = async (email: string, password: string) => {

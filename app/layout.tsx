@@ -37,7 +37,7 @@ export default function RootLayout({
           }
         `}</style>
       </head>
-      <body className={inter.className} style={{ background: `url('/full-logo.png') center center / 100% 100% no-repeat`, width: '100vw', minHeight: '100vh', position: 'relative' }}>
+      <body className={inter.className} style={{ background: `url('/full-logo.png') center center / 100% 100% no-repeat`, minHeight: '100vh', position: 'relative' }}>
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(255,255,255,0.75)', pointerEvents: 'none', zIndex: 0 }} />
         <ThemeProvider attribute="class" defaultTheme="light" forcedTheme="light" enableSystem={false}>
           <AuthProvider>

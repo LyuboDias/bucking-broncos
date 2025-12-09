@@ -5,13 +5,26 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Trophy, Clock, Users } from "lucide-react";
 import { GREEN, GREY, ORANGE, RED } from "@/app/constants";
+import { format } from "date-fns";
 
 // Force dynamic rendering and disable caching
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export default async function RacesPage() {
-  const races = await getRaces();
+  let races: Awaited<ReturnType<typeof getRaces>> = [];
+  
+  try {
+    races = await getRaces();
+    // Ensure races is always an array
+    if (!Array.isArray(races)) {
+      console.error('getRaces() did not return an array:', races);
+      races = [];
+    }
+  } catch (error) {
+    console.error('Error fetching races:', error);
+    races = [];
+  }
 
   // Races are already ordered by creation date ascending from getRaces()
 
@@ -21,67 +34,84 @@ export default async function RacesPage() {
         <h1 className="text-6xl font-bold tracking-tight">Races</h1>
       </div>
       <div className="grid gap-6 w-full max-w-2xl">
-        {await Promise.all(races.map(async (race) => {
-          const players = await getPlayersForRace(race.id);
-          return (
-            <Card key={race.id} className="overflow-hidden">
-              <CardHeader className="pb-3">
-                <div className="flex justify-between items-start">
-                  <CardTitle className="text-2xl font-bold" style={{ color: ORANGE }}>{race.name}</CardTitle>
-                  <StatusBadge status={race.status} />
-                </div>
-                <CardDescription style={{ color: GREY }}>{new Date(race.createdAt).toLocaleDateString()}</CardDescription>
-              </CardHeader>
-              <CardContent className="pb-3">
-                <div className="flex items-center gap-2 text-sm mb-4" style={{ color: GREY }}>
-                  <Users className="h-4 w-4" />
-                  <span>{players.length} participants</span>
-                </div>
-                <div className="space-y-2">
-                  {players.slice(0, 3).map((player) => (
-                    <div key={player.id} className="flex justify-between items-center">
-                      <div className="font-medium">{player.name}</div>
-                      <div className="text-sm">
-                        <span style={{ color: GREY }}>Odds: </span>
-                        <span style={{ color: ORANGE, fontWeight: 700 }}>{player.odds}x</span>
+        {races.length === 0 ? (
+          <Card className="overflow-hidden">
+            <CardContent className="py-8 text-center">
+              <p style={{ color: GREY }}>No races found. Create a race to get started!</p>
+            </CardContent>
+          </Card>
+        ) : (
+          (await Promise.all(races.map(async (race) => {
+            let players: Awaited<ReturnType<typeof getPlayersForRace>> = [];
+            try {
+              players = await getPlayersForRace(race.id);
+              if (!Array.isArray(players)) {
+                players = [];
+              }
+            } catch (error) {
+              console.error(`Error fetching players for race ${race.id}:`, error);
+              players = [];
+            }
+            return (
+              <Card key={race.id} className="overflow-hidden">
+                <CardHeader className="pb-3">
+                  <div className="flex justify-between items-start">
+                    <CardTitle className="text-2xl font-bold" style={{ color: ORANGE }}>{race.name}</CardTitle>
+                    <StatusBadge status={race.status} />
+                  </div>
+                  <CardDescription style={{ color: GREY }}>{format(new Date(race.createdAt), 'MMM d, yyyy')}</CardDescription>
+                </CardHeader>
+                <CardContent className="pb-3">
+                  <div className="flex items-center gap-2 text-sm mb-4" style={{ color: GREY }}>
+                    <Users className="h-4 w-4" />
+                    <span>{players.length} participants</span>
+                  </div>
+                  <div className="space-y-2">
+                    {players.slice(0, 3).map((player) => (
+                      <div key={player.id} className="flex justify-between items-center">
+                        <div className="font-medium">{player.name}</div>
+                        <div className="text-sm">
+                          <span style={{ color: GREY }}>Odds: </span>
+                          <span style={{ color: ORANGE, fontWeight: 700 }}>{player.odds}x</span>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                  {players.length > 3 && (
-                    <div className="text-sm text-center pt-1" style={{ color: ORANGE }}>
-                      +{players.length - 3} more participants
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Link href={`/races/${race.id}`} className="w-full">
-                  <Button
-                    variant={race.status === "open" ? "default" : "outline"}
-                    className="w-full"
-                    style={
-                      race.status === "open"
-                        ? { background: GREEN, borderColor: GREEN, color: "#fff" }
-                        : race.status === "settled"
-                        ? { color: RED, border: `2px solid ${RED}`, background: "#fecaca" }
-                        : race.status === "closed"
-                        ? { color: ORANGE, border: `2px solid ${ORANGE}`, background: "#fed7aa" }
-                        : { color: ORANGE, border: `2px solid ${ORANGE}`, background: "#fff" }
-                    }
-                  >
-                    {race.status === "settled"
-                      ? "View Results"
-                      : race.status === "open"
-                      ? "Place Bet Now"
-                      : race.status === "closed"
-                      ? "Betting Closed"
-                      : "View Race"}
-                  </Button>
-                </Link>
-              </CardFooter>
-            </Card>
-          );
-        }))}
+                    ))}
+                    {players.length > 3 && (
+                      <div className="text-sm text-center pt-1" style={{ color: ORANGE }}>
+                        +{players.length - 3} more participants
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+                <CardFooter>
+                  <Link href={`/races/${race.id}`} className="w-full">
+                    <Button
+                      variant={race.status === "open" ? "default" : "outline"}
+                      className="w-full"
+                      style={
+                        race.status === "open"
+                          ? { background: GREEN, borderColor: GREEN, color: "#fff" }
+                          : race.status === "settled"
+                          ? { color: RED, border: `2px solid ${RED}`, background: "#fecaca" }
+                          : (race.status === "close" || (race.status as string) === "closed")
+                          ? { color: ORANGE, border: `2px solid ${ORANGE}`, background: "#fed7aa" }
+                          : { color: ORANGE, border: `2px solid ${ORANGE}`, background: "#fff" }
+                      }
+                    >
+                      {race.status === "settled"
+                        ? "View Results"
+                        : race.status === "open"
+                        ? "Place Bet Now"
+                        : (race.status === "close" || (race.status as string) === "closed")
+                        ? "Betting Closed"
+                        : "View Race"}
+                    </Button>
+                  </Link>
+                </CardFooter>
+              </Card>
+            );
+          })))
+        )}
       </div>
     </div>
   );
@@ -105,6 +135,7 @@ function StatusBadge({ status }: { status: string }) {
           <span>Open for Betting</span>
         </Badge>
       );
+    case "close":
     case "closed":
       return (
         <Badge variant="secondary" className="flex items-center gap-1" style={{ background: '#fed7aa', color: ORANGE }}>

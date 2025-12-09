@@ -20,23 +20,33 @@ function safeParseInt(id: string | undefined | null): number | null {
 
 // Data access functions for races
 export async function getRaces(): Promise<Race[]> {
-  const { data, error } = await supabase
-    .from('races')
-    .select('*')
-    .order('created_at', { ascending: true })
+  try {
+    const { data, error } = await supabase
+      .from('races')
+      .select('*')
+      .order('created_at', { ascending: true })
+      
+    if (error) {
+      console.error('Error fetching races:', error)
+      return []
+    }
     
-  if (error) {
-    console.error('Error fetching races:', error)
+    if (!data || !Array.isArray(data)) {
+      console.error('Invalid data returned from getRaces:', data)
+      return []
+    }
+    
+    return data.map(race => ({
+      ...race,
+      id: race.id.toString(),
+      createdAt: race.created_at,
+      settledAt: race.settled_at,
+      winnerId: race.winner_id?.toString()
+    }))
+  } catch (error) {
+    console.error('Exception in getRaces:', error)
     return []
   }
-  
-  return data.map(race => ({
-    ...race,
-    id: race.id.toString(),
-    createdAt: race.created_at,
-    settledAt: race.settled_at,
-    winnerId: race.winner_id?.toString()
-  }))
 }
 
 export async function getRace(id: string): Promise<Race | null> {

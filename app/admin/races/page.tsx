@@ -2,11 +2,13 @@ import { getRaces } from "@/lib/data"
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Settings, ArrowLeft, AlertCircle, PlusCircle, BarChart3 } from "lucide-react"
+import { Settings, ArrowLeft, AlertCircle, BarChart3 } from "lucide-react"
 import AdminCheck from "../admin-check"
 import CreateRaceForm from "../create-race-form"
 import BulkRaceButtons from "./bulk-race-buttons"
+import CreateRaceButton from "./create-race-button"
 import { ORANGE, GREY, GREEN } from "@/app/constants"
+import { format } from "date-fns"
 
 // Force dynamic rendering and disable caching
 export const dynamic = 'force-dynamic'
@@ -74,7 +76,7 @@ export default async function AdminRacesPage() {
                                 Upcoming
                               </span>
                             )}
-                            {(race.status === "close" || race.status === "closed") && (
+                            {(race.status === "close" || (race.status as string) === "closed") && (
                               <span
                                 className="text-sm font-semibold rounded-full"
                                 style={{
@@ -103,7 +105,7 @@ export default async function AdminRacesPage() {
                             )}
                           </div>
                           <div className="text-muted-foreground mt-1" style={{ color: GREY, fontSize: '0.85rem' }}>
-                            Created on {new Date(race.createdAt).toLocaleDateString()}
+                            Created on {format(new Date(race.createdAt), 'MMM d, yyyy')}
                           </div>
                         </div>
                         <div className="flex gap-2">
@@ -151,19 +153,7 @@ export default async function AdminRacesPage() {
                       Get started by creating your first race using the form above.
                     </p>
                     <div className="mt-6">
-                      <Button
-                        size="sm"
-                        onClick={() => {
-                          // Focus the race name input in the form
-                          const inputElement = document.querySelector('input[name="raceName"]') as HTMLInputElement;
-                          if (inputElement) inputElement.focus();
-                        }}
-                        style={{ background: GREEN, color: '#fff' }}
-                        className="flex items-center gap-1 mx-auto"
-                      >
-                        <PlusCircle className="h-4 w-4 mr-1" />
-                        Create Your First Race
-                      </Button>
+                      <CreateRaceButton />
                     </div>
                   </div>
                 )}

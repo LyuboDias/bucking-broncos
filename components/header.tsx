@@ -14,11 +14,11 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
-    <header className="border-b" style={{ background: NAVY_BLUE, color: GREY }}>
+    <header className="border-b" style={{ background: NAVY_BLUE, color: GREY }} suppressHydrationWarning>
       <div className="container mx-auto h-34 px-4 flex items-center justify-between py-2">
         {/* Title container with min width */}
         <div className="flex flex-col md:min-w-[300px] h-full justify-center">
-          <Link href="/" className="font-bold text-xl flex items-center gap-2 h-full" style={{ color: GREY }}>
+          <Link href="/" className="font-bold text-xl flex items-center gap-2 h-full" style={{ color: GREY }} suppressHydrationWarning>
             <img src="/logo.png" alt="Bucking Broncos Logo" style={{ height: '100%', maxHeight: '100%', width: '190px', display: 'block' }} />
           </Link>
           {/* Mobile: User info and balance stacked under logo */}
@@ -39,13 +39,13 @@ export default function Header() {
         {/* Mobile: Log out/login and menu button side by side, top right */}
         <div className="flex items-center gap-2 md:hidden">
           {user ? (
-            <Button variant="ghost" size="icon" onClick={logout}>
-              <LogOut className="h-4 w-4" style={{ color: ORANGE }} />
+            <Button variant="ghost" size="icon" onClick={logout} suppressHydrationWarning>
+              <LogOut className="h-4 w-4" style={{ color: ORANGE }} suppressHydrationWarning />
             </Button>
           ) : (
             <Link href="/login">
-              <Button variant="outline" size="icon" className="flex items-center justify-center" style={{ background: GREEN, borderColor: GREEN, color: '#fff' }}>
-                <User className="h-4 w-4" style={{ color: '#fff' }} />
+              <Button variant="outline" size="icon" className="flex items-center justify-center" style={{ background: GREEN, borderColor: GREEN, color: '#fff' }} suppressHydrationWarning>
+                <User className="h-4 w-4" style={{ color: '#fff' }} suppressHydrationWarning />
               </Button>
             </Link>
           )}
@@ -66,16 +66,18 @@ export default function Header() {
             href="/"
             className={`flex items-center gap-2 font-medium text-3xl`}
             style={{ color: GREY }}
+            suppressHydrationWarning
           >
-            <Home className="h-8 w-8" style={{ color: ORANGE }} />
+            <Home className="h-8 w-8" style={{ color: ORANGE }} suppressHydrationWarning />
             <span>Races</span>
           </Link>
           <Link
             href="/leaderboard"
             className={`flex items-center gap-2 font-medium text-3xl`}
             style={{ color: GREY }}
+            suppressHydrationWarning
           >
-            <Trophy className="h-8 w-8" style={{ color: ORANGE }} />
+            <Trophy className="h-8 w-8" style={{ color: ORANGE }} suppressHydrationWarning />
             <span>Leaderboard</span>
           </Link>
           {user?.isAdmin && (
@@ -83,8 +85,9 @@ export default function Header() {
               href="/admin"
               className={`flex items-center gap-2 font-medium text-3xl`}
               style={{ color: GREY }}
+              suppressHydrationWarning
             >
-              <Settings className="h-8 w-8" style={{ color: ORANGE }} />
+              <Settings className="h-8 w-8" style={{ color: ORANGE }} suppressHydrationWarning />
               <span>Admin</span>
             </Link>
           )}
@@ -105,14 +108,14 @@ export default function Header() {
                   <span className="font-medium" style={{ color: GREY }}>{user.balance} coins</span>
                 </div>
               </div>
-              <Button variant="ghost" size="icon" onClick={logout}>
-                <LogOut className="h-4 w-4" style={{ color: ORANGE }} />
+              <Button variant="ghost" size="icon" onClick={logout} suppressHydrationWarning>
+                <LogOut className="h-4 w-4" style={{ color: ORANGE }} suppressHydrationWarning />
               </Button>
             </>
           ) : (
             <Link href="/login">
-              <Button variant="outline" size="sm" className="flex items-center gap-1" style={{ background: GREEN, borderColor: GREEN, color: '#fff' }}>
-                <User className="h-4 w-4" style={{ color: '#fff' }} />
+              <Button variant="outline" size="sm" className="flex items-center gap-1" style={{ background: GREEN, borderColor: GREEN, color: '#fff' }} suppressHydrationWarning>
+                <User className="h-4 w-4" style={{ color: '#fff' }} suppressHydrationWarning />
                 <span>Login</span>
               </Button>
             </Link>
@@ -122,14 +125,15 @@ export default function Header() {
 
       {/* Mobile nav dropdown */}
       {menuOpen && (
-        <nav className="md:hidden border-t px-4 py-2 flex flex-col gap-2" style={{ color: GREY, background: NAVY_BLUE }}>
+        <nav className="md:hidden border-t px-4 py-2 flex flex-col gap-2" style={{ color: GREY, background: NAVY_BLUE }} suppressHydrationWarning>
           <Link
             href="/"
             className={`flex items-center gap-2 py-3 font-medium text-2xl`}
             style={{ color: GREY }}
             onClick={() => setMenuOpen(false)}
+            suppressHydrationWarning
           >
-            <Home className="h-6 w-6" style={{ color: ORANGE }} />
+            <Home className="h-6 w-6" style={{ color: ORANGE }} suppressHydrationWarning />
             <span>Races</span>
           </Link>
           <Link
@@ -137,8 +141,9 @@ export default function Header() {
             className={`flex items-center gap-2 py-3 font-medium text-2xl`}
             style={{ color: GREY }}
             onClick={() => setMenuOpen(false)}
+            suppressHydrationWarning
           >
-            <Trophy className="h-6 w-6" style={{ color: ORANGE }} />
+            <Trophy className="h-6 w-6" style={{ color: ORANGE }} suppressHydrationWarning />
             <span>Leaderboard</span>
           </Link>
           {user?.isAdmin && (
@@ -147,8 +152,9 @@ export default function Header() {
               className={`flex items-center gap-2 py-3 font-medium text-2xl`}
               style={{ color: GREY }}
               onClick={() => setMenuOpen(false)}
+              suppressHydrationWarning
             >
-              <Settings className="h-6 w-6" style={{ color: ORANGE }} />
+              <Settings className="h-6 w-6" style={{ color: ORANGE }} suppressHydrationWarning />
               <span>Admin</span>
             </Link>
           )}

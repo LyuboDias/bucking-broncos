@@ -37,15 +37,15 @@ export default function RootLayout({
           }
         `}</style>
       </head>
-      <body className={inter.className} style={{ background: `url('/full-logo.png') center center / 100% 100% no-repeat`, minHeight: '100vh', position: 'relative' }}>
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(255,255,255,0.75)', pointerEvents: 'none', zIndex: 0 }} />
+      <body className={inter.className} style={{ background: `url('/full-logo.png') center center / 100% 100% no-repeat`, minHeight: '100vh', position: 'relative' }} suppressHydrationWarning>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(255,255,255,0.75)', pointerEvents: 'none', zIndex: 0 }} suppressHydrationWarning />
         <ThemeProvider attribute="class" defaultTheme="light" forcedTheme="light" enableSystem={false}>
           <AuthProvider>
             <div className="min-h-screen flex flex-col" style={{ position: 'relative', zIndex: 1 }}>
               <Header />
               <main className="flex-1 container mx-auto py-6 px-4">{children}</main>
-              <footer className="border-t py-4" style={{ background: NAVY_BLUE }}>
-                <div className="container mx-auto text-center text-sm" style={{ color: ORANGE }}>
+              <footer className="border-t py-4" style={{ background: NAVY_BLUE }} suppressHydrationWarning>
+                <div className="container mx-auto text-center text-sm" style={{ color: ORANGE }} suppressHydrationWarning>
                   © {new Date().getFullYear()} Bucking Broncos App
                 </div>
               </footer>

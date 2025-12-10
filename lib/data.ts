@@ -354,22 +354,19 @@ export async function bulkUpdateRaceStatus(status: "open" | "close"): Promise<{ 
         continue;
       }
 
-      // For opening races, check if they have required winners set
-      if (status === 'open') {
-        if (!race.winner_id || !race.second_place_id) {
-          console.log(`Skipping race ${race.id}: Missing first or second place winner`);
-          skippedCount++;
-          skippedRaces.push(`${race.name} (winners not set)`);
-          continue;
-        }
-      }
-
       // For closing races, only close races that are currently "open"
       if (status === 'close') {
         if (race.status !== 'open') {
           console.log(`Skipping race ${race.id}: Can only close open races (current status: ${race.status})`);
           skippedCount++;
           skippedRaces.push(`${race.name} (not open)`);
+          continue;
+        }
+
+        if (!race.winner_id || !race.second_place_id) {
+          console.log(`Skipping race ${race.id}: Cannot close without first and second place set`);
+          skippedCount++;
+          skippedRaces.push(`${race.name} (winners not set)`);
           continue;
         }
       }
@@ -401,6 +398,25 @@ export async function updateRaceStatus(raceId: string, status: "upcoming" | "ope
   if (parsedRaceId === null) {
     console.error('Invalid race ID format:', raceId);
     return null;
+  }
+
+  // When closing a race, make sure winners have been set so results can be processed later.
+  if (status === 'close') {
+    const { data: existingRace, error: fetchError } = await supabase
+      .from('races')
+      .select('winner_id, second_place_id, status')
+      .eq('id', parsedRaceId)
+      .single();
+
+    if (fetchError || !existingRace) {
+      console.error('Error checking race before closing:', fetchError);
+      return null;
+    }
+
+    if (!existingRace.winner_id || !existingRace.second_place_id) {
+      console.error('Cannot close race without winner and second place set');
+      return null;
+    }
   }
 
   const { data, error } = await supabase
@@ -568,7 +584,7 @@ export async function setRaceThirdPlace(raceId: string, playerId: string): Promi
   };
 }
 
-export async function updateBet(betId: string, newAmount: number, userId: string): Promise<{ success: boolean; bet?: Bet; error?: string }> {
+export async function updateBet(betId: string, newAmount: number, userId: string): Promise<{ success: boolean; bet?: Bet; newBalance?: number; error?: string }> {
   const parsedBetId = safeParseInt(betId);
   const parsedUserId = safeParseInt(userId);
   
@@ -641,7 +657,8 @@ export async function updateBet(betId: string, newAmount: number, userId: string
         settled: updatedBet.settled,
         winnings: updatedBet.winnings,
         odds: currentBet.players.odds
-      }
+      },
+      newBalance
     };
   } catch (error) {
     console.error('Error updating bet:', error);

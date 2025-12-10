@@ -10,6 +10,7 @@ import type { Bet, Player } from "@/lib/types"
 import { getUser } from "@/lib/data"
 import { updateBetAction } from "@/lib/actions"
 import { ORANGE, GREY, GREEN } from "@/app/constants"
+import { useAuth } from "@/components/auth-provider"
 
 type BetWithDetails = Bet & {
   userName: string
@@ -29,6 +30,7 @@ export default function AllUserBets({
   raceId: string
 }) {
   const { toast } = useToast()
+  const { updateUserBalance, user: authUser } = useAuth()
   const [betsWithDetails, setBetsWithDetails] = useState<BetWithDetails[]>([])
   const [loading, setLoading] = useState(true)
   const [editingBetId, setEditingBetId] = useState<string | null>(null)
@@ -140,6 +142,8 @@ export default function AllUserBets({
 
   const handleUpdateBet = async (bet: BetWithDetails) => {
     if (!userId) return // Only allow editing own bets
+    const authUserId = authUser?.id ? String(authUser.id) : undefined
+    const targetUserId = userId ? String(userId) : undefined
     
     const newAmount = parseFloat(editAmount)
     if (isNaN(newAmount) || newAmount <= 0) {
@@ -153,13 +157,25 @@ export default function AllUserBets({
 
     setIsUpdating(true)
     try {
-      const result = await updateBetAction(bet.id, newAmount, userId, raceId)
+      const result = await updateBetAction(bet.id, newAmount, targetUserId, raceId)
       
       if (result.success) {
         toast({
           title: "Bet updated successfully",
           description: `Stake amount changed to ${newAmount} coins`,
         })
+
+        // Refresh and sync the user balance when updating own bet
+        if (authUserId && targetUserId && authUserId === targetUserId) {
+          if (typeof result.newBalance === "number") {
+            updateUserBalance(result.newBalance)
+          } else {
+            const latestUser = await getUser(targetUserId)
+            if (latestUser) {
+              updateUserBalance(latestUser.balance)
+            }
+          }
+        }
         
         // Update local state
         setBetsWithDetails(prev => 

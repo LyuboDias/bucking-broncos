@@ -110,6 +110,15 @@ export default function ManageRaceForm({
   }
 
   const handleCloseBetting = async () => {
+    if (!race.winnerId || !race.secondPlaceId) {
+      toast({
+        title: "Set winners before closing",
+        description: "Choose at least 1st and 2nd place before closing betting.",
+        variant: "destructive",
+      })
+      return
+    }
+
     setIsSubmitting(true)
 
     try {
@@ -508,7 +517,7 @@ export default function ManageRaceForm({
           {race.status === "upcoming" && (
             <div className="space-y-4">
               <div className="text-sm" style={{ color: GREY }}>
-                This race is currently in the setup phase. You can set the winners and then open it for betting.
+                This race is currently in the setup phase. Add participants, then open it for betting. You can set winners after betting is open.
               </div>
               
               {/* Race standings summary - always visible */}
@@ -533,10 +542,66 @@ export default function ManageRaceForm({
                 </div>
               </div>
               
-              {/* Winner Selection - collapsible */}
+              <Button 
+                onClick={handleOpenRace} 
+                className="w-full" 
+                style={{ background: GREEN, color: '#fff' }} 
+                disabled={isSubmitting || players.length === 0}
+              >
+                Open Race for Betting
+              </Button>
+            </div>
+          )}
+
+          {race.status === "open" && (
+            <div className="space-y-4">
+              <div className="text-sm" style={{ color: GREY }}>
+                This race is open for betting. Set winners before you close the race so results can be settled.
+              </div>
+
+              {players.length === 0 && (
+                <Alert>
+                  <AlertCircle className="h-4 w-4" style={{ color: ORANGE }} />
+                  <AlertTitle style={{ color: ORANGE }}>No participants</AlertTitle>
+                  <AlertDescription style={{ color: '#000' }}>Add participants before setting winners or closing.</AlertDescription>
+                </Alert>
+              )}
+
+              {/* Race standings summary - always visible */}
+              <div className="border rounded-md p-3 bg-muted/30">
+                <h3 className="font-semibold mb-2 text-sm" style={{ color: GREY }}>Race Standings</h3>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <Trophy className="h-4 w-4 text-yellow-500" />
+                    <span className="text-sm font-medium" style={{ color: GREY }}>1st:</span>
+                    <span className="text-sm" style={{ color: GREY }}>{players.find(p => p.id === race.winnerId)?.name || 'Not set'}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Medal className="h-4 w-4 text-gray-400" />
+                    <span className="text-sm font-medium" style={{ color: GREY }}>2nd:</span>
+                    <span className="text-sm" style={{ color: GREY }}>{players.find(p => p.id === race.secondPlaceId)?.name || 'Not set'}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Award className="h-4 w-4 text-amber-700" />
+                    <span className="text-sm font-medium" style={{ color: GREY }}>3rd:</span>
+                    <span className="text-sm" style={{ color: GREY }}>{players.find(p => p.id === race.thirdPlaceId)?.name || 'Not set'}</span>
+                  </div>
+                </div>
+              </div>
+
+              {(!race.winnerId || !race.secondPlaceId) && (
+                <Alert variant="destructive" className="mb-2">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>Set winners before closing</AlertTitle>
+                  <AlertDescription>
+                    Choose at least 1st and 2nd place while betting is open. Closing is blocked until winners are set.
+                  </AlertDescription>
+                </Alert>
+              )}
+
               <CollapsibleCard
                 title="Set Winners"
-                description="Select winners for 1st, 2nd, and 3rd places"
+                description="Pick 1st, 2nd, and optionally 3rd place before closing"
                 titleColor={ORANGE}
                 descriptionColor={GREY}
               >
@@ -632,56 +697,6 @@ export default function ManageRaceForm({
                   </div>
                 </div>
               </CollapsibleCard>
-              
-              {/* Show warning if 1st or 2nd place is not set */}
-              {(!race.winnerId || !race.secondPlaceId) && (
-                <Alert variant="destructive" className="mb-2">
-                  <AlertCircle className="h-4 w-4" />
-                  <AlertTitle>Winners required</AlertTitle>
-                  <AlertDescription>
-                    You must set both 1st and 2nd place winners before opening the race for betting.
-                  </AlertDescription>
-                </Alert>
-              )}
-              
-              <Button 
-                onClick={handleOpenRace} 
-                className="w-full" 
-                style={{ background: GREEN, color: '#fff' }} 
-                disabled={isSubmitting || players.length === 0 || !race.winnerId || !race.secondPlaceId}
-              >
-                Open Race for Betting
-              </Button>
-            </div>
-          )}
-
-          {race.status === "open" && (
-            <div className="space-y-4">
-              <div className="text-sm" style={{ color: GREY }}>
-                This race is open for betting. Winners have been set and cannot be changed.
-              </div>
-
-              {/* Race standings summary - always visible */}
-              <div className="border rounded-md p-3 bg-muted/30">
-                <h3 className="font-semibold mb-2 text-sm" style={{ color: GREY }}>Race Standings</h3>
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <Trophy className="h-4 w-4 text-yellow-500" />
-                    <span className="text-sm font-medium" style={{ color: GREY }}>1st:</span>
-                    <span className="text-sm" style={{ color: GREY }}>{players.find(p => p.id === race.winnerId)?.name || 'Not set'}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Medal className="h-4 w-4 text-gray-400" />
-                    <span className="text-sm font-medium" style={{ color: GREY }}>2nd:</span>
-                    <span className="text-sm" style={{ color: GREY }}>{players.find(p => p.id === race.secondPlaceId)?.name || 'Not set'}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Award className="h-4 w-4 text-amber-700" />
-                    <span className="text-sm font-medium" style={{ color: GREY }}>3rd:</span>
-                    <span className="text-sm" style={{ color: GREY }}>{players.find(p => p.id === race.thirdPlaceId)?.name || 'Not set'}</span>
-                  </div>
-                </div>
-              </div>
 
               <div className="flex gap-2">
                 <Button 

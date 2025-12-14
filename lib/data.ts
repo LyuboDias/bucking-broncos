@@ -362,13 +362,6 @@ export async function bulkUpdateRaceStatus(status: "open" | "close"): Promise<{ 
           skippedRaces.push(`${race.name} (not open)`);
           continue;
         }
-
-        if (!race.winner_id || !race.second_place_id) {
-          console.log(`Skipping race ${race.id}: Cannot close without first and second place set`);
-          skippedCount++;
-          skippedRaces.push(`${race.name} (winners not set)`);
-          continue;
-        }
       }
 
       // Update the race status
@@ -398,25 +391,6 @@ export async function updateRaceStatus(raceId: string, status: "upcoming" | "ope
   if (parsedRaceId === null) {
     console.error('Invalid race ID format:', raceId);
     return null;
-  }
-
-  // When closing a race, make sure winners have been set so results can be processed later.
-  if (status === 'close') {
-    const { data: existingRace, error: fetchError } = await supabase
-      .from('races')
-      .select('winner_id, second_place_id, status')
-      .eq('id', parsedRaceId)
-      .single();
-
-    if (fetchError || !existingRace) {
-      console.error('Error checking race before closing:', fetchError);
-      return null;
-    }
-
-    if (!existingRace.winner_id || !existingRace.second_place_id) {
-      console.error('Cannot close race without winner and second place set');
-      return null;
-    }
   }
 
   const { data, error } = await supabase

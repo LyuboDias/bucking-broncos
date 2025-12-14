@@ -110,15 +110,6 @@ export default function ManageRaceForm({
   }
 
   const handleCloseBetting = async () => {
-    if (!race.winnerId || !race.secondPlaceId) {
-      toast({
-        title: "Set winners before closing",
-        description: "Choose at least 1st and 2nd place before closing betting.",
-        variant: "destructive",
-      })
-      return
-    }
-
     setIsSubmitting(true)
 
     try {
@@ -556,7 +547,7 @@ export default function ManageRaceForm({
           {race.status === "open" && (
             <div className="space-y-4">
               <div className="text-sm" style={{ color: GREY }}>
-                This race is open for betting. Set winners before you close the race so results can be settled.
+                This race is open for betting. You can stop betting at any time; set winners before you settle results.
               </div>
 
               {players.length === 0 && (
@@ -589,19 +580,9 @@ export default function ManageRaceForm({
                 </div>
               </div>
 
-              {(!race.winnerId || !race.secondPlaceId) && (
-                <Alert variant="destructive" className="mb-2">
-                  <AlertCircle className="h-4 w-4" />
-                  <AlertTitle>Set winners before closing</AlertTitle>
-                  <AlertDescription>
-                    Choose at least 1st and 2nd place while betting is open. Closing is blocked until winners are set.
-                  </AlertDescription>
-                </Alert>
-              )}
-
               <CollapsibleCard
                 title="Set Winners"
-                description="Pick 1st, 2nd, and optionally 3rd place before closing"
+                description="Pick 1st, 2nd, and optionally 3rd place before settling"
                 titleColor={ORANGE}
                 descriptionColor={GREY}
               >
@@ -727,7 +708,7 @@ export default function ManageRaceForm({
           {(race.status === "close" || (race.status as string) === "closed") && (
             <div className="space-y-4">
               <div className="text-sm" style={{ color: GREY }}>
-                Betting is closed for this race. Winners have been set and cannot be changed.
+                Betting is closed. You can still set winners before settling results.
               </div>
 
               {/* Race standings summary - always visible */}
@@ -752,36 +733,102 @@ export default function ManageRaceForm({
                 </div>
               </div>
 
-              {/* Winner Selection - read-only view */}
+              {/* Winner Selection - still editable while closed */}
               <CollapsibleCard
-                title="View Winners"
-                description="Current winners (read-only)"
+                title="Set Winners"
+                description="Pick 1st, 2nd, and optionally 3rd place before settling"
                 titleColor={ORANGE}
                 descriptionColor={GREY}
               >
                 <div className="space-y-3">
-                  <div className="grid grid-cols-[auto_1fr] gap-2 items-center">
+                  <div className="grid grid-cols-[auto_1fr_auto] gap-2 items-center">
                     <Trophy className="h-4 w-4 text-yellow-500" />
-                    <div className="h-8 px-3 py-1 border rounded-md bg-muted/50 flex items-center text-sm" style={{ color: GREY }}>
-                      {players.find(p => p.id === race.winnerId)?.name || 'Not set'} 
-                      {race.winnerId && ` (${players.find(p => p.id === race.winnerId)?.odds}x)`}
-                    </div>
+                    <Select value={selectedWinner} onValueChange={setSelectedWinner}>
+                      <SelectTrigger className="h-8 text-sm" style={{ color: '#000000' }}>
+                        <SelectValue placeholder="Select 1st place" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {players.map((player) => (
+                          <SelectItem 
+                            key={`first-closed-${player.id}`} 
+                            value={player.id} 
+                            disabled={(race.secondPlaceId === player.id || race.thirdPlaceId === player.id) && race.winnerId !== player.id}
+                          >
+                            {player.name} ({player.odds}x)
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Button 
+                      onClick={handleSetWinner} 
+                      size="sm"
+                      variant="outline"
+                      className="h-8 px-2 text-xs"
+                      disabled={isSubmitting || !selectedWinner}
+                      style={{ borderColor: GREEN, color: GREEN }}
+                    >
+                      Set
+                    </Button>
                   </div>
 
-                  <div className="grid grid-cols-[auto_1fr] gap-2 items-center">
+                  <div className="grid grid-cols-[auto_1fr_auto] gap-2 items-center">
                     <Medal className="h-4 w-4 text-gray-400" />
-                    <div className="h-8 px-3 py-1 border rounded-md bg-muted/50 flex items-center text-sm" style={{ color: GREY }}>
-                      {players.find(p => p.id === race.secondPlaceId)?.name || 'Not set'}
-                      {race.secondPlaceId && ` (${players.find(p => p.id === race.secondPlaceId)?.odds}x)`}
-                    </div>
+                    <Select value={selectedSecondPlace} onValueChange={setSelectedSecondPlace}>
+                      <SelectTrigger className="h-8 text-sm" style={{ color: '#000000' }}>
+                        <SelectValue placeholder="Select 2nd place" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {players.map((player) => (
+                          <SelectItem 
+                            key={`second-closed-${player.id}`} 
+                            value={player.id} 
+                            disabled={(race.winnerId === player.id || race.thirdPlaceId === player.id) && race.secondPlaceId !== player.id}
+                          >
+                            {player.name} ({player.odds}x)
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Button 
+                      onClick={handleSetSecondPlace} 
+                      size="sm"
+                      variant="outline"
+                      className="h-8 px-2 text-xs"
+                      disabled={isSubmitting || !selectedSecondPlace}
+                      style={{ borderColor: GREEN, color: GREEN }}
+                    >
+                      Set
+                    </Button>
                   </div>
 
-                  <div className="grid grid-cols-[auto_1fr] gap-2 items-center">
+                  <div className="grid grid-cols-[auto_1fr_auto] gap-2 items-center">
                     <Award className="h-4 w-4 text-amber-700" />
-                    <div className="h-8 px-3 py-1 border rounded-md bg-muted/50 flex items-center text-sm" style={{ color: GREY }}>
-                      {players.find(p => p.id === race.thirdPlaceId)?.name || 'Not set'}
-                      {race.thirdPlaceId && ` (${players.find(p => p.id === race.thirdPlaceId)?.odds}x)`}
-                    </div>
+                    <Select value={selectedThirdPlace} onValueChange={setSelectedThirdPlace}>
+                      <SelectTrigger className="h-8 text-sm" style={{ color: '#000000' }}>
+                        <SelectValue placeholder="Select 3rd place (optional)" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {players.map((player) => (
+                          <SelectItem 
+                            key={`third-closed-${player.id}`} 
+                            value={player.id} 
+                            disabled={(race.winnerId === player.id || race.secondPlaceId === player.id) && race.thirdPlaceId !== player.id}
+                          >
+                            {player.name} ({player.odds}x)
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Button 
+                      onClick={handleSetThirdPlace} 
+                      size="sm"
+                      variant="outline"
+                      className="h-8 px-2 text-xs"
+                      disabled={isSubmitting || !selectedThirdPlace}
+                      style={{ borderColor: GREEN, color: GREEN }}
+                    >
+                      Set
+                    </Button>
                   </div>
                 </div>
               </CollapsibleCard>
